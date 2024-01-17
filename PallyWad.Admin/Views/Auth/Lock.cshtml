@@ -1,0 +1,172 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Zoogler - Responsive Bootstrap 4 Admin Dashboard</title>
+    <meta content="Admin Dashboard" name="description" />
+    <meta content="Mannatthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body class="fixed-left">
+
+    <!-- Begin page -->
+    <div class="accountbg"></div>
+    <div class="wrapper-page">
+
+        <div class="card">
+            <div class="card-body" id="formarea">
+
+                <div class="text-center m-b-15">
+                    <a href="~/" class="logo logo-admin"><img src="~/assets/images/logo.png" height="24" alt="logo"></a>
+                </div>
+
+                <div class="p-3">
+                    <form class="form-horizontal">
+
+                        <div class="user-thumb text-center m-b-30">
+                            <img src="~/assets/images/users/avatar-1.jpg" class="rounded-circle img-thumbnail" alt="thumbnail">
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="password" required="" id="password" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center row m-t-20">
+                            <div class="col-12">
+                                <button id="login" class="btn btn-primary btn-block waves-effect waves-light" type="button">Log In</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-t-10 mb-0 row">
+                            <div class="col-12 m-t-20 text-center">
+                                <a href="login" class="text-muted">Not you?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery  -->
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/modernizr.min.js"></script>
+    <script src="~/assets/js/detect.js"></script>
+    <script src="~/assets/js/fastclick.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.js"></script>
+    <script src="~/assets/js/jquery.blockUI.js"></script>
+    <script src="~/assets/js/waves.js"></script>
+    <script src="~/assets/js/jquery.nicescroll.js"></script>
+    <script src="~/assets/js/jquery.scrollTo.min.js"></script>
+    <script src="~/js/jquery.pleaseWait.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <script src="~/Scripts/config.js"></script>
+    <script>
+        $(function () {
+            var prev = localStorage.getItem('prev');
+            localStorage.removeItem('auth');
+            //$('#lockscreen-name').html(JSON.parse(localStorage.getItem('fullname')));
+            $('#lockscreen-name').html(localStorage.getItem('fullname'));
+            $('#login').click(function (e) {
+                login();
+            })
+
+            $('#password').on('keypress', function (e) {
+                if (e.which == 13) {
+                    login();
+                }
+            });
+
+            function login() {
+                $('#formarea').pleaseWait();
+                //var auth = JSON.parse(localStorage.getItem('auth') || "[]");//$('#username').val();
+                //var username = auth.username;
+                var username = JSON.parse(localStorage.getItem('uemail') || "[]");
+                var password = $('#password').val();
+                var refreshToken = '';
+                try {
+                    refreshToken = JSON.parse(sessionStorage.getItem('tokenKey')).refresh_token
+                } catch {
+
+                }
+
+                var loginData = {
+                    grant_type: 'password',
+                    username: username,
+                    password: password,
+                    email: username,
+                    client_id: 'coorpAppCoreAuth',
+                    client_secret: 'secretkey_secretkey123!',
+                    //scope: 'CoorpAppCoreAuthApi openid offline_access',
+                    refresh_token: refreshToken
+                };
+                var loginUrl = appConfig.authURL + 'api/v1/auth/login'; //'auth/oluso';
+                $.ajax({
+                    type: 'POST',
+                    url: loginUrl,
+                    data: JSON.stringify(loginData),
+                    //contentType: 'application/x-www-form-urlencoded',
+                    contentType: 'application/json',
+                }).done(function (data) {
+
+                    data.username = username;
+                    data.email = username
+                    getUsersDetails(data.email);
+                    localStorage.setItem('auth', JSON.stringify(data));
+                    sessionStorage.setItem('tokenKey', JSON.stringify(data));
+                    $('#formarea').pleaseWait('stop');
+                    var url = '@Html.Raw(Url.Action("Index", "Home"))';
+                    if (prev === '') {
+                        window.location.href = url;
+                    } else {
+                        window.location.href = prev;
+                    }
+                    //window.location.href = url;
+
+                }).fail(showError);
+
+                function showError(error, value, xhr) {
+                    $('#formarea').pleaseWait('stop');
+                    toastr.error('unable to signin');
+                    toastr.error(error.responseJSON.error_description);
+                }
+            }
+            function getUsersDetails(email) {
+                $.get(appConfig.apiURL + 'api/settings/UserInfo?email=' + email, function (data) {
+                    var fullname = data.lastName + ' ' + data.firstName;
+                    localStorage.setItem('fullname', JSON.stringify(fullname));
+                    localStorage.setItem('uemail', JSON.stringify(email));
+                }).fail(function (e) {
+                    toastr.error('unable to get user ' + email + ' details');
+                });
+            }
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Zoogler - Responsive Bootstrap 4 Admin Dashboard</title>
+    <meta content="Admin Dashboard" name="description" />
+    <meta content="Mannatthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
+
+</head>
+
+
+<body class="fixed-left">
+
+    <!-- Begin page -->
+    <div class="accountbg"></div>
+    <div class="wrapper-page">
+
+        <div class="card">
+            <div class="card-body" id="formarea">
+
+                <div class="text-center m-b-15">
+                    <a href="index.html" class="logo logo-admin"><img src="~/assets/images/logo.png" height="24" alt="logo"></a>
+                </div>
+
+                <div class="p-3">
+                    <form class="form-horizontal">
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="email" required="" id="email" placeholder="Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" required="" id="lastname" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" required="" id="firstname" placeholder="First Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" required="" id="othernames" placeholder="Other Names">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="number" required="" id="phoneno" placeholder="Phone Number">
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" required="" placeholder="Username">
+                            </div>
+                        </div>-->
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="password" required="" id="password" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="password" required="" id="confirmpassword" placeholder="Confirm Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <label class="custom-control-label font-weight-normal" for="customCheck1">I accept <a href="#" class="text-muted">Terms and Conditions</a></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center row m-t-20">
+                            <div class="col-12">
+                                <!--<button class="btn btn-danger btn-block waves-effect waves-light" type="submit">Register</button>-->
+                                <a href="javascript:void(0);" id="register" class="btn btn-primary btn-user btn-block waves-effect waves-light">
+                                    Register Account
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-t-10 mb-0 row">
+                            <div class="col-12 m-t-20 text-center">
+                                <a href="login" class="text-muted">Already have account?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jQuery  -->
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/modernizr.min.js"></script>
+    <script src="~/assets/js/detect.js"></script>
+    <script src="~/assets/js/fastclick.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.js"></script>
+    <script src="~/assets/js/jquery.blockUI.js"></script>
+    <script src="~/assets/js/waves.js"></script>
+    <script src="~/assets/js/jquery.nicescroll.js"></script>
+    <script src="~/assets/js/jquery.scrollTo.min.js"></script>
+
+
+    <script src="~/js/jquery.pleaseWait.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script src="~/js/icheck.min.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/Scripts/config.js"></script>
+
+
+    <script>
+        var registerUrl = appConfig.authURL + 'api/v1/auth/register';
+        $(function () {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            var $branch = $('#branch');
+            var $units = $('#units');
+            var $option;
+
+
+            //setTimeout(getTenant(), "1000");
+
+            function getTenant() {
+                var tenant = localStorage.getItem('tenant');
+                if (tenant == '' || tenant == null) {
+                    $.get(appConfig.authURL + 'api/account/tenant', function (data) {
+                        localStorage.setItem('tenant', JSON.stringify(data));
+                        checkStartBackground(data);
+                        mtenant = data;
+                    });
+                } else {
+                    checkBackground(tenant);
+                }
+
+            }
+
+            function checkStartBackground(tenant) {
+                $('.bg-register-image').css('background', 'url("' + tenant.tenantUrl + 'img/' + tenant.name + '.png")');
+            }
+
+            function checkBackground(_tenant) {
+                var tenant = JSON.parse((_tenant));
+                console.log(tenant)
+                $('.bg-register-image').css('background', 'url("' + tenant.tenantUrl + 'img/' + tenant.name + '.png")');
+                /**
+
+
+        .bg-login-image {
+        background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+        background-position: center;
+        background-size: cover;
+        }
+
+        .bg-register-image {
+        background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
+        background-position: center;
+        background-size: cover;
+        }
+
+        .bg-password-image {
+        background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+        background-position: center;
+        background-size: cover;
+        }
+                 */
+            }
+            function loadLocation() {
+                $.get(appConfig.apiURL + 'api/settings/Branches', function (data) {
+                    $branch.empty();
+                    $branch.append('<option value=""> Select Branch </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].branchname + '">' + data[counter].branchname + '</option>');
+
+                        $branch.append($option);
+                    }
+                    $branch.select2({
+                        placeholder: "Select a Branch"
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get branch/location list');
+                });
+
+                $.get(appConfig.apiURL + 'api/settings/departments', function (data) {
+                    $units.empty();
+                    $units.append('<option value=""> Select Department </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].deptcode + '">' + data[counter].deptdesc + '</option>');
+
+                        $units.append($option);
+                    }
+                    $units.select2({
+                        placeholder: "Select a department",
+                        //containerCssClass: 'form-control-user',
+                        //theme: 'classic'
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get units list');
+                });
+            }
+            //loadLocation();
+            var form = $("#form-register");
+            form.validate({
+                errorPlacement: function errorPlacement(error, element) { element.before(error); },
+                rules: {
+                    confirm: {
+                        equalTo: "#password"
+                    },
+                    'surname': { required: true },
+                    'firstname': { required: true },
+                    'email': { required: true },
+                    'password': { required: true },
+                    'phoneno': { required: true },
+                    'confirmpassword': { required: true },
+                    'input': { required: true },
+                    confirmpassword: { equalTo: '#password' }
+                },
+                submitHandler: function (form) {
+
+                    //}.fail(showError);
+
+
+
+                }
+
+            });
+
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+
+
+            $('#register').click(function (e) {
+                register();
+            });
+        });
+
+        function register() {
+            $('#formarea').pleaseWait();
+            var username = $('#email').val();
+            var password = $('#password').val();
+            var lastname = $('#lastname').val();
+            var firstname = $('#firstname').val();
+            var othernames = $('#othernames').val();
+            var phoneno = $('#phoneno').val();
+            var address = $('#address').val();
+            var memberId = $('#memberId').val();
+            var confirmpassword = $('#confirmpassword').val();
+            /*var _branch = document.getElementById("branch");
+            var branch = _branch.options[_branch.selectedIndex].value;
+            var _units = document.getElementById("units");
+            var units = _units.options[_units.selectedIndex].value;*/
+            var registerData = {
+                lastName: lastname,
+                username: username,
+                name: username,
+                password: password,
+                firstName: firstname,
+                othernames: othernames,
+                confirmpassword: confirmpassword,
+                phoneNo: phoneno,
+                email: username,
+                location: address,
+                SSN: '',
+                type: '2'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: registerUrl,
+                //data: registerData,
+                data: JSON.stringify(registerData),
+                //contentType: 'application/x-www-form-urlencoded',
+                contentType: "application/json", //; charset=utf-8
+            }).done(function (data) {
+                $('#formarea').pleaseWait('stop');
+                window.location.href = './login';
+            }).fail(function (request, message, error) {
+                handleException(request, message, error);
+            });
+        }
+
+        function handleException(request, message, error) {
+            console.log(request);
+            console.log(message);
+            console.log(error);
+            var msg = "";
+            //msg += "Code: " + request.status + "\n";
+            //msg += "Text: " + request.statusText + "\n";
+            if (request.responseJSON != null) {
+                var mserror = JSON.parse(JSON.stringify(request.responseJSON.message));
+                for (var i = 0; i < mserror.length; i++) {
+                    toastr.error(mserror[i].description);
+                    msg += mserror[i].description
+                }
+                //msg += "Message: " + request.responseText + "\n";
+            } else {
+                msg += request.responseText
+                toastr.error(msg);
+            }
+            $('#errorMessage').append(msg)
+            
+            $('#formarea').pleaseWait('stop');
+        }
+
+        function showError(error) {
+            toastr.error('unable to signin');
+            var message = '<p>' + error.modelState + '</p>'
+            $('#errorMessage').append(message)
+            $('#formarea').pleaseWait('stop');
+        }
+    </script>
+
+</body>
+</html>
