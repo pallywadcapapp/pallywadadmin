@@ -1,0 +1,572 @@
+﻿
+@{
+    ViewBag.Title = "Users";
+}
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Users</li>
+        </ol>
+        <!-- Example DataTables Card-->
+
+        <div id="tab">
+            <ul>
+                <li><a href="#tabs-1">Active Users</a></li>
+            <li><a href="#tabs-2">Inactive Users</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>Users
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!--
+                    <div class="col-sm-12">
+                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                        </div>
+                    </div>
+                    -->
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="userTab" cellspacing="0"
+                                           data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                                           data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                           data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                </div>
+            </div>
+            <div id="tabs-2">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>Users
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="incativeuserTab" cellspacing="0"
+                                           data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                                           data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                           data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+            <div id="userViewModal" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h4 class="modal-title">User  <span name="lastName"></span>  <span name="firstName"></span> Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <p>
+                                        <span>FirstName: </span><span name="firstName" id="firstnameSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>LastName: </span><span name="lastName" id="lastnameSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Unit: </span><span name="unit" id="unitSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Branch: </span><span name="location" id="branchSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Home Address: </span><span name="homeAddress" id="HomeAddressSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Phone No: </span><span name="phoneNumber" id="phoneNoSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Email: </span><span name="email" id="emailSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Nationality: </span><span name="nationality" id="nationalitySummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Religion: </span><span name="religion" id="religionSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>DOB: </span><span name="dob" id="dobSummation"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div id="editUserModal" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h4 class="modal-title">Edit User  <span name="lastName"></span> <span name="firstName"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <p>
+                                        <span>Email: </span><span name="email" id="emailSummation"></span>
+                                        <!--<span>Email: </span><input type="text" class="form-control" id="email" name="email" />-->
+                                    </p>
+                                    <p>
+                                        <span>FirstName: </span><input type="text" class="form-control" id="firstName" name="firstName" />
+                                    </p>
+                                    <p>
+                                        <span>LastName: </span><input type="text" class="form-control" id="lastName" name="lastName" />
+                                    </p>
+                                    <p>
+                                        <span>Unit: </span>
+                                        <select class="form-control" id="unit"></select>
+                                    </p>
+                                    <p>
+                                        <span>Branch: </span>
+                                        <select class="form-control" id="branch"></select>
+                                    </p>
+                                    <p>
+                                        <span>Home Address: </span><span name="homeAddress" id="HomeAddressSummation"></span>
+                                    </p>
+                                    <p>
+                                        <span>Phone No: </span><input type="text" class="form-control" id="phoneNumber" name="phoneNumber" />
+                                    </p>
+                                    <p>
+                                        <span>Nationality: </span>
+                                        <select class="form-control" id="nationality"></select>
+                                    </p>
+                                    <p>
+                                        <span>DOB: </span><input type="date" class="form-control" id="dob" name="dob" />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+                            <button type="button" class="btn btn-primary" onclick="SaveUserInfo()">Save</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="deactivateUserModal" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h4 class="modal-title">Deactivate User  <span name="lastName"></span> <span name="firstName"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <p>
+                                        <span>Kindly Proceed to deactivate the account for: </span><span name="lastName"> <span> </span></span> <span name="firstName"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+                            <button type="button" class="btn btn-primary" onclick="DeactivateUser('false')">Deactivate</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="activateUserModal" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h4 class="modal-title">Activate User  <span name="lastName"></span> <span name="firstName"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <p>
+                                        <span>Kindly Proceed to Activate the account for: </span><span name="lastName"> <span> </span></span> <span name="firstName"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+                            <button type="button" class="btn btn-primary" onclick="DeactivateUser('true')">Activate</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="editEmailViewModal" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h4 class="modal-title">Change Email  <span name="lastName"></span> <span name="chgemail"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                   <span>Member ID: </span> <span name="memberId"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4"><h6><b>Old Email</b></h6></label>
+                                        <label class="col-md-8"><span name="chgemail"></span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4"><h6><b>New Email</b></h6></label>
+                                        <label class="col-md-8"><input id="newMail" class="form-control" /></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-success">
+                            <button type="button" class="btn btn-primary" onclick="ChangeMail()">Change</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+@section Scripts{
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        //loadSelect();
+
+        function loadSelect() {
+            var $branch = $('#branch');
+            var $unit = $('#unit');
+            var $option; var $option2;
+            $.get(appConfig.apiURL + 'api/settings/BranchesList', function (data) {
+                $branch.empty();
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    $branch.append($option);
+                }
+            }).fail(function (e) {
+                toastr.error('unable to get branch/location list');
+            });
+
+            $.get(appConfig.apiURL + 'api/settings/marketingunits', function (data) {
+                $unit.empty();
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                console.log(data[counter].units);
+                    $option2 = $('<option value="' + data[counter].units + '">' + data[counter].units + '</option>');
+                    $unit.append($option2);
+                }
+            }).fail(function (e) {
+                toastr.error('unable to get branch/location list');
+            });
+            setCountries();
+            
+        }
+
+        function setCountries() {
+            var $option;
+            var $nationality = $('#nationality');
+            $nationality.empty();
+            for (var counter = 0; counter <= countries.length - 1; counter++) {
+                $option = $('<option value="' + countries[counter].name + '">' + countries[counter].name + '</option>');
+                $nationality.append($option);
+            }
+
+            $nationality.select2();
+        }
+
+        var userdata;
+
+        function loadEditEmail(id, memberId) {
+            $('[name="chgemail"]').html(id);
+            console.log(memberId)
+            $('[name="memberId"]').html(memberId);
+        }
+        function loadEditView(id) {
+            $('#editUserModal').pleaseWait();
+            var eurl = appConfig.authURL + 'api/admin/UserById?email=' + id;
+            $.get(eurl, function (data) {
+                userdata = data;
+                $('#editUserModal').pleaseWait('stop');
+                try {
+                    for (var key in data) {
+                        if (key == 'insuredname') {
+                            var lname = data[key].split(' ')[0];
+                            var fname = data[key].split(' ')[1];
+                            $('[name="firstname"]').html(fname);
+                            $('[name="lastname"]').html(lname);
+                        }
+                        $('[name="' + key + '"]').val(data[key]);
+                        $('[name="' + key + '"]').html(data[key]);
+                        if (key == 'dob') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }).fail(function (xhr, status, error) {
+                $('#editUserModal').pleaseWait('stop');
+            });
+        }
+        function loadView(id) {
+            $('#userViewModal').pleaseWait();
+            var url = appConfig.authURL + 'api/admin/UserById?email=' + id;
+             $.get(url, function (data) {
+                 $('#userViewModal').pleaseWait('stop');
+                 try {
+                     for (var key in data) {
+                         if (key == 'insuredname') {
+                             var lname = data[key].split(' ')[0];
+                             var fname = data[key].split(' ')[1];
+                             $('[name="firstname"]').html(fname);
+                             $('[name="lastname"]').html(lname);
+                         }
+                         $('[name="' + key + '"]').html(data[key]);
+                         if (key == 'dob') {
+                             $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                         }
+                     }
+                 } catch (e) {
+                     console.log(e);
+                 }
+             }).fail(function (xhr, status, error) {
+                 $('#userViewModal').pleaseWait('stop');
+             });
+
+        }
+
+        function identityFormatter(value, row, index) {
+            console.log(row)
+            var val = row.lastname + ' ' + row.firstname + ' ' + row.othernames; 
+            return val;
+        };
+
+        function userOpFormatter(value, row, index) {
+            var val = row.lastName + ' ' + row.firstName;
+            var id = row.id;
+            var memberId = row.userName;
+            var email = row.email; 
+            return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+                ' <ul class="dropdown-menu">' +
+                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#userViewModal" onclick="loadView(\'' + email + '\')">VIEW</a></li>' +
+                '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">EDIT USER</a></li>' +
+                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#editEmailViewModal" onclick="loadEditEmail(\'' + email + '\',\'' + memberId + '\')">CHANGE EMAIL</a></li>' +
+                '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#activateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>ACTIVATE</a></li>' +
+                '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#deactivateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>DEACTIVATE</a></li>' +
+                '<li><a id="demo02" class="btn Administrator" onclick="CompleteReg(\'' + memberId + '\')"><i class="fa fa-plus"></i>Fix Reg</a></li>' +
+                ' </ul></div >'
+        };
+
+        function CompleteReg(memberId){
+            var url = '@Html.Raw(Url.Action("FixReg","Auth"))';
+                window.location.href = url + '?memberId=' + memberId;
+        }
+
+        function ChangeMail() {
+            $('#editEmailViewModal').pleaseWait();
+            var oldMail = $('[name="chgemail"]').html();
+            var newMail = $('[id="newMail"]').val();
+            var memberId = $('[name="memberId"]').html();
+            console.log(oldMail);
+            console.log(newMail);
+            var cmail = {
+                oldMail: oldMail,
+                newMail: newMail,
+                username: memberId
+            }
+            console.log(cmail)
+            var editEmailUrl = appConfig.authURL + 'api/admin/EditUserEmail';
+            
+
+            $.ajax({
+                type: 'POST',
+                url: editEmailUrl,
+                data: JSON.stringify(cmail),
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#editEmailViewModal').pleaseWait('stop');
+                toastr.success('Email changed successfully');
+                
+            }).fail(function (request, message, error) {
+                $('#editEmailViewModal').pleaseWait('stop');
+                toastr.error('error ' + request.responseText);
+            });
+        }
+        function DeactivateUser(status) {
+            $('#deactivateUserModal').pleaseWait();
+            userdata.active = status;
+            var editUrl = '';
+            if(status == 'false'){
+                editUrl = appConfig.authURL + 'api/admin/DisableUser?user=' + userdata.userName;
+                
+            }else{
+                 editUrl = appConfig.authURL + 'api/admin/EnableUser?user=' + userdata.userName;
+            }
+             
+            $.ajax({
+                type: 'POST',
+                url: editUrl,
+                data: JSON.stringify(userdata),
+                contentType: "application/json",
+            }).done(function (data) {
+                refreshTables();
+                        $('#deactivateUserModal').pleaseWait('stop');
+                    }).fail(function (xhr, status, error) {
+                        //handleException(request, message, error);
+                        $('#deactivateUserModal').pleaseWait('stop');
+                    console.log(xhr)
+                    toastr.error(xhr.responseJSON.exceptionMessage);
+                    });
+        }
+        function refreshTables() {
+            var activeUrl =  appConfig.adminURL + 'api/user/AllActiveUsers';
+            var inactiveUrl =  appConfig.adminURL + 'api/user/AllInActiveUsers';
+            $('#userTab').bootstrapTable('refresh', { url: activeUrl, silent: true });
+            $('#incativeuserTab').bootstrapTable('refresh', { url: inactiveUrl, silent: true });
+        }
+        function SaveUserInfo() {
+            $('#editUserModal').pleaseWait();
+            var firstname = $('#firstName').val();
+            var lastname = $('#lastName').val();
+            var phoneNumber = $('#phoneNumber').val();
+            var dob = $('#dob').val();
+
+            var _unit = document.getElementById("unit");
+            var unit = _unit.options[_unit.selectedIndex].value;
+            var _branch = document.getElementById("branch");
+            var branch = _branch.options[_branch.selectedIndex].value;
+            var _nationality = document.getElementById("nationality");
+            var nationality = _nationality.options[_nationality.selectedIndex].value;
+
+            userdata.phoneNumber = phoneNumber;
+            userdata.firstName = firstname;
+            userdata.lastName = lastname;
+            userdata.location = branch;
+            userdata.unit = unit;
+            //console.log(userdata);
+            var editUrl = appConfig.authURL + 'api/admin/EditUser'
+             $.post(editUrl, userdata, function (data) {
+                    $('#editUserModal').pleaseWait('stop');
+                    // window.location.href = 'receiptHistory?p=' + data.policyNo + '&d=' + data.dncnNo;
+                }).fail(function (xhr, status, error) {
+                    $('#editUserModal').pleaseWait('stop');
+                    console.log(xhr)
+                    toastr.error(xhr.responseJSON.exceptionMessage);
+                });
+        }
+        $(function () {
+
+            $('#userTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.adminURL + 'api/user/AllActiveUsers',
+                columns: [{
+                    field: 'id',
+                    title: '',
+                    formatter: userOpFormatter
+                    //checkbox: true
+                },{
+                    field: 'id',
+                    title: 'Name',
+                    formatter: identityFormatter
+                    //checkbox: true
+                }, {
+                    field: 'userName',
+                    title: 'Member ID'
+                }, {
+                    field: 'email',
+                    title: 'Email'
+                }, {
+                        field: 'sex',
+                        title: 'Sex'
+                }, {
+                        field: 'phoneNumber',
+                        title: 'Phone Number'
+                }]//,
+                /*onEventName: function (arg1, arg2) {
+                console.log()
+                }*/
+            });
+
+            $('#incativeuserTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.adminURL + 'api/user/AllInActiveUsers',
+                columns: [{
+                    field: 'id',
+                    title: '',
+                    formatter: userOpFormatter
+                    //checkbox: true
+                },{
+                    field: 'id',
+                    title: 'Name',
+                    formatter: identityFormatter
+                    //checkbox: true
+                }, {
+                    field: 'userName',
+                    title: 'Member ID'
+                }, {
+                    field: 'email',
+                    title: 'Email'
+                }, {
+                        field: 'sex',
+                        title: 'Sex'
+                }, {
+                        field: 'phoneNumber',
+                        title: 'Phone Number'
+                }]//,
+                /*onEventName: function (arg1, arg2) {
+                console.log()
+                }*/
+            });
+            $('#userTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#incativeuserTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,128 @@
+@{
+    //ViewData["Title"] = "States";
+    ViewBag.Title = "States";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">States</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>States
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add States</a>
+                <table class="table table-bordered" id="StatesTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add States</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group modsp">
+                            <span>State Name </span><input type="text" placeholder="State Name" class="form-control" id="name" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Code</span><input type="text" placeholder="State Code" class="form-control" id="code" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveStates()" id="saveGLLines">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/settings/States';
+            $('#StatesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+
+        function saveStates() {
+            $('#myModal').pleaseWait();
+
+            var name = $('#name').val();
+            var code = $('#code').val();
+            var States = {
+                "name": name,
+                "code": code
+            }
+
+            console.log(States);
+            var url = appConfig.apiURL + "api/settings/States";
+            $.post(url, States, function (e) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                toastr.success('States  ' + name + ' saved successfully');
+                refreshTables();
+            }).fail(function (error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving State ' + name);
+
+            });
+
+        }
+        $(function () {
+            $('#StatesTab').bootstrapTable({
+                idField: 'product',
+                url: appConfig.apiURL + 'api/settings/States',
+                columns: [{
+                    field: 'name',
+                    title: 'Name'
+                }, {
+                    field: 'code',
+                    title: 'code'
+                }]
+            });
+            $('#StatesTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#StatesTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/settings/States', row, function (e) {
+                    console.log(e);
+                    toastr.success('State ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' State');
+
+                });
+            });
+
+        });
+    </script>
+
+
+    }

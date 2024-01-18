@@ -1,0 +1,163 @@
+@{
+    //ViewData["Title"] = "LoanCharges";
+    ViewBag.Title = "LoanCharges";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">LoanCharges</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>LoanCharges
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add LoanCharges</a>
+                <table class="table table-bordered" id="LoanChargesTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Loan Charges</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group modsp">
+                            <span>Loan Charge Name </span><input type="text" placeholder="Loan Charge Name" class="form-control" id="name" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Code</span><input type="text" placeholder="Loan Charge Code" class="form-control" id="code" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Description</span><textarea placeholder="Description" class="form-control" id="description"></textarea>
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>GL Acct</span><select class="form-control" id="accountno"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveLoanCharges()" id="saveGLLines">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var $accountno = $('#accountno');
+        var $option, $option2;
+            function loadDefault() {
+                $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                    $accountno.empty();
+                    $accountno.append('<option value=""> Select GL </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - '+ data[counter].shortdesc + '</option>');
+
+                        $accountno.append($option);
+                    }
+                    $accountno.select2({
+                          placeholder: "Select a GL"
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get account list');
+                });
+            }
+            loadDefault();
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/settings/LoanCharges';
+            $('#LoanChargesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+
+        function saveLoanCharges() {
+            $('#myModal').pleaseWait();
+
+            var name = $('#name').val();
+            var code = $('#code').val();
+            var description = $('#description').val();
+            var _accountno = document.getElementById("accountno");
+            var accountno = _accountno.options[_accountno.selectedIndex].value;
+            var LoanCharges = {
+                "shortname": name,
+                "chargecode": code,
+                interestdesc: description,
+                accountno, accountno
+            }
+
+            console.log(LoanCharges);
+            var url = appConfig.apiURL + "api/settings/Charge";
+             $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(LoanInterests),
+                contentType: "application/json", //; charset=utf-8
+            }).done(function (data) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                toastr.success('Loan Charges  ' + name + ' saved successfully');
+                refreshTables();
+            }).fail(function (request, message, error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving LoanCharge ' + name);
+            });
+
+        }
+        $(function () {
+            $('#LoanChargesTab').bootstrapTable({
+                idField: 'product',
+                url: appConfig.apiURL + 'api/settings/Charges',
+                columns: [{
+                    field: 'shortname',
+                    title: 'Name'
+                }, {
+                    field: 'chargecode',
+                    title: 'code'
+                }]
+            });
+            $('#LoanChargesTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#LoanChargesTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/settings/LoanCharges', row, function (e) {
+                    console.log(e);
+                    toastr.success('LoanCharge ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' LoanCharge');
+
+                });
+            });
+
+        });
+    </script>
+
+
+    }

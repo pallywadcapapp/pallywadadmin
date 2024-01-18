@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\Scripts\\root.js"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\Scripts\\select2.min.js",
+      "PackagePath": "staticwebassets\\Scripts\\select2.min.js"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\assets\\css\\bootstrap.min.css"
     },
@@ -7029,6 +7033,10 @@
       "PackagePath": "staticwebassets\\css\\font-awesome.min.css"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\jquery-ui.css",
+      "PackagePath": "staticwebassets\\css\\jquery-ui.css"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -7083,6 +7091,14 @@
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery-jvectormap-world-mill-en.js",
       "PackagePath": "staticwebassets\\js\\jquery-jvectormap-world-mill-en.js"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery-ui.js",
+      "PackagePath": "staticwebassets\\js\\jquery-ui.js"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery-ui.min.js",
+      "PackagePath": "staticwebassets\\js\\jquery-ui.min.js"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.base64.js",

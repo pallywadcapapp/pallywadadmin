@@ -1,0 +1,155 @@
+﻿@{
+    //ViewData["Title"] = "Products";
+    ViewBag.Title = "Products";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Products</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Products
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add Products</a>
+                <table class="table table-bordered" id="ProductsTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Products</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group modsp">
+                            <span>Product Name </span><input type="text" placeholder="Product Name" class="form-control" id="name" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Class/Category</span><select class="form-select select2" placeholder="Category" id="type">
+                                <option value="">Select Option</option>
+                                <option value="Asset">Asset</option>
+                                <option value="Liability">Liability</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveProducts()" id="saveGLLines">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    
+    <script>
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/settings/Products';
+            $('#ProductsTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+        loadSelect();
+        function loadSelect() {
+            var $accountno = $('#accountno');
+            $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].shortdesc + '</option>');
+                    $accountno.append($option);
+                }
+
+            });
+            $accountno.select2();
+        }
+
+        $('#type').select2();
+
+
+        function saveProducts() {
+            $('#myModal').pleaseWait();
+
+            var name = $('#name').val();
+            var code = $('#type').val();
+            var Products = {
+                "name": name,
+                "type": code
+            }
+
+            console.log(Products);
+            var url = appConfig.setupURL + "api/Product";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(Products),
+                dataType: 'json',
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                toastr.success('Products  ' + name + ' saved successfully');
+                refreshTables();
+            }).fail(function (request, message, error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving Product ' + name);
+            });
+
+        }
+        $(function () {
+            $('#ProductsTab').bootstrapTable({
+                idField: 'product',
+                url: appConfig.setupURL + 'api/Product',
+                columns: [{
+                    field: 'name',
+                    title: 'Name'
+                }, {
+                    field: 'type',
+                    title: 'Category'
+                }, {
+                    field: 'isDefault',
+                    title: 'Default'
+                }]
+            });
+            $('#ProductsTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#ProductsTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/settings/Products', row, function (e) {
+                    console.log(e);
+                    toastr.success('Product ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' Product');
+
+                });
+            });
+
+        });
+    </script>
+
+
+    }

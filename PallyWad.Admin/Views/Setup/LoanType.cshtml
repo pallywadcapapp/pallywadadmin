@@ -1,0 +1,522 @@
+@{
+    //ViewData["Title"] = "LoanTypes";
+    ViewBag.Title = "Loan Types";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Loan Types</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Loan Types
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add Loan Types</a>
+                <table class="table table-bordered" id="LoanTypesTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Loan Types</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                        <div class="form-group modsp col-sm-8">
+                            <span>Loan Code</span><input type="text" placeholder="Loan Type Code" class="form-control" id="code" />
+                        </div>
+                        <!--<div class="form-group modsp col-sm-8">
+                            <span>Loan Type Name </span><input type="text" placeholder="Loan Type Name" class="form-control" id="name" />
+                        </div>-->
+                        <div class="form-group modsp col-sm-4">
+                            <span>Loan Short Name</span><input type="text" placeholder="Loan Short Name" class="form-control" id="shortname" />
+                            </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Loan Description</span><textarea placeholder="Loan Description" class="form-control" id="description"></textarea>
+                            </div>
+                            <div class="form-group modsp col-sm-6">
+                                <span>Loan Category</span><select class="select2 form-select" id="category">
+                                    <option value="Long Term">Select Loan Category</option>
+                                    <option value="Short Term">Short Term</option>
+                                    <option value="Long Term">Long Term</option>
+                                </select>
+                            </div>
+                            <div class="form-group modsp col-sm-6">
+                                <span>Deduction Order</span><select class="select2 form-select" id="repayOrder">
+                                    <option value="1">Select Repayment Priority</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Duration</span><input type="number" value="1" placeholder="Loan Duration" class="form-control" id="duration" />
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Interest Rate</span><input type="number" placeholder="Interest Rate" class="form-control" id="intRate" />
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Processing Rate</span><input type="number" placeholder="Processing Rate" class="form-control" id="procRate" />
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Processing Amount</span><input type="number" placeholder="Processing Amount" class="form-control" id="procAmount" />
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                                <span>Requirement (Months).</span><input type="number" placeholder="Minimum Requirements" class="form-control" id="loanrequire" />
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                                <span>Auto Process Indicator.</span>
+                                <select type="number" placeholder="Minimum Requirements" class="form-select select2" id="procInd">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>GL Acct</span><select class="form-control" id="accountno"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Group Acct</span><select class="form-control" id="memgroupacct"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Interest Code</span><select class="form-control" id="interestcode"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <span>Charges Code</span><select class="form-control" id="chargecode"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-6 hidden">
+                            <span>Savings Code</span><select class="form-control" id="savingscode"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-6 hidden">
+                            <span>Shares Code</span><select class="form-control" id="sharecode"></select>
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <div class=" form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="requireGuarantor" />
+                            <label for="requireGuarantor">Require Guarantors</label>
+                            </div>
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <div class=" form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="request_while_running" />
+                            <label for="request_while_running">Can be requested while Loan Running</label>
+                            </div>
+                        </div>
+                        <div class="form-group modsp col-sm-6">
+                            <label for="no_of_guarantors">No of Guarantors</label><input placeholder="No of Guarantors" class="form-control" id="no_of_guarantors" />
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveLoanTypes()" id="saveGLLines">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="loadViewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h4 class="modal-title"><span name="loandesc"></span> Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <p>
+                            <span>Loan Account No: </span><span name="accountno" id="loanId"></span>
+                        </p>
+                        <p>
+                            <span>Loan Duration : </span><span name="duration" id="fullname"></span>
+                        </p>
+                        <p>
+                            <span>Loan Code: </span><span name="loancode" id="loancode"></span>
+                        </p>
+                        <p>
+                            <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
+                        </p>
+                        <p>
+                            <span>Processing Fee: </span><span name="processamt" id="processamt"></span>
+                        </p>
+                        <p>
+                            <span>Can Request (If previous is running): </span><span name="request_while_running" id="request_while_running"></span>
+                        </p>
+                        <p>
+                            <span>Require Guarantor: </span><span name="requireGuarantor" id="requireGuarantor"></span>
+                        </p>
+                        <p>
+                            <span>No of Guarantors: </span><span name="no_of_guarantor" id="no_of_guarantor"></span>
+                        </p>
+                        <p>
+                            <span>Category</span><span name="category" id="category"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-success">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var $accountno = $('#accountno');
+        var $memgroupacct = $('#memgroupacct');
+        var $interestcode = $('#interestcode');
+        var $chargecode = $('#chargecode');
+        var $savingscode = $('#savingscode');
+        var $sharecode = $('#sharecode');
+        var $category = $('#category');
+        
+        var $option, $option2;
+            function loadDefault() {
+                $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                    $accountno.empty();
+                    $accountno.append('<option value=""> Select GL </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - '+ data[counter].shortdesc + '</option>');
+
+                        $accountno.append($option);
+                    }
+                    $accountno.select2({
+                          placeholder: "Select a GL"
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get account list');
+                });
+
+                $.get(appConfig.apiURL + 'api/settings/ChartAcc3', function (data) {
+                    $memgroupacct.empty();
+                    $memgroupacct.append('<option value=""> Select Group </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - '+ data[counter].shortdesc + '</option>');
+
+                        $memgroupacct.append($option);
+                    }
+                    $memgroupacct.select2({
+                         placeholder: "Select an Acc Group",
+                         //containerCssClass: 'form-control-user',
+                        //theme: 'classic'
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get member group acct list');
+                });
+
+                $.get(appConfig.apiURL + 'api/settings/interests', function (data) {
+                    $interestcode.empty();
+                    $interestcode.append('<option value=""> Select Interest Code </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].interestcode + '">' + data[counter].interestcode + ' - '+ data[counter].interestdesc + '</option>');
+
+                        $interestcode.append($option);
+                    }
+                    $interestcode.select2({
+                         placeholder: "Select Interest Code",
+                         //containerCssClass: 'form-control-user',
+                        //theme: 'classic'
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get interest code');
+            });
+
+            $.get(appConfig.apiURL + 'api/settings/producttypes?type=Liability', function (data) {
+                $category.empty();
+                $category.append('<option value=""> Select Category </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter].name + '">' + data[counter].name + '</option>');
+
+                    $category.append($option);
+                }
+                $category.select2({
+                    placeholder: "Select an Acc Group",
+                    //containerCssClass: 'form-control-user',
+                    //theme: 'classic'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get categories list');
+            });
+
+                $.get(appConfig.apiURL + 'api/settings/charges', function (data) {
+                    $chargecode.empty();
+                    $chargecode.append('<option value=""> Select Charges </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].chargecode + '">' + data[counter].chargecode + ' - '+ data[counter].chargedesc + '</option>');
+
+                        $chargecode.append($option);
+                    }
+                    $chargecode.select2({
+                         placeholder: "Select an Acc Group",
+                         //containerCssClass: 'form-control-user',
+                        //theme: 'classic'
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get member group acct list');
+                });
+
+                $.get(appConfig.apiURL + 'api/settings/ChartAcc3', function (data) {
+                    $savingscode.empty();
+                    $savingscode.append('<option value=""> Select Savings Code </option>')
+                    $sharecode.empty();
+                    $sharecode.append('<option value=""> Select Share Code </option>')
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - '+ data[counter].shortdesc + '</option>');
+
+                        $savingscode.append($option);
+                    }
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        //console.log(counter);
+                        $option2 = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - '+ data[counter].shortdesc + '</option>');
+
+                        $sharecode.append($option2);
+                    }
+                    $savingscode.select2({
+                         placeholder: "Select Savings Code",
+                    });
+                    $sharecode.select2({
+                         placeholder: "Select Share Code",
+                    });
+                }).fail(function (e) {
+                    toastr.error('unable to get Savings/Share code');
+                });
+            }
+            loadDefault();
+        
+        function viewFormatter(value, row, index) {
+            var id = row.id;
+            var status = row.status;
+            var key = index;
+            return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+                ' <ul class="dropdown-menu">' +
+                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + id + '\', \'' + status + '\', \'' + key + '\')">VIEW</a></li>' +
+                '<li><a id="demo02" class="btn admin" onclick="loadEditView(\'' + id + '\')"><i class="fa fa-edit"></i> EDIIT</a></li>' +
+                ' </ul></div >'
+        };
+
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/settings/LoanTypes';
+            $('#LoanTypesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+
+        function saveLoanTypes() {
+            $('#myModal').pleaseWait();
+
+            var name = $('#name').val();
+            var description = $('#description').val();
+            var loancode = $('#code').val();
+            var shortname = $('#shortname').val();
+            var duration = $('#duration').val();
+            var loanrequire = $('#loanrequire').val();
+            var intRate = $('#intRate').val();
+            var procRate = $('#procRate').val();
+            var procAmount = $('#procAmount').val();
+            var procInd = $('#procInd').val();
+            var requireGuarantor = $('#requireGuarantor').is(':checked');//val();
+            var no_of_guarantors = $('#no_of_guarantors').val();
+            var request_while_running = $('#request_while_running').is(':checked');// .val();
+            //var loancode = $('#code').val();
+
+            var _memgroupacct = document.getElementById("memgroupacct");
+            var memgroupacct = _memgroupacct.options[_memgroupacct.selectedIndex].value;
+
+            var _interestcode = document.getElementById("interestcode");
+            var interestcode = _interestcode.options[_interestcode.selectedIndex].value;
+
+            var _savingscode = document.getElementById("savingscode");
+            var savingscode = _savingscode.options[_savingscode.selectedIndex].value;
+
+            var _sharecode = document.getElementById("sharecode");
+            var sharecode = _sharecode.options[_sharecode.selectedIndex].value;
+
+            var _accountno = document.getElementById("accountno");
+            var accountno = _accountno.options[_accountno.selectedIndex].value;
+
+            var _chargecode = document.getElementById("chargecode");
+            var chargecode = _chargecode.options[_chargecode.selectedIndex].value;
+
+            var category = $category.val();
+            
+        var repayOrder = $('#repayOrder').val();
+
+            var LoanTypes = {
+                /*"name": name,
+                "code": code,*/
+                //loantype: 'LOAN01',
+                accountno: accountno,
+                duration: duration,
+                chargecode: chargecode,
+                loancode: loancode,
+                loandesc: description,
+                loaninterest: intRate,
+                processrate: procRate,
+                processamt: procAmount,
+                processind: procInd,
+                loanrequire: loanrequire,
+                normalloanind: 1, //normalloanind,
+                memgroupacct: memgroupacct,
+                interestcode: interestcode,
+                savingscode: 'SAVINGS', //savingscode,
+                sharecode: 'SAVINGS', //sharecode,
+                shortname: shortname,
+                no_of_guarantors: no_of_guarantors,
+                requireGuarantor: requireGuarantor,
+                request_while_running: request_while_running,
+                category: category,
+                repayOrder: repayOrder
+            }
+
+            console.log(LoanTypes);
+            var url = appConfig.apiURL + "api/settings/LoanTypes";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(LoanTypes),
+                contentType: "application/json", //; charset=utf-8
+            }).done(function (data) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                toastr.success('LoanTypes  ' + shortname + ' saved successfully');
+                refreshTables();
+            }).fail(function (request, message, error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving LoanType ' + shortname);
+            });
+        }
+
+        function loadEditView(id){
+            alert(id);
+            window.location.href = 'loantypeedit?id=' + id;
+        }
+
+        function loadView(id, status, key) {
+        var res = $('#LoanTypesTab').bootstrapTable('getData');
+        console.log(res[key])
+        var data = res[key];
+        
+            try {
+                for (var key in data) {
+                    if (key == 'insuredname') {
+                        var lname = data[key].split(' ')[0];
+                        var fname = data[key].split(' ')[1];
+                        $('[name="firstname"]').html(fname);
+                        $('[name="lastname"]').html(lname);
+                    }
+                    $('[name="' + key + '"]').html(data[key]);
+                    if (key == 'dob') {
+                        $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                    }
+                    if (key == 'processamt') {
+                        var val = currformatter.format(data[key]);
+                        $('[name="' + key + '"]').html(val);
+                    }
+
+                    if (key == 'request_while_running') {
+                        if(data[key] == true){
+                            $('[name="' + key + '"]').html('Yes');
+                        }else{
+                            $('[name="' + key + '"]').html('No');
+                        }
+                    }
+
+                    if (key == 'requireGuarantor') {
+                        if(data[key] == true){
+                            $('[name="' + key + '"]').html('Yes');
+                        }else{
+                            $('[name="' + key + '"]').html('No');
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+            }
+
+    }
+
+        $(function () {
+            $('#LoanTypesTab').bootstrapTable({
+                idField: 'product',
+                url: appConfig.apiURL + 'api/settings/loanTypes',
+                columns: [{
+                    field: 'loancode',
+                    title: 'Loan Code'
+                }, {
+                    field: 'loandesc',
+                    title: 'Loan Description'
+                }, {
+                    field: 'loaninterest',
+                    title: 'Interest Rate'
+                }, {
+                    field: 'duration',
+                    title: 'Duration'
+                }, {
+                    field: 'sharecode',
+                    title: 'Share Code'
+                }, {
+                    field: 'savingscode',
+                    title: 'Savings Code'
+                },{
+                    field: 'id',
+                    title: '',
+                    formatter: viewFormatter
+                }]
+            });
+            $('#LoanTypesTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#LoanTypesTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/settings/LoanTypes', row, function (e) {
+                    console.log(e);
+                    toastr.success('LoanType ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' LoanType');
+
+                });
+            });
+
+        });
+    </script>
+
+
+    }

@@ -1,0 +1,279 @@
+﻿
+@{
+    ViewBag.Title = "Roles";
+}
+<div class="container-fluid">
+    <div id="admin-view">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Roles</a></li>
+                <li><a href="#tabs-2">Users in Roles</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="card mb-3">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Roles</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                            <div class="col-sm-4">
+                                <div class="panel panel-danger">
+                                    <div class="panel-heading">
+                                        <label>Users Role</label>
+                                    </div>
+                                    <div class="panel-body widget wblue">
+                                        <table class="table table-condensed table-striped">
+                                            <tbody id="roles"></tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4" id="addingRole-view">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" data-cc-widget-header title="Create New Role"
+                                         allow-collapse="true">
+                                        <span>Create New Role</span>
+                                    </div>
+                                    <div class="panel-body widget-content text-center text-info"> 
+                                        <input class="forms-control" id="txtRole" type="text" required placeholder="Role Name" ng-model="txtRole" />
+                                        <input type="button" value="Add Role" class="btn btn-primary" id="addrole" />
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="panel panel-default ">
+                                    <div data-cc-widget-header title="Add User to Role"
+                                         allow-collapse="true" class="panel-heading">
+                                        <span>Add User to Role</span>
+                                    </div>
+                                    <div class="panel-body text-center text-info">
+                                        <label for="rolesList" title="Select Role">Select Role</label>
+                                        <select name="rolesList" id="rolesList" class="form-control">
+                                        </select>
+                                        <br /><br />
+                                        <label for="usersList" title="Select User">Select User</label>
+                                        <select name="usersList" id="usersList" class="form-control">
+                                        </select>
+                                        <br /><br />
+                                        <input type="button" value="Add User To Role" class="btn btn-success pull-right" id="AddUserToRole" ng-click="AddUserToRole()" />
+                                        <br /><br /><br />
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Action</a></li>
+                                            <li><a href="#">Another action</a></li>
+                                            <li><a href="#">Something else here</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#">Separated link</a></li>
+                                        </ul>
+                                        <br /><br /><br />
+
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="tabs-2">
+                <div class="card mb-3">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Users In Roles</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="panel panel-success">
+                                <div data-cc-widget-header title="Role List"
+                                     allow-collapse="true" class="panel-heading">
+                                    <span>Role List</span>
+                                </div>
+                                <div class="panel-body widget-content text-info">
+                                    <table id="usersInRolesTab" class="table table-bordered"  width="100%" cellspacing="0"
+                               data-pagination="true" data-sort-name="balance" data-sort-order="desc" data-page-size="50"
+                               data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="memberId"
+                               data-show-refresh="true" data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                               data-search="true" data-show-columns-toggle-all="true" data-show-footer="true" data-footer-style="footerStyle"
+                                           data-search="true">
+                                    </table>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+    </div>
+    </div>
+
+@section Scripts{ 
+    <script>
+        function roleFormatter(value, row,index){
+            var result = '<a href="javascript:void;" onclick="deleteUserFromRole(\''+ row.users +'\',\''+ row.role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a>';
+                return result;
+        }
+        //$('#usersInRolesTab').bootstrapTable();
+        function deleteUserFromRole(user, role) {
+            var _user = encodeURIComponent(user);
+            var _role = encodeURIComponent(role);
+            $('#rolerel').pleaseWait();
+            $.get(appConfig.authURL + 'api/admin/RemoveUserFromRole?user=' + _user + '&role=' + _role, data => {
+                GetAllUsersInRoles();
+                $('#rolerel').pleaseWait('stop');
+            }).fail(error => {
+                console.log(error)
+                $('#rolerel').pleaseWait('stop');
+            });
+                }
+
+        function deleteRole(user) {
+            console.log(user);
+        }
+        //$(document).ready(function () {
+            var $roles = $('#roles'); var $rolesList = $('#rolesList'); var $users = $('#usersList');
+            var $rolerel = $('#rolerel');
+            var $option = [];
+
+            loadFunct();
+            function loadFunct() {
+                GetAllUsersInRoles();
+                GetAllRolesList();
+                GetActiveUsers();
+            }
+           
+
+            
+
+        function GetActiveUsers() {
+            $.get(appConfig.adminURL + './api/user/ActiveUsers', function (data) {
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        $option = $('<option value="' + data[counter].email + '">' + data[counter].lastname + ' ' + data[counter].firstname + ' ( '+ data[counter].email +' ) ' + '</option>');
+                        $users.append($option);
+                    }
+                    $users.select2();
+                })
+            }
+
+            function GetAllRolesList() {
+                $.get(appConfig.adminURL + './api/roles/AllRolesList', function (data) {
+                    $roles.empty();
+                    $rolesList.empty();
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        $option = $('<tr><td><span><option value="' + data[counter].name + '">' +
+                             data[counter].name  + '</option></span></td><td><span>'+
+                            ' <a href="javascript:void;" onclick="deleteRole(\''+ data[counter].name +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a></span></li></td></tr>');
+                        $roles.append($option);
+                    }
+
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        $option = $('<option value="' + data[counter].name + '">' + data[counter].name + '</option>');
+                        $rolesList.append($option);
+                    }
+                    $rolesList.select2();
+                });
+            }
+            function GetAllUsersInRoles(){
+                $.get(appConfig.adminURL + './api/roles/GetAllUsersInRoles', function (data) {
+                    $rolerel.empty();
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        $option = $('<tr><td>' + data[counter].users + '</td><td>' + data[counter].role + '</td>' +
+                            '<td><a href="javascript:void;" onclick="deleteUserFromRole(\''+ data[counter].users +'\',\''+ data[counter].role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a><td></tr>');
+                        $rolerel.append($option);
+                    }
+                });
+            }
+            
+            $('#AddUserToRole').click(function (data) {
+                var _usersList = document.getElementById("usersList");
+                var usersList = _usersList.options[_usersList.selectedIndex].value;
+                var _rolesList = document.getElementById("rolesList");
+                var rolesList = _rolesList.options[_rolesList.selectedIndex].value; 
+                var roles = {
+                    role: rolesList,
+                    user: usersList
+                };
+                $.ajax({
+                    url: appConfig.adminURL + "api/roles/AddUserToRole?user=" + usersList + '&role=' + rolesList,
+                    type: "Post",
+                    //data: roles,
+                    // Address: address, DOB: dob },
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        toastr.success('Role Adding Successful', 'Success');
+                        GetAllUsersInRoles();
+                        $('#txtRole').val('');
+                    },
+                    error: function (dat) {
+                        toastr.error('Error Adding Role\n' + dat, 'Error');
+                    }
+                });
+
+            })
+            $('#addrole').click(function (e) {
+                var text = $('#txtRole').val();
+                $.ajax({
+                    url: appConfig.authURL + "api/Admin/CreateRole?role=" + text,
+                    type: "Post",
+                    //data: JSON.stringify([email, festivalName, alias, registerpassword, username, telephone]), //{ Name: name,
+                    // Address: address, DOB: dob },
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        toastr.success('Role Adding Successful', 'Success');
+                        GetAllRolesList();
+                        $('#txtRole').val('');
+                    },
+                    error: function (dat) {
+                        toastr.error('Error Adding Role\n' + dat, 'Error');
+                    }
+                });
+
+                //log('me');
+                console.log('me');
+            })
+
+            $(function(){
+                var url = appConfig.adminURL + './api/roles/GetAllUsersInRoles';
+            //$('#LongTermLoanTab').bootstrapTable({
+            $('#usersInRolesTab').bootstrapTable({
+                idField: 'users',
+                url: url,
+                sortStable: true,
+                columns: [ {
+                    field: 'users',
+                    title: 'Fullname',
+                    //footerFormatter: totalNameFormatter,
+                },{
+                    field: 'role',
+                    title: 'Role',
+                }, {
+                    field: 'role',
+                    title: '',
+                    formatter: roleFormatter,
+                    //footerFormatter: totalPriceFormatter
+                }]
+            });
+            })
+        //})
+    </script>
+}

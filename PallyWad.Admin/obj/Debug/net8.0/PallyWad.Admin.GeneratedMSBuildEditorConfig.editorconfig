@@ -34,12 +34,112 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Auth/Roles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSb2xlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Auth/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxVc2Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Requests.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcUmVxdWVzdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/AccBase.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQWNjQmFzZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Banks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQmFua3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Branch.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQnJhbmNoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Chart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQ2hhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Collateral.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQ29sbGF0ZXJhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Commodity.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQ29tbW9kaXR5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Department.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcRGVwYXJ0bWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Document.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcRG9jdW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Email.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcRW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/FundsRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcRnVuZHNSZXF1ZXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/LoanCharges.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTG9hbkNoYXJnZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/LoanInterest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTG9hbkludGVyZXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/LoanType.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTG9hblR5cGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/LoanTypeEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTG9hblR5cGVFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/MemberBanks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTWVtYmVyQmFua3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/NormalDeduction.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcTm9ybWFsRGVkdWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/Product.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/SpecialSavings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcU3BlY2lhbFNhdmluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/State.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcU3RhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Setup/TermCalc.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcVGVybUNhbGMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Shared/Error.cshtml]

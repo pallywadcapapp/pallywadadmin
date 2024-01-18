@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <title>Zoogler - Responsive Bootstrap 4 Admin Dashboard</title>
+    <title>PallyWad - Admin Login</title>
     <meta content="Admin Dashboard" name="description" />
     <meta content="Mannatthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -211,8 +211,8 @@
                 }).done(function (data) {
                     data.username = username;
                     data.email = username
-                    //initMembers(data);
-                    getUsersDetails(data);
+                    initMembers(data);
+                    //getUsersDetails(data);
                 }).fail(showError);
             }
 
@@ -257,9 +257,9 @@
             }
 
             function initMembers(logindata) {
-                var memUrl = appConfig.apiURL + 'api/member/all';
+                var memUrl = appConfig.authURL + 'api/profile?username=' + logindata.username
                 $.ajax({
-                    type: 'POST',
+                    type: 'GET',
                     contentType: 'application/json',
                     url: memUrl
                 }).done(function (data) {

@@ -1,0 +1,873 @@
+﻿@{
+    ViewBag.Title = "Loan Request";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<style>
+    .hide {
+        display: none;
+    }
+
+    .select2-selection {
+        height: 34px !important;
+        font-size: 13px;
+        font-family: 'Open Sans', sans-serif;
+        border-radius: 0 !important;
+        border: solid 1px #c4c4c4 !important;
+        padding-left: 4px;
+    }
+
+    .select2-selection--multiple {
+        height: 154px !important;
+        width: 366px !important;
+    }
+
+    .select2-selection__choice {
+        height: 40px;
+        line-height: 40px;
+        padding-right: 16px !important;
+        padding-left: 16px !important;
+        background-color: #CAF1FF !important;
+        color: #333 !important;
+        border: none !important;
+        border-radius: 3px !important;
+    }
+
+    .select2-selection__choice__remove {
+        float: right;
+        margin-right: 0;
+        margin-left: 2px;
+    }
+
+    .select2-search--inline .select2-search__field {
+        line-height: 40px;
+        color: #333;
+        width: 100% !important;
+    }
+
+    .select2-container:hover,
+    .select2-container:focus,
+    .select2-container:active,
+    .select2-selection:hover,
+    .select2-selection:focus,
+    .select2-selection:active {
+        outline-color: transparent;
+        outline-style: none;
+    }
+
+    .select2-results__options li {
+        display: block;
+    }
+
+    .select2-selection__rendered {
+        transform: translateY(2px);
+    }
+
+    .select2-selection__arrow {
+        display: none;
+    }
+
+    .select2-results__option--highlighted {
+        background-color: #CAF1FF !important;
+        color: #333 !important;
+    }
+
+    .select2-dropdown {
+        border-radius: 0 !important;
+        box-shadow: 0px 3px 6px 0 rgba(0, 0, 0, 0.15) !important;
+        border: none !important;
+        margin-top: 4px !important;
+        width: 366px !important;
+    }
+
+    .select2-results__option {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 13px;
+        line-height: 24px !important;
+        vertical-align: middle !important;
+        padding-left: 8px !important;
+    }
+
+    .select2-results__option[aria-selected="true"] {
+        background-color: #eee !important;
+    }
+
+    .select2-search__field {
+        font-family: 'Open Sans', sans-serif;
+        color: #333;
+        font-size: 13px;
+        padding-left: 8px !important;
+        border-color: #c4c4c4 !important;
+    }
+
+    .select2-selection__placeholder {
+        color: #c4c4c4 !important;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Loan Request</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Loan Requests</a></li>
+            <li><a href="#tabs-2">Declined Requests</a></li>
+            <li><a href="#tabs-3">Approved Requests</a></li>
+            <li><a href="#tabs-4">Processed Requests</a></li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="tabs-1">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Loan Request
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="LoanRequestTab" width="100%" cellspacing="0"
+                                    data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
+                                    data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                                    data-search="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                    </div>
+                </div>
+                <div id="tabs-2">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Declined Request
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="DeclineRequestTab" width="100%" cellspacing="0"
+                                    data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
+                                    data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                                    data-search="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Approved Request
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="ApprovedRequestTab" width="100%" cellspacing="0"
+                                    data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
+                                    data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                                    data-search="true" data-click-to-select="true" data-show-footer="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                    </div>
+                </div>
+                <div id="tabs-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Processed Request
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="ProcessedRequestTab" width="100%"
+                                    cellspacing="0" data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
+                                    data-show-header="true" data-id-field="loanId" data-show-refresh="true"
+                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                                    data-search="true" data-show-footer="true" ></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Loan Request</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group modsp col-sm-4">
+                            <span>Savings Balance </span><input type="text" disabled class="form-control"
+                                id="sbalance" />
+                        </div>
+                        <div class="form-group modsp col-sm-4">
+                            <span>Loan Balance </span><input type="text" disabled class="form-control" id="lbalance" />
+                        </div>
+                        <div class="form-group modsp col-sm-4">
+                            <span>Net Balance </span><input type="text" disabled class="form-control" id="nbalance" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Loan Amount </span><input type="number" placeholder="Loan Amount" class="form-control"
+                                id="amount" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Bank Name </span><input type="text" placeholder="Bank Name" class="form-control"
+                                id="bankname" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Account Number</span><input type="text" placeholder="Bank Account Number"
+                                class="form-control" id="bankaccountno" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>BVN </span><input type="text" placeholder="BVN" class="form-control" id="bvn" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Other Coorperative Loan </span><input type="text" placeholder="Other Coop Loan"
+                                class="form-control" id="othercoorp" />
+                        </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Guarantors</span><select class="form-control" id="guarantors"
+                                multiple="multiple"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveLoanRequest()" id="saveGLLines">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="loadViewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h4 class="modal-title"> <span name="category"></span> Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <p>
+                            <span>Loan ID: </span><span name="loanId" id="loanId"></span>
+                        </p>
+                        <p>
+                            <span>Member : </span><span name="fullname" id="fullname"></span>
+                        </p>
+                        <p>
+                            <span>Amount: </span><span name="amount" id="amount"></span>
+                        </p>
+                        <p>
+                            <span>Requested Date: </span><span name="requestedDate" id="requestedDate"></span>
+                        </p>
+                        <p>
+                            <span>BVN: </span><span name="bvn" id="bvn"></span>
+                        </p>
+                        <p>
+                            <span>Bank: </span><span name="bank" id="bank"></span>
+                        </p>
+                        <p>
+                            <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
+                        </p>
+                        <p>
+                            <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
+                        </p>
+                        <p>
+                            <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
+                        </p>
+                        <p>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <span>Guarantor 1:
+                                </span>
+                            </div>
+                            <div class="col-sm-8">
+                                <span name="guarantorId1" id="guarantorId1"></span>
+                                <br />
+                                <span><b>Savings</b>: </span><label name="guarantorId1Normal"
+                                    style="color: green;"></label>
+                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: red;"> </label>
+                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: yellow;">
+                                </label>
+                            </div>
+
+                        </div>
+                        </p>
+                        <p>
+                            <span>Guarantor 2: </span><span name="guarantorId2" id="guarantorId1"></span>
+                        </p>
+                        <p>
+                            <span>Guarantor 3: </span><span name="guarantorId3" id="guarantorId1"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-success">
+                <button type="button" class="btn btn-warning" onclick="printPreview()">Print Preview</button>
+                <button type="button" class="btn btn-primary process" onclick="processReview('Approve')">Fund
+                    Account</button>
+                <button type="button" class="btn btn-primary approve" onclick="saveReview('Approve')">Process</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="processModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Process Loan Request</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group modsp col-sm-4">
+                            <span>Approval Date </span><input type="date" class="form-control"
+                                id="approvalDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="ProcessData()" id="processBulkLoan">
+                        Proceed
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+@section Scripts{
+
+<script src="~/Scripts/config.js" type="text/javascript"></script>
+<script>
+    var checkedRows = [];
+    var loanDetails = '';
+
+    function loadDefault() {
+        $.get(appConfig.apiURL + 'api/settings/ChartAcc', function (data) {
+            $guarantors.empty();
+            //$guarantors.append('<option value=""> Select GL </option>')
+            for (var counter = 0; counter <= data.length - 1; counter++) {
+                $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].shortdesc + '</option>');
+
+                $guarantors.append($option);
+            }
+            $guarantors.select2({
+                placeholder: "Select Guarantors",
+                width: 'element'
+            }).on('change', function (e) {
+                if ($(this).val() && $(this).val().length) {
+                    $(this).next('.select2-container')
+                        .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Guarantors');
+                }
+            });
+        }).fail(function (e) {
+            toastr.error('unable to get guarantors list');
+        });
+    }
+
+    //loadDefault();
+    function actionFormatter(value, row, index) {
+        return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+    };
+        
+    function fullNameFormatter(value, row, index) {
+        try{
+            var fullname = getMemberById(value).fullname
+        return fullname;
+        }catch{
+            window.location.href = '../Auth/Login'
+        }
+        
+    }
+    function refreshTables() {
+        var newUrl = appConfig.apiURL + 'api/admin/PendingLoanRequests';
+        var declinelonaUrl = appConfig.apiURL + 'api/admin/DeclinedLoanRequests';
+        var approvelonaUrl = appConfig.apiURL + 'api/admin/UnProcessedLoanRequests';
+        var processedlonaUrl = appConfig.apiURL + 'api/admin/ProcessedLoanRequests';
+        $('#LoanRequestTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        $('#DeclineRequestTab').bootstrapTable('refresh', { url: declinelonaUrl, silent: true });
+        $('#ApprovedRequestTab').bootstrapTable('refresh', { url: approvelonaUrl, silent: true });
+        $('#ProcessedRequestTab').bootstrapTable('refresh', { url: processedlonaUrl, silent: true });
+    }
+
+
+    function saveReview(type) {
+        var url = '@Html.Raw(Url.Action("LoanApproval","Admin"))';
+        window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+
+    }
+    function processReview(type) {
+        var url = '@Html.Raw(Url.Action("LoanProcessor","Admin"))';
+        window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+
+    }
+    function printPreview() {
+        var url = '@Html.Raw(Url.Action("LoanprintPreview","Admin"))';
+        window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+
+    }
+
+    function loadView(id, status, key) {
+        $('#loadViewModal').pleaseWait();
+        console.log(status)
+        if (status === 'Pending' || status === 'pending') {
+            $('.process').css('display', 'none');
+            $('.approve').css('display', 'block');
+        } else {
+            $('.approve').css('display', 'none');
+            $('.process').css('display', 'block');
+            if (key == 'Processed' || key == 'processed') {            
+                $('.process').hide();            
+        }else{
+            $('.process').show();
+        }
+        }
+
+        
+
+        var url = appConfig.apiURL + 'api/member/loandetail?loadId=' + encodeURIComponent(id);
+        $.get(url, function (data) {
+            loanDetails = data;
+            $('#loadViewModal').pleaseWait('stop');
+            try {
+                for (var key in data) {
+                    if (key == 'insuredname') {
+                        var lname = data[key].split(' ')[0];
+                        var fname = data[key].split(' ')[1];
+                        $('[name="firstname"]').html(fname);
+                        $('[name="lastname"]').html(lname);
+                    }
+                    $('[name="' + key + '"]').html(data[key]);
+                    if (key == 'dob') {
+                        $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                    }
+                    if (key == 'memberId') {
+                        var fullname = getMemberById(data[key]).fullname
+                        $('[name="' + key + '"]').html(data[key]);
+                        $('[name="fullname"]').html(fullname);
+                    }
+
+                    if (key == 'guarantorId1') {
+                        var g1 = getMemberById(data[key]).fullname
+                        console.log(g1);
+                        getGuarantorOverhead(data[key], key, g1);
+                        $('[name="' + key + '"]').html(g1);
+                        //$('[name="fullname"]').html(fullname);
+                    }
+
+                    if (key == 'guarantorId2') {
+                        var g1 = getMemberById(data[key]).fullname;
+                        console.log(g1);
+                        $('[name="' + key + '"]').html(g1);
+                        getGuarantorOverhead(data[key], key, g1);
+                        //$('[name="fullname"]').html(fullname);
+                    }
+
+                    if (key == 'guarantorId3') {
+                        var g1 = getMemberById(data[key]).fullname;
+                        console.log(g1);
+                        $('[name="' + key + '"]').html(g1);
+                        getGuarantorOverhead(data[key], key, g1);
+                        //$('[name="fullname"]').html(fullname);
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }).fail(function (xhr, status, error) {
+            $('#loadViewModal').pleaseWait('stop');
+        });
+
+    }
+
+    window.clickEvent = {
+        'click .like': function (e, value, row, index) {
+            alert('You click like action, row: ' + JSON.stringify(row))
+        },
+        'click .remove': function (e, value, row, index) {
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            })
+        },
+        'click .bs-checkbox': function (e, value, row, index) {
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            })
+        }
+    }
+
+    function ProcessData(){
+        $('#processModal').pleaseWait();
+        console.log(checkedRows);
+         const chunkSize = 10;
+         var approvalDate = $('#approvalDate').val();
+         if(approvalDate == ''){
+ toastr.error('Please select a valid date');
+ $('#processModal').pleaseWait('stop');
+         }else{
+        $('#processBulkLoan').prop("disabled",true);
+        var result = [];
+        for (let i = 0; i < checkedRows.length; i += chunkSize) {
+            const chunk = checkedRows.slice(i, i + chunkSize);
+            //console.log(chunk);
+            result.push(chunk);
+
+        }
+
+        console.log(result);
+        for (let p = 0; p < result.length; p++){
+            var lrr = result[p];
+            for(let q = 0; q < lrr.length; q++){
+                var loanDetails = lrr[q];
+                loanDetails.approvalDate = approvalDate;
+            loanDetails.processState = "Processed";
+            loanDetails.status = "Approved";
+            loanDetails.tenantId = "rr";
+            loanDetails.approvedBy = localStorage.getItem('uemail');
+            }
+            console.log(lrr)
+             postData(appConfig.apiURL + 'api/admin/ProcessBatchLoanRequest', lrr).then((data) => {
+                    if (data === null) {
+                        toastr.error('error connecting to server');
+                    }
+
+                    toastr.success("Batch " + p + " Loan successfully processed")
+                    window.location.href = 'LoanRequest';
+                }).catch((error) => {
+                    // Your error is here!
+                    toastr.error('error processing request from server');
+                    console.log(error)
+                });
+            if(p == result.length){
+                 $('#processModal').pleaseWait('stop');
+         
+        $('#processBulkLoan').prop("disabled",false);
+            }
+        }
+        
+    }
+    }
+    function _ProcessData() {
+        var $table = $('#ApprovedRequestTab');
+        $('#ApprovedRequestTab').pleaseWait();
+        var selection = $table.bootstrapTable('getSelections');
+        $.each(selection, function (data) {
+            var loanDetails = selection[data];
+            loanDetails.processState = "Processed";
+            loanDetails.status = "Approved";
+            loanDetails.tenantId = "rr";
+            //loanDetails.id = 0;
+            loanDetails.approvedBy = localStorage.getItem('uemail');
+            url = appConfig.apiURL + 'api/admin/ProcessLoanRequest';
+            console.log(loanDetails);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(loanDetails),
+                dataType: 'json',
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#ApprovedRequestTab').pleaseWait('stop');
+                toastr.success('Loan Request  processed successfully');
+                //refreshTables();
+            }).fail(function (request, message, error) {
+                $('#ApprovedRequestTab').pleaseWait('stop');
+                toastr.error('error ' + error + 'for processing Loan Request ');
+            });
+        });
+        refreshTables();
+
+        //window.location.href = 'loanrequest';
+    }
+
+    function getGuarantorOverhead(memberId, guarantor, gname) {
+        console.log(guarantor)
+        var url = appConfig.apiURL + "api/Admin/GuarantorOverhead?memberId=" + memberId;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            contentType: "application/json",
+        }).done(function (data) {
+            toastr.success('guarantor ' + gname + ' savings and Loan details gotten suucessfully ');
+
+            for (var key in data) {
+                var acc = data[key];
+                for (var v in acc) {
+                    if (v == 'acctype') {
+                        if (acc[v] == 'Loans') {
+                            $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].loanBalance));
+                        } else {
+                            $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
+                        }
+                    }
+                }
+            }
+        }).fail(function (request, message, error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('unable to get guarantor ' + gname + ' savings and Loan details ');
+        });
+    };
+    $(function () {
+        var ulonaUrl = appConfig.apiURL + 'api/admin/PendingLoanRequests';
+        var declinelonaUrl = appConfig.apiURL + 'api/admin/DeclinedLoanRequests';
+        var approvelonaUrl = appConfig.apiURL + 'api/admin/UnProcessedLoanRequests';
+        var processlonaUrl = appConfig.apiURL + 'api/admin/ProcessedLoanRequests';
+        $('#LoanRequestTab').bootstrapTable({
+            idField: 'product',
+            url: ulonaUrl,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'id',
+                checkbox:true
+            },
+            {
+                field: 'loanId',
+                title: 'Loan Id'
+            },{
+                field: 'memberId',
+                title: 'Member FullName(s)',
+                formatter: fullNameFormatter
+            }, {
+                field: 'amount',
+                title: 'Amount',
+                formatter: moneyFormatter
+            }, {
+                field: 'requestDate',
+                title: 'Req Date',
+                formatter: localDateFormatter
+            }, {
+                field: 'status',
+                title: 'Approval Status'
+            }, {
+                field: 'processState',
+                title: 'Processing State'
+            }, {
+                filed: 'grossPremium',
+                title: '',
+                formatter: viewFormatter
+            }]
+        });
+
+        $('#DeclineRequestTab').bootstrapTable({
+            idField: 'product',
+            url: declinelonaUrl,
+            columns: [{
+                field: 'loanId',
+                title: 'Loan Id'
+            },{
+                field: 'memberId',
+                title: 'Member FullName(s)',
+                formatter: fullNameFormatter
+            }, {
+                field: 'amount',
+                title: 'Amount',
+                formatter: moneyFormatter
+            }, {
+                field: 'approvalDate',
+                title: 'Decl Date',
+                formatter: localDateFormatter
+            } ,{
+                field: 'status',
+                title: 'Approval Status'
+            }, {
+                field: 'processState',
+                title: 'Processing State'
+            }, {
+                filed: 'grossPremium',
+                title: '',
+                //formatter: viewFormatter
+            }]
+        });
+
+        $('#ApprovedRequestTab').bootstrapTable({
+            idField: 'product',
+            url: approvelonaUrl,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'ids',
+                title: '',
+                checkbox: true,
+                event: clickEvent,
+            }, {
+                field: 'loanId',
+                title: 'Loan Id'
+            }, {
+                field: 'amount',
+                title: 'Amount',
+                formatter: moneyFormatter
+            }, {
+                field: 'approvalDate',
+                title: 'Appr Date',
+                formatter: localDateFormatter
+            } ,{
+                field: 'memberId',
+                title: 'Member FullName(s)',
+                formatter: fullNameFormatter
+            }, {
+                field: 'status',
+                title: 'Approval Status'
+            }, {
+                field: 'processState',
+                title: 'Processing State'
+            }, {
+                field: 'id',
+                title: '',
+                formatter: viewFormatter,
+                footerFormatter: proceedFormatter
+            }]
+        });
+
+        $('#ProcessedRequestTab').bootstrapTable({
+            idField: 'product',
+            url: processlonaUrl,
+            columns: [{
+                field: 'ids',
+                checkbox:true
+            },{
+                field: 'loanId',
+                title: 'Loan Id'
+            },{
+                field: 'memberId',
+                title: 'Member FullName(s)',
+                formatter: fullNameFormatter
+            }, {
+                field: 'amount',
+                title: 'Amount',
+                formatter: moneyFormatter
+            }, {
+                field: 'approvalDate',
+                title: 'Appr Date',
+                formatter: localDateFormatter
+            } , {
+                field: 'status',
+                title: 'Approval Status'
+            }, {
+                field: 'processState',
+                title: 'Processing State'
+            }, {
+                filed: 'id',
+                title: '',
+                formatter: viewFormatter
+            }]
+        });
+
+        function viewFormatter(value, row, index) {
+            var id = row.id;
+            var email = row.loanId;
+            var status = row.status;
+            var key = row.processState;
+            return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+                ' <ul class="dropdown-menu">' +
+                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + email + '\', \'' + status + '\', \'' + key + '\')">VIEW</a></li>' +
+                //'<li><a id="demo02" class="btn admin" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">REVIEW</a></li>' +
+                ' </ul></div >'
+        };
+
+        function proceedFormatter(data) {
+            return '<button type="button" id="procBtn" class="btn btn-success" data-toggle="modal" data-target="#processModal"> Process </button>';
+
+        }
+
+
+        $('#LoanRequestTab').on('post-body.bs.table', function () {
+            $('[data-tooltip="true"]').tooltip({
+                container: 'body'
+            });
+        });
+        $('#LoanRequestTab').on('load-success.bs.table', function () {
+            hideAdmin();
+            $('[data-tooltip="true"]').tooltip({
+                container: 'body'
+            });
+        });
+
+
+
+$('#ApprovedRequestTab').on('check.bs.table', function (e, row) {
+  checkedRows.push({id: row.id, name: row.memberId, forks: row.forks});
+  console.log(checkedRows);
+});
+$('#ApprovedRequestTab').on('check-all.bs.table', function (e, row) {
+  checkedRows = [];
+  checkedRows = row;
+  console.log(checkedRows);
+});
+
+$('#ApprovedRequestTab').on('uncheck.bs.table', function (e, row) {
+  $.each(checkedRows, function(index, value) {
+    try{
+ if (value.id === row.id) {
+      checkedRows.splice(index,1);
+    }
+        }catch{
+
+        }
+  });
+  console.log(checkedRows);
+});
+
+$('#ApprovedRequestTab').on('uncheck-all.bs.table', function (e, row) {
+  checkedRows = [];
+  console.log(checkedRows);
+});
+
+$("#add_cart").click(function() {
+  $("#output").empty();
+  $.each(checkedRows, function(index, value) {
+    $('#output').append($('<li></li>').text(value.id + " | " + value.memberId + " | " + value.forks));
+  });
+});
+        $(document).on('editable-save.bs.table', '#LoanRequestTab', function (e, field, row, old, $el) {
+            console.log(row);
+            $.post(appConfig.apiURL + 'api/settings/LoanRequest', row, function (e) {
+                console.log(e);
+                toastr.success('Department ' + product + ' edited successfully');
+            }).fail(function (error) {
+                toastr.error('error editing ' + error.responseText + ' Department');
+
+            });
+        });
+
+    });
+</script>
+
+
+}
