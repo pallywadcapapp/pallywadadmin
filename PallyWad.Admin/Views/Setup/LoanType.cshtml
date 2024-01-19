@@ -53,8 +53,6 @@
                             <div class="form-group modsp col-sm-6">
                                 <span>Loan Category</span><select class="select2 form-select" id="category">
                                     <option value="Long Term">Select Loan Category</option>
-                                    <option value="Short Term">Short Term</option>
-                                    <option value="Long Term">Long Term</option>
                                 </select>
                             </div>
                             <div class="form-group modsp col-sm-6">
@@ -79,7 +77,7 @@
                         <div class="form-group modsp col-sm-6">
                             <span>Processing Amount</span><input type="number" placeholder="Processing Amount" class="form-control" id="procAmount" />
                         </div>
-                        <div class="form-group modsp col-sm-6">
+                        <!--<div class="form-group modsp col-sm-6">
                                 <span>Requirement (Months).</span><input type="number" placeholder="Minimum Requirements" class="form-control" id="loanrequire" />
                         </div>
                         <div class="form-group modsp col-sm-6">
@@ -88,7 +86,7 @@
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
-                        </div>
+                        </div>-->
                         <div class="form-group modsp col-sm-12">
                             <span>GL Acct</span><select class="form-control" id="accountno"></select>
                         </div>
@@ -110,7 +108,7 @@
                         <div class="form-group modsp col-sm-6">
                             <div class=" form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="requireGuarantor" />
-                            <label for="requireGuarantor">Require Guarantors</label>
+                            <label for="requireCollateral">Require Collateral</label>
                             </div>
                         </div>
                         <div class="form-group modsp col-sm-6">
@@ -118,9 +116,6 @@
                             <input type="checkbox" class="form-check-input" id="request_while_running" />
                             <label for="request_while_running">Can be requested while Loan Running</label>
                             </div>
-                        </div>
-                        <div class="form-group modsp col-sm-6">
-                            <label for="no_of_guarantors">No of Guarantors</label><input placeholder="No of Guarantors" class="form-control" id="no_of_guarantors" />
                         </div>
 
                         </div>
@@ -252,7 +247,7 @@
                     toastr.error('unable to get interest code');
             });
 
-            $.get(appConfig.apiURL + 'api/settings/producttypes?type=Liability', function (data) {
+            $.get(appConfig.setupURL + 'api/Product', function (data) {
                 $category.empty();
                 $category.append('<option value=""> Select Category </option>')
                 for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -288,7 +283,7 @@
                     toastr.error('unable to get member group acct list');
                 });
 
-                $.get(appConfig.apiURL + 'api/settings/ChartAcc3', function (data) {
+                $.get(appConfig.accountURL + 'api/ChartsOfAcc/Tier3Chart', function (data) {
                     $savingscode.empty();
                     $savingscode.append('<option value=""> Select Savings Code </option>')
                     $sharecode.empty();
@@ -345,13 +340,12 @@
             var loancode = $('#code').val();
             var shortname = $('#shortname').val();
             var duration = $('#duration').val();
-            var loanrequire = $('#loanrequire').val();
+            var loanrequire = 0;//$('#loanrequire').val();
             var intRate = $('#intRate').val();
             var procRate = $('#procRate').val();
             var procAmount = $('#procAmount').val();
-            var procInd = $('#procInd').val();
+            var procInd = 0;//$('#procInd').val();
             var requireGuarantor = $('#requireGuarantor').is(':checked');//val();
-            var no_of_guarantors = $('#no_of_guarantors').val();
             var request_while_running = $('#request_while_running').is(':checked');// .val();
             //var loancode = $('#code').val();
 
@@ -397,7 +391,6 @@
                 savingscode: 'SAVINGS', //savingscode,
                 sharecode: 'SAVINGS', //sharecode,
                 shortname: shortname,
-                no_of_guarantors: no_of_guarantors,
                 requireGuarantor: requireGuarantor,
                 request_while_running: request_while_running,
                 category: category,

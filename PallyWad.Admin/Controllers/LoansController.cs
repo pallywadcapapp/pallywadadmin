@@ -12,5 +12,11 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult Payments()
+        {
+            return View();
+        }
+        
     }
 }

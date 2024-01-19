@@ -30,6 +30,7 @@ namespace PallyWad.Admin.Controllers
             return View();
         }
         
+
         public IActionResult email()
         {
             return View();
