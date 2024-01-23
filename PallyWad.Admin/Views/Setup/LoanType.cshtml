@@ -99,12 +99,12 @@
                         <div class="form-group modsp col-sm-6">
                             <span>Charges Code</span><select class="form-control" id="chargecode"></select>
                         </div>
-                        <div class="form-group modsp col-sm-6 hidden">
+                        <!--<div class="form-group modsp col-sm-6 hidden">
                             <span>Savings Code</span><select class="form-control" id="savingscode"></select>
                         </div>
                         <div class="form-group modsp col-sm-6 hidden">
                             <span>Shares Code</span><select class="form-control" id="sharecode"></select>
-                        </div>
+                        </div>-->
                         <div class="form-group modsp col-sm-6">
                             <div class=" form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="requireGuarantor" />
@@ -162,10 +162,7 @@
                             <span>Can Request (If previous is running): </span><span name="request_while_running" id="request_while_running"></span>
                         </p>
                         <p>
-                            <span>Require Guarantor: </span><span name="requireGuarantor" id="requireGuarantor"></span>
-                        </p>
-                        <p>
-                            <span>No of Guarantors: </span><span name="no_of_guarantor" id="no_of_guarantor"></span>
+                            <span>Require Collateral: </span><span name="requireGuarantor" id="requireGuarantor"></span>
                         </p>
                         <p>
                             <span>Category</span><span name="category" id="category"></span>
@@ -195,7 +192,7 @@
         
         var $option, $option2;
             function loadDefault() {
-                $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                $.get(appConfig.accountURL + 'api/chartsofacc/InternalControl', function (data) {
                     $accountno.empty();
                     $accountno.append('<option value=""> Select GL </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -205,13 +202,14 @@
                         $accountno.append($option);
                     }
                     $accountno.select2({
-                          placeholder: "Select a GL"
+                          placeholder: "Select a GL",
+                          width: '90%'
                     });
                 }).fail(function (e) {
                     toastr.error('unable to get account list');
                 });
 
-                $.get(appConfig.apiURL + 'api/settings/ChartAcc3', function (data) {
+                $.get(appConfig.accountURL + 'api/chartsofacc/ChartAcc3', function (data) {
                     $memgroupacct.empty();
                     $memgroupacct.append('<option value=""> Select Group </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -222,6 +220,7 @@
                     }
                     $memgroupacct.select2({
                          placeholder: "Select an Acc Group",
+                         width:'90%'
                          //containerCssClass: 'form-control-user',
                         //theme: 'classic'
                     });
@@ -229,7 +228,7 @@
                     toastr.error('unable to get member group acct list');
                 });
 
-                $.get(appConfig.apiURL + 'api/settings/interests', function (data) {
+                $.get(appConfig.setupURL + 'api/interest/all', function (data) {
                     $interestcode.empty();
                     $interestcode.append('<option value=""> Select Interest Code </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -240,6 +239,7 @@
                     }
                     $interestcode.select2({
                          placeholder: "Select Interest Code",
+                         width: '90%'
                          //containerCssClass: 'form-control-user',
                         //theme: 'classic'
                     });
@@ -265,7 +265,7 @@
                 toastr.error('unable to get categories list');
             });
 
-                $.get(appConfig.apiURL + 'api/settings/charges', function (data) {
+                $.get(appConfig.setupURL + 'api/charges/all', function (data) {
                     $chargecode.empty();
                     $chargecode.append('<option value=""> Select Charges </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -276,6 +276,7 @@
                     }
                     $chargecode.select2({
                          placeholder: "Select an Acc Group",
+                         width: '90%'
                          //containerCssClass: 'form-control-user',
                         //theme: 'classic'
                     });
@@ -283,7 +284,7 @@
                     toastr.error('unable to get member group acct list');
                 });
 
-                $.get(appConfig.accountURL + 'api/ChartsOfAcc/Tier3Chart', function (data) {
+                /*$.get(appConfig.accountURL + 'api/ChartsOfAcc/Tier3Chart', function (data) {
                     $savingscode.empty();
                     $savingscode.append('<option value=""> Select Savings Code </option>')
                     $sharecode.empty();
@@ -308,7 +309,7 @@
                     });
                 }).fail(function (e) {
                     toastr.error('unable to get Savings/Share code');
-                });
+                });*/
             }
             loadDefault();
         
@@ -327,7 +328,7 @@
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
         function refreshTables() {
-            var newUrl = appConfig.apiURL + 'api/settings/LoanTypes';
+            var newUrl = appConfig.setupURL + 'api/loan';
             $('#LoanTypesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
@@ -340,11 +341,11 @@
             var loancode = $('#code').val();
             var shortname = $('#shortname').val();
             var duration = $('#duration').val();
-            var loanrequire = 0;//$('#loanrequire').val();
+            var loanrequire = false;//$('#loanrequire').val();
             var intRate = $('#intRate').val();
             var procRate = $('#procRate').val();
             var procAmount = $('#procAmount').val();
-            var procInd = 0;//$('#procInd').val();
+            var procInd = false;//$('#procInd').val();
             var requireGuarantor = $('#requireGuarantor').is(':checked');//val();
             var request_while_running = $('#request_while_running').is(':checked');// .val();
             //var loancode = $('#code').val();
@@ -355,11 +356,11 @@
             var _interestcode = document.getElementById("interestcode");
             var interestcode = _interestcode.options[_interestcode.selectedIndex].value;
 
-            var _savingscode = document.getElementById("savingscode");
+            /*var _savingscode = document.getElementById("savingscode");
             var savingscode = _savingscode.options[_savingscode.selectedIndex].value;
 
             var _sharecode = document.getElementById("sharecode");
-            var sharecode = _sharecode.options[_sharecode.selectedIndex].value;
+            var sharecode = _sharecode.options[_sharecode.selectedIndex].value;*/
 
             var _accountno = document.getElementById("accountno");
             var accountno = _accountno.options[_accountno.selectedIndex].value;
@@ -385,20 +386,20 @@
                 processamt: procAmount,
                 processind: procInd,
                 loanrequire: loanrequire,
-                normalloanind: 1, //normalloanind,
+                normalloanind: true, //normalloanind,
                 memgroupacct: memgroupacct,
                 interestcode: interestcode,
                 savingscode: 'SAVINGS', //savingscode,
                 sharecode: 'SAVINGS', //sharecode,
                 shortname: shortname,
-                requireGuarantor: requireGuarantor,
+                require_collateral: requireGuarantor,
                 request_while_running: request_while_running,
                 category: category,
                 repayOrder: repayOrder
             }
 
             console.log(LoanTypes);
-            var url = appConfig.apiURL + "api/settings/LoanTypes";
+            var url = appConfig.setupURL + "api/loan";
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -467,7 +468,7 @@
         $(function () {
             $('#LoanTypesTab').bootstrapTable({
                 idField: 'product',
-                url: appConfig.apiURL + 'api/settings/loanTypes',
+                url: appConfig.setupURL + 'api/loan',
                 columns: [{
                     field: 'loancode',
                     title: 'Loan Code'
@@ -499,7 +500,7 @@
             });
             $(document).on('editable-save.bs.table', '#LoanTypesTab', function (e, field, row, old, $el) {
                 console.log(row);
-                $.post(appConfig.apiURL + 'api/settings/LoanTypes', row, function (e) {
+                $.post(appConfig.setupURL + 'api/loan', row, function (e) {
                     console.log(e);
                     toastr.success('LoanType ' + product + ' edited successfully');
                 }).fail(function (error) {

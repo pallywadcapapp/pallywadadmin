@@ -69,7 +69,7 @@
         var $accountno = $('#accountno');
         var $option, $option2;
             function loadDefault() {
-                $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                $.get(appConfig.accountURL + 'api/chartsofacc/InternalControl', function (data) {
                     $accountno.empty();
                     $accountno.append('<option value=""> Select GL </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -79,7 +79,8 @@
                         $accountno.append($option);
                     }
                     $accountno.select2({
-                          placeholder: "Select a GL"
+                          placeholder: "Select a GL",
+                          'width':'90%'
                     });
                 }).fail(function (e) {
                     toastr.error('unable to get account list');
@@ -90,7 +91,7 @@
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
         function refreshTables() {
-            var newUrl = appConfig.apiURL + 'api/settings/interests';
+            var newUrl = appConfig.setupURL + 'api/interest/all';
             $('#LoanInterestsTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
@@ -107,11 +108,12 @@
                 "shortname": name,
                 "interestcode": code,
                 interestdesc: description,
-                accountno, accountno
+                accountno, accountno,
+                payableacctno: ''
             }
 
             console.log(LoanInterests);
-            var url = appConfig.apiURL + "api/settings/interest";
+            var url = appConfig.setupURL + "api/interest/interest";
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -131,7 +133,7 @@
         $(function () {
             $('#LoanInterestsTab').bootstrapTable({
                 idField: 'product',
-                url: appConfig.apiURL + 'api/settings/interests',
+                url: appConfig.setupURL + 'api/interest/all',
                 columns: [{
                     field: 'interestdesc',
                     title: 'Name'

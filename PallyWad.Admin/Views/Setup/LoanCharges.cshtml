@@ -69,7 +69,7 @@
         var $accountno = $('#accountno');
         var $option, $option2;
             function loadDefault() {
-                $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+                $.get(appConfig.accountURL + 'api/chartsofacc/InternalControl', function (data) {
                     $accountno.empty();
                     $accountno.append('<option value=""> Select GL </option>')
                     for (var counter = 0; counter <= data.length - 1; counter++) {
@@ -79,7 +79,8 @@
                         $accountno.append($option);
                     }
                     $accountno.select2({
-                          placeholder: "Select a GL"
+                          placeholder: "Select a GL",
+                          width: '90%'
                     });
                 }).fail(function (e) {
                     toastr.error('unable to get account list');
@@ -90,7 +91,7 @@
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
         function refreshTables() {
-            var newUrl = appConfig.apiURL + 'api/settings/LoanCharges';
+            var newUrl = appConfig.setupURL + 'api/charges/all';
             $('#LoanChargesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
@@ -106,16 +107,16 @@
             var LoanCharges = {
                 "shortname": name,
                 "chargecode": code,
-                interestdesc: description,
+                chargedesc: description,
                 accountno, accountno
             }
 
             console.log(LoanCharges);
-            var url = appConfig.apiURL + "api/settings/Charge";
+            var url = appConfig.setupURL + "api/charges/Charges";
              $.ajax({
                 type: 'POST',
                 url: url,
-                data: JSON.stringify(LoanInterests),
+                data: JSON.stringify(LoanCharges),
                 contentType: "application/json", //; charset=utf-8
             }).done(function (data) {
                 $('#myModal').pleaseWait('stop');
@@ -131,7 +132,7 @@
         $(function () {
             $('#LoanChargesTab').bootstrapTable({
                 idField: 'product',
-                url: appConfig.apiURL + 'api/settings/Charges',
+                url: appConfig.setupURL + 'api/charges/all',
                 columns: [{
                     field: 'shortname',
                     title: 'Name'
@@ -147,7 +148,7 @@
             });
             $(document).on('editable-save.bs.table', '#LoanChargesTab', function (e, field, row, old, $el) {
                 console.log(row);
-                $.post(appConfig.apiURL + 'api/settings/LoanCharges', row, function (e) {
+                $.post(appConfig.setupURL + 'api/charges/all', row, function (e) {
                     console.log(e);
                     toastr.success('LoanCharge ' + product + ' edited successfully');
                 }).fail(function (error) {

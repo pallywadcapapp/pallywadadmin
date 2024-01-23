@@ -4945,6 +4945,10 @@
       "PackagePath": "staticwebassets\\assets\\icons\\typicons\\typicons.woff"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\images\\_bg-account.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\_bg-account.jpg"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\images\\_logo.png",
       "PackagePath": "staticwebassets\\assets\\images\\_logo.png"
     },
@@ -7035,6 +7039,10 @@
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\jquery-ui.css",
       "PackagePath": "staticwebassets\\css\\jquery-ui.css"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\jquery.step.css",
+      "PackagePath": "staticwebassets\\css\\jquery.step.css"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\site.css",

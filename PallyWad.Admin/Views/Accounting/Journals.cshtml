@@ -1,0 +1,1113 @@
+﻿
+@{
+    ViewBag.Title = "Journal";
+}
+
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Journals</li>
+        </ol>
+        <!-- Example DataTables Card-->
+        
+        <div id="tab">
+            <ul>
+                <li><a href="#tabs-3">Rejected Journals</a></li>
+                <li><a href="#tabs-1">Journals</a></li>
+                <li><a href="#tabs-2">Posted Journals</a></li>
+            </ul>
+            <div class="row">
+            <div class="col-sm-12">
+                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                </div>
+            </div>
+            <div class="col-sm-12">
+            <div id="tabs-1">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>Journals
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#journalModal">Post New Journal</a>
+                                    <a id="demo02" class="btn btn-warning" data-toggle="modal" data-target="#ujournalModal">Post New Journal(Manual)</a>
+                                    <table class="table table-bordered" id="journalTab" width="100%" cellspacing="0" data-show-footer="true"
+                                           data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                                           data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="id" data-show-refresh="true"
+                                           data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                    <div id="journalModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add New Journal</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Voucher No. </span><input type="text" placeholder="Voucher No" class="form-control" id="voucherNo" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Trans Date. </span><input type="date" placeholder="Trans Date" class="form-control" id="transDate" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Cost Centers</span>
+                                                <select id="ccenter" class="form-control"></select>
+                                            </div>
+                                        </div>-->
+
+                                        <div class="col-md-12">
+                                            <div class="form-group modsp">
+                                                <span>Details/Description</span>
+                                                <textarea type="text" placeholder="Account/Cash Code Description" class="form-control" id="cashcodeDesc"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span><b>Debit</b></span>
+                                            <div class="form-group modsp">
+                                                <span>Glcode </span><select id="debit" class="glcode form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <span><b>Credit</b></span>
+                                            <div class="form-group modsp">
+                                                <span>Glcode </span><select id="credit" class="glcode form-control"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group modsp">
+                                        <span>Amount</span><input type="number" class="form-control" placeholder="Amount" id="amount" />
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="saveJournal()" id="saveJournal">Save</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="ujournalModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add New Journal(Manual)</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Voucher No. </span><input type="text" placeholder="Voucher No" class="form-control" id="mvoucherNo" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Trans Date. </span><input type="date" placeholder="Trans Date" class="form-control" id="mtransDate" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group modsp">
+                                                <span>Cost Centers</span>
+                                                <select id="mccenter" class="form-control"></select>
+                                            </div>
+                                        </div>-->
+
+                                        <div class="col-md-12">
+                                            <div class="form-group modsp">
+                                                <span>Details/Description</span>
+                                                <textarea type="text" placeholder="Account/Cash Code Description" class="form-control" id="mcashcodeDesc"></textarea>
+                                            </div>
+                                        </div>
+                                    </div><div class="row">
+                                        <div class="col-md-12">
+                                            <span><b>Debit</b></span>
+                                            <div class="form-group modsp">
+                                                <span>Glcode </span><select id="mdebit" class="glcode form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <span><b>Credit</b></span>
+                                            <div class="form-group modsp">
+                                                <span>Glcode </span><select id="mcredit" class="glcode form-control"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group modsp">
+                                        <span>Amount</span><input type="number" class="form-control" placeholder="Amount" id="mamount" />
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="saveMJournal()" id="saveJournal">Save</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div id="tabs-2">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>Posted Journals
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="postedJournalsTab" cellspacing="0"
+                                   data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                                   data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                   data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                </div>
+            </div>
+            <div id="tabs-3">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>Rejected Postings
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="rejectedPostingTab" cellspacing="0"
+                                   data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                                   data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                   data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+                </div>
+
+                <div id="revisePVModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Revise Payment Voucher</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 hidden">
+                                        <div class="form-group modsp">
+                                            <span>Payment Mode. </span>
+                                            <select id="rpaymode" class="form-control">
+                                                <option value="CHEQUE">CHEQUE</option>
+                                                <option value="CASH"> CASH</option>
+                                                <option value="TRANSFER">TRANSFER</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group modsp">
+                                            <span>Trans Date. </span><input type="date" placeholder="Trans Date" class="form-control" id="rtransDate" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <!--<div class="col-md-6">
+                                        <div class="form-group modsp">
+                                            <span>Cost Centers</span>
+                                            <select id="rccenter" class="form-control"></select>
+                                        </div>
+                                    </div>-->
+                                    <div class="col-md-12">
+                                        <div class="form-group modsp">
+                                            <span>Account/Cash Description</span>
+                                            <textarea type="text" placeholder="Account/Cash Description" class="form-control" id="rcashcodeDesc"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group modsp hidden">
+                                    <span>Transaction Type</span>
+                                    <select id="rtype" class="form-control">
+                                        <option value="NORMAL">NORMAL</option>
+                                        <option value="REVERSAL">REVERSAL</option>
+                                    </select>
+                                </div>
+                                <div class="row hidden">
+                                    <div class="col-md-6">
+                                        <div class="form-group modsp">
+                                            <span>Account/Cash Code</span>
+                                            <select id="raccCode" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                    </div>
+                                </div>
+                                <div class="row hidden">
+                                    <div class="col-md-6">
+                                        <div class="form-group modsp">
+                                            <span>Cheque No. </span><input type="text" placeholder="Cheque No" class="form-control" id="rchequeNo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group modsp">
+                                            <span>Received From. </span><textarea type="text" placeholder="Received From" class="form-control" id="rreceivedFrom"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span><b>Debit</b></span>
+                                        <div class="form-group modsp">
+                                            <span>Glcode </span><select id="rdebit" class="glcode form-control"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span><b>Credit</b></span>
+                                        <div class="form-group modsp">
+                                            <span>Glcode </span><select id="rcredit" class="glcode form-control"></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group modsp">
+                                    <span>Amount</span><input type="number" class="form-control" placeholder="Amount" id="ramount" />
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="reviseJournal()" id="saveJournal">Save</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div></div>
+        </div>
+        <div id="declineJournalModal" class="modal fade" role="dialog">
+            <div class="modal-dialog  modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Decline Journal Posting</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">Reason</span>
+                            <textarea id="declineReason" name="declineReason" placeholder="Reason Details"
+                                      class="required form-control mb-2 mr-sm-2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="__declineJV()" id="declineJV">Save</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="viewJournalModal" class="modal fade" role="dialog">
+            <div class="modal-dialog  modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Journal Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-xs-6">
+                            <p>
+                                <span>Voucher No: </span><span name="voucherNo" id="voucherNoSummation"></span>
+                            </p>
+                            <p>
+                                <span>Name: </span><span name="receivedFrom" id="receivedFromSummation"></span>
+                            </p>
+                            <p>
+                                <span>Cost Center: </span><span name="ccenter" id="ccenterSummation"></span>
+                            </p>
+                            <p>
+                                <span>Trans. Date: </span><span name="transDate" id="transDateSummation"></span>
+                            </p>
+                            <p>
+                                <span>Posting Date: </span><span name="postedDate" id="postedDateSummation"></span>
+                            </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p>
+                                <span>Amount: </span><span name="amount" id="amountSummation"></span>
+                            </p>
+                            <p>
+                                <span>Branch: </span><span name="branch" id="branchSummation"></span>
+                            </p>
+                            <p>
+                                <span>Cheque No: </span><span name="chequeNo" id="chequeNoSummation"></span>
+                            </p>
+                            <p>
+                                <span>Narration: </span><span name="cashcodeDesc" id="typeSummation"></span>
+                            </p>
+                            <p>
+                                <span>Approval Status: </span><span name="approvalForm" id="approvalFormSummation"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="getJV()" class="btn btn-info">View JV</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+@section Scripts{
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var appyear = localStorage.getItem('app_year');
+        var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+        var today = new Date().addHours(2).toISOString().split('T')[0];
+        //var start = startyear.toISOString().split('T')[0];
+            var processByEmail = JSON.parse(localStorage.getItem('uemail'));
+            var processBy = localStorage.getItem('fullname');
+        var status = ''; var transtype = '';
+        var revisedData = [];
+
+        function getJV() {
+             var id = JSON.parse(localStorage.getItem('jvIdex')); 
+            window.location.href = '@Html.Raw(Url.Action("JV","Certificates"))' + '?id='+ id
+        }
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/gl/journal?startdate=' + startyear + '&enddate=' + today;
+            var pnewUrl = appConfig.apiURL + 'api/gl/PostedJournal?startdate=' + startyear + '&enddate=' + today;
+            var rnewUrl = appConfig.apiURL + 'api/gl/rejectedJournals?startdate=' + startyear + '&enddate=' + today;
+            $('#journalTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+            $('#postedJournalsTab').bootstrapTable('refresh', { url: pnewUrl, silent: true });
+            $('#rejectedPostingTab').bootstrapTable('refresh', { url: rnewUrl, silent: true });
+        }
+
+        
+            loadSelect();
+        function loadSelect() {
+            var $product = $('#product');//document.getElementById("product");//
+            var $rproduct = $('#rproduct');//document.getElementById("rproduct");//
+            var $ccenter = $('#ccenter');
+            var $mccenter = $('#mccenter');
+            var $rccenter = $('#rccenter');
+            var $branch = $('#branch');
+            var $banks = $('#accCode');
+            var $glcode = $('.glcode');
+            var $option;
+            var $option2;
+            $.get(appConfig.apiURL + 'api/settings/product', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    $product.append($option);
+                    //$rproduct.append($option);
+                }
+
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option2 = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    //$product.append($option);
+                    $rproduct.append($option2);
+                }
+            });
+
+            $.get(appConfig.apiURL + 'api/settings/acctype', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    $ccenter.append($option);  
+                } 
+
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>'); 
+                    $rccenter.append($option);
+                } 
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    $mccenter.append($option);
+                } 
+            });
+            $.get(appConfig.apiURL + 'api/settings/branches', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].id + '">' + data[counter].name + '</option>');
+                    $branch.append($option);
+                }
+            });
+            $.get(appConfig.apiURL + 'api/settings/banks', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accCode + '">' + data[counter].code + '</option>');
+                    $banks.append($option);
+                }
+            });
+            $.get(appConfig.apiURL + 'api/settings/ChartAcc', function (data) {// internalcontrol
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].shortdesc + '</option>');
+                    $glcode.append($option);
+                }
+                $glcode.select2();
+            });
+        }
+
+        function saveTreaty() {
+            $('#myModal').pleaseWait();
+
+            var year = $('#year').val();
+            var capacity = $('#capacity').val();
+            var _product = document.getElementById("product");//$('#product');
+            var product = _product.options[_product.selectedIndex].value;
+
+            var treaty = {
+                "year": year,
+                "capacity": capacity,
+                "product": product
+            }
+            console.log(treaty);
+            var url = appConfig.apiURL + "api/gl/journal";
+            $.post(url, treaty, function (e) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                refreshTables();
+                toastr.success('Treaty ' + name + ' saved successfully');
+            }).fail(function (error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving treaty ' + name);
+
+            });
+
+        }
+        function saveJournal() {
+            $('#journalModal').pleaseWait();
+            var processBy = localStorage.getItem('fullname'); //JSON.parse(localStorage.getItem('fullname'));
+            var year = $('#year').val();
+            var voucherNo = $('#voucherNo').val();
+            var transDate = $('#transDate').val();
+            var cashcodeDesc = $('#cashcodeDesc').val();
+            var chequeNo = $('#chequeNo').val();
+            var receivedFrom = $('#receivedFrom').val();
+            var amount = $('#amount').val();
+
+           /* var _ccenter = document.getElementById("ccenter");//$('#product');
+            var ccenter = _ccenter.options[_ccenter.selectedIndex].value;*/
+
+            var _debit = document.getElementById("debit");
+            var debit = _debit.options[_debit.selectedIndex].value;
+
+            var _credit = document.getElementById("credit");
+            var credit = _credit.options[_credit.selectedIndex].value;
+
+            var pv = {
+                "year": year,
+                "voucherNo": voucherNo,
+                "transDate": transDate,
+                "receivedFrom": receivedFrom,
+                "cashcodeDesc": cashcodeDesc,
+                "chequeNo": chequeNo,
+                //"ccenter": ccenter,
+                'amount': amount,
+                "type": 'JOURNAL',
+                "debit": debit,
+                "credit": credit,
+                "transType": "Journal Voucher",
+                "postedBy": processBy, 
+                "posterEmail": processByEmail
+            }
+            console.log(pv);
+            var url = appConfig.apiURL + "api/gl/journal";
+             $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(pv),
+                contentType: "application/json",
+            }).done(function (data) {
+               $('#journalModal').pleaseWait('stop');
+                $('#journalModal').modal('hide');
+                alert('Journal Voucher No: ' + data.voucherNo + ' Kindly save/copy this one the PV document');
+                //alert(data.voucherNo);
+                refreshTables();
+
+                toastr.success('Voucher saved successfully');
+                //toastr.success('Voucher ' + data.type + ' saved successfully');
+            }).fail(function (request, message, error) {
+                 toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ' + type);
+                $('#journalModal').pleaseWait('stop');
+            });
+
+        }
+
+
+        function saveMJournal() {
+            $('#ujournalModal').pleaseWait();
+            var processBy = JSON.parse(localStorage.getItem('fullname'));
+            var year = $('#year').val();
+            var voucherNo = $('#mvoucherNo').val();
+            var transDate = $('#mtransDate').val();
+            var cashcodeDesc = $('#mcashcodeDesc').val();
+            var chequeNo = $('#mchequeNo').val();
+            var receivedFrom = $('#mreceivedFrom').val();
+            var amount = $('#mamount').val();
+
+            /*var _ccenter = document.getElementById("mccenter");//$('#product');
+            var ccenter = _ccenter.options[_ccenter.selectedIndex].value;*/
+
+            var _debit = document.getElementById("mdebit");
+            var debit = _debit.options[_debit.selectedIndex].value;
+
+            var _credit = document.getElementById("mcredit");
+            var credit = _credit.options[_credit.selectedIndex].value;
+
+            var pv = {
+                "year": year,
+                "voucherNo": voucherNo,
+                "transDate": transDate,
+                "receivedFrom": receivedFrom,
+                "cashcodeDesc": cashcodeDesc,
+                "chequeNo": chequeNo,
+                //"ccenter": ccenter,
+                'amount': amount,
+                "type": 'JOURNAL',
+                "debit": debit,
+                "credit": credit,
+                "transType": "Journal Voucher",
+                "postedBy": processBy,
+                "posterEmail": processByEmail
+            }
+            console.log(pv);
+            var url = appConfig.apiURL + "api/gl/MJournal";
+            $.post(url, pv, function (data) {
+                $('#journalModal').pleaseWait('stop');
+                $('#journalModal').modal('hide');
+                alert('Journal Voucher No: ' + data.voucherNo + ' Kindly save/copy this one the PV document');
+                //alert(data.voucherNo);
+                refreshTables();
+
+                toastr.success('Voucher saved successfully');
+                //toastr.success('Voucher ' + data.type + ' saved successfully');
+            }).fail(function (error) {
+                toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ' + type);
+                $('#journalModal').pleaseWait('stop');
+
+            });
+
+        }
+
+         function reviseJournal() {
+            $('#revisePVModal').pleaseWait();
+            var year = $('#year').val();
+            //var voucherNo = $('#voucherNo').val();
+            var transDate = $('#rtransDate').val();
+            var cashcodeDesc = $('#rcashcodeDesc').val();
+            //var chequeNo = $('#rchequeNo').val();
+            //var receivedFrom = $('#rreceivedFrom').val();
+            var amount = $('#ramount').val(); 
+
+            var _ccenter = document.getElementById("rccenter");//$('#product');
+            var ccenter = _ccenter.options[_ccenter.selectedIndex].value;
+
+            var _type = document.getElementById("rtype");
+            var type = _type.options[_type.selectedIndex].value; 
+
+            var _debit = document.getElementById("rdebit");
+            var debit = _debit.options[_debit.selectedIndex].value;
+
+            var _credit = document.getElementById("rcredit");
+            var credit = _credit.options[_credit.selectedIndex].value;
+
+            //var _paymode = document.getElementById("rpaymode");
+            // var paymode = _paymode.options[_paymode.selectedIndex].value; 
+
+            revisedData.transDate = transDate;
+            revisedData.cashcodeDesc = cashcodeDesc;
+            //revisedData.chequeNo = chequeNo;
+            //revisedData.receivedFrom = receivedFrom;
+            revisedData.amount = amount;
+            revisedData.debit = debit;
+            revisedData.credit = credit;
+            revisedData.ccenter = ccenter;
+            //revisedData.paymentMode = paymode;
+            console.log(revisedData);
+            var url = appConfig.apiURL + "api/gl/Journal";
+
+            $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: JSON.stringify(revisedData),
+                contentType: "application/json",
+                    success: function (result) { 
+                        refreshTables();
+                        $('#revisePVModal').pleaseWait('stop');
+                         $('#revisePVModal').modal('hide');
+                        toastr.success(revisedData.voucherNo +  ' updated successfully');
+                    },
+                    error: function (xhr, status, error) { 
+                        $('#revisePVModal').pleaseWait('stop');
+                        toastr.error('error updating voucher ' + revisedData.voucherNo);
+                    }
+                }); 
+
+        }
+
+
+
+        function approveJournal(index) {
+            $('#journalTab').pleaseWait();
+            console.log(tempgld[index]);
+            var pv = tempgld[index];
+            pv.approvedBy = processBy;
+            pv.approvedByEmail = processByEmail;
+            var url = appConfig.apiURL + "api/gl/ApproveJV";
+               $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(pv),
+                contentType: "application/json",
+                    success: function (result) { 
+                $('#journalTab').pleaseWait('stop');
+                $('#journalTab').modal('hide');
+                refreshTables();
+                toastr.success('Voucher ' + type + ' saved successfully');
+                    },
+                    error: function (xhr, status, error) { 
+                $('#journalTab').pleaseWait('stop');
+                console.log(xhr)
+                toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ');
+                    }
+                }); 
+        }
+
+        $('#declineJV').click(function (e) {
+            var index = JSON.parse(localStorage.getItem('jvIdex'));
+            _declineJournal(index);
+        });
+
+         function declineJV(index) {
+            $('#declineJournalModal').modal('show');
+            localStorage.setItem('jvIdex',index);
+        }
+        function __declineJV() {
+
+        }
+        function _declineJournal(index) {
+            $('#journalTab').pleaseWait();
+            console.log(tempgld[index]);
+            var reason = $('#declineReason').val();
+            var pv = tempgld[index];
+            pv.approvedBy = processBy;
+            pv.approvedByEmail = processByEmail;
+            pv.reason = reason
+            var url = appConfig.apiURL + "api/gl/declineJV";
+            $.post(url, pv, function (e) {
+                $('#journalTab').pleaseWait('stop');
+                $('#declineJournalModal').modal('hide');
+                refreshTables();
+                toastr.success('Journal ' + type + ' saved successfully');
+            }).fail(function (error, status, xhr) {
+                $('#journalTab').pleaseWait('stop');
+                toastr.error('error ' + error.responseJSON.message + ' for saving Journal ' + type);
+
+            });
+        }
+
+        function viewPost(index) {
+            localStorage.setItem('jvIdex',index);
+            $.get(appConfig.apiURL + 'api/gl/JournalById?id=' + index, function (data) {
+                try {
+                    for (var key in data) {
+                        if (key == 'insuredname') {
+                            var lname = data[key].split(' ')[0];
+                            var fname = data[key].split(' ')[1];
+                            $('[name="firstname"]').html(fname);
+                            $('[name="lastname"]').html(lname);
+                        }
+                        if (key == 'businessclass') {
+                            if (data[key] == 'Motor') {
+
+                            } else {
+                                $('.motor').hide();
+                            }
+                        }
+                        console.log(key)
+                        console.log(data[key]);
+                        $('[name="' + key + '"]').html(data[key]);
+                        if (key == 'transDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'postedDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'bookingDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'amount') {
+                            $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                $('#viewJournalModal').modal('show');
+            }).fail(function (xhr, status, error) {
+                toastr.error(xhr.responseJSON.message);
+            })
+
+            console.log(index);
+        }
+
+        function revisePost(index) {
+            $.get(appConfig.apiURL + 'api/gl/JournalById?id=' + index, function (data) {
+                revisedData = data;
+                console.log(revisedData);
+                var dobDate = new Date(data.transDate);
+                var dobday = ('0' + dobDate.getDate()).slice(-2);
+                var dobmonth = ('0' + (parseInt(dobDate.getMonth()) + 1)).slice(-2);
+                var dobDates = dobDate.getFullYear() + '-' + dobmonth + '-' + dobday;
+                $("#rreceivedFrom").val(data.receivedFrom);
+                $("#rchequeNo").val(data.chequeNo);
+                $("#rcashcodeDesc").val(data.cashcodeDesc);
+                $("#rdebit").val(data.debit);
+                $("#rcredit").val(data.credit);
+                $("#rpaymode").val(data.paymentMode);
+                $("#rccenter").val(data.ccenter);
+                $("#ramount").val(data.amount);
+                $("#rtransDate").val(dobDates);
+                $('#revisePVModal').modal('show');
+            }).fail(function (xhr, status, error) {
+                toastr.error(xhr.responseJSON.message);
+            }) 
+        }
+
+
+        $(function () {
+            $('#startdate').val(startyear);
+            $('#enddate').val(today);
+            $('#load').click(function (e) {
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var glUrl = appConfig.apiURL + "./api/gl/Journal?startdate=" + startdate + '&enddate=' + enddate;
+                $('#journalTab').bootstrapTable('refresh', { url: glUrl, silent: false });
+            });
+
+            function loadTable(startdate, enddate) {
+                var glUrl = appConfig.apiURL + "./api/gl/Journal?startdate=" + startdate + '&enddate=' + enddate;
+                $('#journalTab').bootstrapTable('refresh', { url: glUrl, silent: false }); 
+            var pnewUrl = appConfig.apiURL + 'api/gl/PostedJournal?startdate=' + startdate + '&enddate=' + enddate;
+            var rnewUrl = appConfig.apiURL + 'api/gl/rejectedJournals?startdate=' + startdate + '&enddate=' + enddate; 
+            $('#postedJournalsTab').bootstrapTable('refresh', { url: pnewUrl, silent: false });
+            $('#rejectedPostingTab').bootstrapTable('refresh', { url: rnewUrl, silent: false });
+            }
+
+            init_daterangepicker('reportrange', loadTable);
+
+            $('#journalTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/gl/Journal?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                },{
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    }, {
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                    field: 'debit',
+                    title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                    title: 'Credit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                }, {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter,
+                    sortable: 'true'
+                }, {
+                    field: 'cashcodeDesc',
+                    title: 'Details',
+                    //formatter: localDateFormatter,
+                    sortable: 'true'
+                }, {
+                    filed: 'approvalStatus',
+                    title: '',
+                    formatter: approveFormatter
+
+                }]//,
+                /*onEventName: function (arg1, arg2) {
+                    console.log()
+                }*/
+            });
+            $('#journalTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#journalTab').on('pre-body.bs.table', function () {
+                var res = $('#journalTab').bootstrapTable('getData');
+                tempgld = res;
+                console.log(res);
+                //localStorage.setItem('tempd', JSON.stringify($('#journalTab').bootstrapTable('getData')));
+            }); 
+
+
+            $('#postedJournalsTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/gl/PostedJournal?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                }, {
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    },{
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                    field: 'debit',
+                    title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                    title: 'Credit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                }, {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter,
+                    sortable: 'true'
+                    },{
+                    field: 'cashcodeDesc',
+                    title: 'Details',
+                    //formatter: localDateFormatter,
+                    sortable: 'true'
+                }, {
+                        field: 'approvalForm',
+                        title: 'State',
+                        formatter: stateSTatusFormatter
+
+                    }, {
+                    filed: 'approvalStatus',
+                    title: '',
+                    formatter: viewApproveFormatter
+
+                }]//,
+                /*onEventName: function (arg1, arg2) {
+                    console.log()
+                }*/
+            });
+            $('#postedJournalsTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#postedJournalsTab').on('pre-body.bs.table', function () {
+                var res = $('#journalTab').bootstrapTable('getData');
+                tempgld = res;
+                console.log(res);
+                //localStorage.setItem('tempd', JSON.stringify($('#journalTab').bootstrapTable('getData')));
+            }); 
+
+            $('#rejectedPostingTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/gl/rejectedJournals?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                },{
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    }, {
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                    field: 'debit',
+                    title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                    title: 'Credit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                }, {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter,
+                    sortable: 'true'
+                    },{
+                    field: 'cashcodeDesc',
+                    title: 'Details',
+                    //formatter: localDateFormatter,
+                    sortable: 'true'
+                }, {
+                        field: 'approvalForm',
+                        title: 'State',
+                        formatter: stateSTatusFormatter
+
+                    }, {
+                        field: 'approvalStatus',
+                        title: '',
+                        formatter: reviseApproveFormatter
+
+                    }]//,
+                /*onEventName: function (arg1, arg2) {
+                    console.log()
+                }*/
+            });
+            $('#rejectedPostingTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            }); 
+
+            
+            //$(document).on('editable-save.bs.table', '#treatyTab', function (e, field, row, old, $el) {
+            //    console.log(row);
+            //    $.post(appConfig.apiURL + 'api/settings/treaty', row, function (e) {
+            //        console.log(e);
+            //        toastr.success('mappings edited successfully');
+            //    }).fail(function (error) {
+            //        toastr.error('error editing ' + error.responseText + ' treaty');
+
+            //    });
+            //});
+
+            function approveFormatter(value, row, index) {
+                alert(row.debit)
+                if (row.debit === null || row.credit === null) {
+                    return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+                } else {
+                    var userroles = JSON.parse(localStorage.getItem('userroles'));
+                    console.log(userroles)
+                    if (userroles.includes('postingapproval')) {
+                        return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ' +
+                            '<button class="btn btn-success Financeadmin" id="' + index + '" onclick="approveJournal(' + index + ');">Approve</button> ' +
+                            '<button class="btn btn-danger" id="' + index + '" onclick="declineJV(' + index + ');">Decline</button>';
+                    } else {
+                        return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+                    }
+                   
+                }
+                //return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ' +
+                //    '<button class="btn btn-success" id="' + index + '" onclick="approveJournal(' + index + ');">Approve</button> ' +
+                //    '<button class="btn btn-danger" id="' + index + '" onclick="declineJV(' + index + ');">Decline</button>';
+            }
+
+            function glcodeFormatter(value, row, index) {
+                return '<span class="trigger">' + value + '</span>';
+            }
+
+            function reviseApproveFormatter(value, row, index) {
+                return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ' +
+                     '<button class="btn btn-danger" id="' + index + '" onclick="revisePost(' + row.id + ');"><i class="fa fa-edit"></i> REVISE</button> ';
+            }
+
+            function viewApproveFormatter(value, row, index) {
+                return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+            }
+            function stateSTatusFormatter(value, row, index) {
+                if (value === 'DECLINED') {
+                    return '<span class="btn-danger">' + value + '</span>';
+                } else {
+                    return '<span class="btn-success">' + value + '</span>';
+                }
+            }
+
+            $('#tab').tabs({
+                collapsible: true
+            })
+
+            $('#postedJournalsTab').on('post-body.bs.table', function () {
+                $(".table tbody > tr > td .trigger").each(function () {
+                    var gl = JSON.parse(localStorage.getItem('glcodes') || "[]");
+                    var gcode = $(this).text();
+                    //console.log(gl[gcode]);
+                    //console.log($(this).text())
+                    //$(this).attr('title', $(this).text());
+                    $(this).attr('title', gl[gcode]);
+                });
+            });
+        });
+    </script>
+}
+

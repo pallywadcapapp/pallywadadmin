@@ -20,6 +20,7 @@
     <link href="~/assets/css/icons.css" rel="stylesheet" type="text/css">
     <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
     <link href="~/css/toastr.css" rel="stylesheet" />
+    <link href="~/css/jquery.step.css" rel="stylesheet" />
     <link href="~/css/jquery-ui.css" rel="stylesheet" />
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -97,12 +98,12 @@
                         <li>
                             <!--<a href="calendar.html" class="waves-effect"><i class="dripicons-to-do"></i><span> Calendar </span></a>-->
                         </li>
-                        <li class="menu-title">User Managements</li>
+                        <li class="menu-title">Accountings</li>
                         <li class="has_sub">
-                            <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-jewel"></i> <span> User Management </span> <span class="float-right"><i class="mdi mdi-user-right"></i></span></a>
+                            <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-jewel"></i> <span> Accounting </span> <span class="float-right"><i class="mdi mdi-user-right"></i></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="~/auth/users">Users</a></li>
-                                <li><a href="~/auth/roles">Roles</a></li>
+                                <li><a href="~/accounting/">Gen. Ledgers</a></li>
+                                <li><a href="~/accounting/chart">Chart of Account</a></li>
                             </ul>
                         </li>
                         <li class="menu-title">Transactions</li>
@@ -126,6 +127,14 @@
                                 <li><a href="~/Setup/loancharges">Loan Charges</a></li>
                                 <li><a href="~/Setup/loaninterest">Loan Interest</a></li>
                                 <li><a href="~/Setup/loantype">Loan Setup</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-title">User Managements</li>
+                        <li class="has_sub">
+                            <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-jewel"></i> <span> User Management </span> <span class="float-right"><i class="mdi mdi-user-right"></i></span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="~/auth/users">Users</a></li>
+                                <li><a href="~/auth/roles">Roles</a></li>
                             </ul>
                         </li>
 
@@ -415,6 +424,9 @@
         <script src="~/assets/js/jquery.scrollTo.min.js"></script>
         <script src="~/js/jquery.pleaseWait.js"></script>
         <script src="~/js/toastr.min.js"></script>
+        <script src="~/js/jstree.min.js"></script>
+        <script src="~/js/jquery.steps.min.js"></script>
+        <script src="~/js/moment.min.js"></script>
 
 
         
@@ -457,6 +469,7 @@
 
         <script src="~/Scripts/config.js" asp-append-version="true"></script>
         <script src="~/Scripts/global.js" asp-append-version="true"></script>
+        <script src="~/Scripts/root.js" asp-append-version="true"></script>
 
         <script src="~/js/jquery.idle.min.js" type="text/javascript"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -493,6 +506,11 @@
                     var useremail = user.Email;
                     //var fullname = localStorage.getItem('fullname');
                     var names = JSON.parse(sessionStorage.getItem('appm'));
+                    if (names == null) {
+
+                        var url = '@Html.Raw(Url.Action("Login", "Auth"))';
+                        window.location.href = url;
+                    }
                     var fullname = names.lastname + ', ' + names.firstname + ' ' + names.othernames
                     var status = user.AgentType;
                     $("#user").html(fullname);
@@ -522,13 +540,13 @@
 
 
 
-                $.get(appConfig.apiURL + 'api/FundsRequest/tblhead', data => {
+                /*$.get(appConfig.apiURL + 'api/FundsRequest/tblhead', data => {
                     console.log(localStorage.getItem('header'))
                     if (localStorage.getItem('header') === null) {
                         localStorage.setItem('header', JSON.stringify(data));
                     };
 
-                });
+                });*/
 
 
 

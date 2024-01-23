@@ -1,0 +1,468 @@
+﻿@{
+    ViewBag.Title = "TrialBalance";
+}
+
+<style>
+    .modsp {
+        margin-top: 5%;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Trial Balance</li>
+    </ol>
+
+    <div id="tabs">
+        <div class="col-sm-12">
+            <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+            </div>
+            <!--<div class="col-sm-3 form-group">
+                <span>Start Date</span><input id="startdate" class="form-control mb-2 mr-sm-2" type="date" /><br />
+
+            </div>
+            <div class="col-sm-3 form-group">
+                <span>End Date</span><input id="enddate" class="form-control mb-2 mr-sm-2" type="date" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <span></span><br />
+                <button id="load" type="button" class="btn btn-success">Load</button>
+            </div>
+            -->
+        </div>
+        <ul>
+            <li><a href="#tabs-1">Consolidated</a></li>
+            <!--
+            <li><a href="#tabs-2">Life</a></li>
+            <li><a href="#tabs-3">Non Life</a></li>
+            <li><a href="#tabs-4">Unlinked GL Lines</a></li>
+            -->
+        </ul>
+        <div id="tabs-1">
+
+            <!-- Example DataTables Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>Consolidated Trial Balance
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="trialBalanceTable" width="100%" cellspacing="0" data-show-footer="true"
+                               data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                               data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                               data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true" data-fixed-columns="true" data-fixed-number="1"></table>
+
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+            </div>
+        </div>
+        <!--
+        <div id="tabs-2">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>Trial Balance (Life)
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="trialBalanceTableLife" width="100%" cellspacing="0"
+                               data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                               data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                               data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+            </div>
+        </div>
+        <div id="tabs-3">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>Trial Balance(Non Life)
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="trialBalanceTableNonLife" width="100%" cellspacing="0"
+                               data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                               data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                               data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+            </div>
+        </div>
+        <div id="tabs-4">
+            <table id="unlinkedTB" data-toggle="table" data-show-refresh="true">
+                <thead>
+                    <tr>
+                        <th data-field="acc_name" data-sortable="true">ACC NAME</th>
+                        <th data-field="accountno" data-sortable="true" data-formatter="addToGLBtn">GL Line</th>
+                    </tr>
+                </thead>
+                <tfoot></tfoot>
+                <tbody></tbody>
+            </table>
+        </div>
+        -->
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add GL Lines</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group modsp">
+                    <span>Account Number </span><input type="text" disabled class="form-control" id="accno" />
+                </div>
+                <div class="form-group modsp">
+                    <span>Account Name </span><input type="text" disabled class="form-control" placeholder="Account Name" id="accname" />
+                </div>
+                <div class="form-group modsp">
+                    <span>Company </span>
+                    <input type="text" disabled class="form-control" id="company" />
+
+                    <!--<select id="company" class="form-control">
+                        <option value="Life">Life</option>
+                        <option value="Non-Life">Non-Life</option>
+                    </select>-->
+                </div>
+                <div>
+                    <span>Product</span>
+                    <select id="product" class="form-control"></select>
+                </div>
+                <div class="form-group modsp">
+                    <span>Class </span>
+                    <select id="category" class="form-control"></select>
+                    <!--<input type="text" class="form-control" placeholder="Class" id="category" />-->
+                </div>
+                <div class="form-group modsp">
+                    <span>Report Mapping </span>
+                    <select id="reportMap" class="form-control">
+                        <option value="Gross Premium Written">Gross Premium Written</option>
+                        <option value="Unearned Premium">Unearned Premium</option>
+                        <option value="Reinsurance Premium Expense">Reinsurance Premium Expense</option>
+                        <option value="Fees and Commission Income">Fees and Commission Income</option>
+                        <option value="Changes in Individual Life Reserves">Changes in Individual Life Reserves</option>
+                        <option value="Claims Expenses">Claims Expenses</option>
+                        <option value="Benefit Payments">Benefit Payments</option>
+                        <option value="Underwriting Expenses">Underwriting Expenses</option>
+                        <option value="Management Expenses">Management Expenses</option>
+                        <option value="Impairment Reversal">Impairment Reversal</option>
+                        <option value="Investment Income(Policyholders Fund)">Investment Income(Policyholders Fund)</option>
+                        <option value="Investment Income(Shareholders Fund)">Investment Income(Shareholders Fund)</option>
+                        <option value="Guaranteed Interest on investment contract liabilities">Guaranteed Interest on investment contract liabilities</option>
+                        <option value="Net realised loss on investment securities">Net realised loss on investment securities</option>
+                        <option value="Net fair value gain/(loss)">Net fair value gain/(loss)</option>
+                        <option value="NAICOM FINES">NAICOM FINES</option>
+                        <option value="Other Operating Income">Other Operating Income</option>
+                        <option value="Income Tax">Income Tax</option>
+                        <option value="Other Comprehensive Income">Other Comprehensive Income</option>
+                        <option value="Cash and short term placements">Cash and short term placements</option>
+                    </select>
+                    <!--<input type="text" class="form-control" placeholder="Report Mapping name" id="reportMap" />-->
+                </div>
+                <div class="form-group modsp">
+                    <span>Tax Mapping </span><input type="text" class="form-control" placeholder="Tax Mapping Name" id="taxMap" />
+                </div>
+                <div class="form-group modsp">
+                    <button type="button" class="btn btn-primary" onclick="SaveGLLines()" id="saveGLLines">Save</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        function glcodeFormatter(value, row, index) {
+            return '<a href="./glcode?code=' + row.accountno + '">' + row.accountno + '</a>';
+        };
+        //loadSelect();
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function sumFormatter(data) {
+            var field = this.field;
+            var total_sum = data.reduce(function (sum, row) {
+                console.log(row[field]);
+                return (sum) + (row[field] || 0)
+            }, 0);
+            var value = total_sum;
+
+            var text = (value).toFixed(0)
+            if (text < 0) {
+                var __text = (parseFloat(text).toFixed(0)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                var _text = __text.replace('-', '');
+                var retval = '(' + _text + ')';
+                return '<span class="formatCurr">' + retval + '</span>';
+            } else if (text == 0) {
+                var retval = '-';
+                return '<span class="formatCurr">' + retval + '</span>';
+            } else {
+                var __text = (parseFloat(text).toFixed(0)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                var retval = __text;
+                return '<span class="formatCurr">' + retval + '</span>';
+            }
+        }
+        function totalTextFormatter(data) {
+            return 'Total'
+        }
+        function moneyFormatter(value, row, index) {
+            //return (value).toFixed(2);
+            return moneyFormat(value);
+        };
+
+        function addToGLBtn(value, row, index) {
+            console.log(row);
+            var spacer = "\',\'";
+            return '<span> ' + value + '   </span><a class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="addGL(\'' + row.acc_name + spacer + row.accountno + spacer + row.company
+                + '\');" href="javascript:void(0);" ><i class="fa fa-plus"></i>Add</a>';
+        };
+
+        function loadSelect() {
+            var $select = $('#product');
+            var $category = $('#category');
+            var $option;
+            //var typeList = ["Aviatiion", "Bond", ]
+            $.get('./api/budget/product', function (data) {
+                $select.append('<option value="NULL">No Product</option>');
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+
+                    $select.append($option);
+                }
+            });
+
+            $.get('./api/gl/tbcategories', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+
+                    $category.append($option);
+                }
+            });
+        }
+
+        function SaveGLLines() {
+            $('#myModal').pleaseWait();
+            console.log(localStorage.getItem("glline"));
+
+            //var e = document.getElementById("company");
+            var eCategory = document.getElementById("category");
+            var repMap = document.getElementById("reportMap");
+            var prod = document.getElementById("product");
+            var company = document.getElementById("company").value;//e.options[e.selectedIndex].value;
+            var accountName = document.getElementById("accname").value;
+            //var accountClass = document.getElementById("category").value;
+            //var reportMap = document.getElementById("reportMap").value;
+            var reportMap = repMap.options[repMap.selectedIndex].value;
+            var taxMap = document.getElementById("taxMap").value;
+            var product = prod.options[prod.selectedIndex].value;
+            var accountClass = eCategory.options[eCategory.selectedIndex].value;
+            var accountCode = localStorage.getItem("glline")
+
+            var newGl = {
+                "glcode": accountCode,
+                "account_name": accountName,
+                "company": company,
+                "category": accountClass,
+                "product": product,
+                "reportMap": reportMap,
+                "mgtCategory": accountClass,
+                "taxmap": taxMap
+            }
+            console.log(newGl);
+            var url = "./api/gl/mappings";
+            $.post(url, newGl, function (e) {
+                $('#myModal').pleaseWait('stop');
+                toastr.success('GL saved successfully');
+            }).fail(function (error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('GL saved error ' + error);
+
+            });
+
+        }
+        function addGL(acc_name, acc_number, company) {
+            console.log(acc_name);
+            localStorage.setItem("glline", acc_number);
+            $('#accno').val(acc_number);
+            $('#accname').val(acc_name);
+            $('#company').val(company);
+        }
+        $(function () {
+            var dialog;
+            var appyear = localStorage.getItem('app_year');
+            $('#trialBalanceTable').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            loadStart();
+
+            $('#load').click(function (e) {
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var tbUrl = appConfig.apiURL + "./api/gl/trialbalanceByDate?startdate=" + startdate + '&enddate=' + enddate;
+                var tbLUrl = appConfig.apiURL + "./api/gl/trialbalanceCategoryByDateRange?startdate=" + startdate + '&enddate=' + enddate + '&category=life';
+                var tbNUrl = appConfig.apiURL + "./api/gl/trialbalanceCategoryByDateRange?startdate=" + startdate + '&enddate=' + enddate + '&category=Non-Life';
+                $('#trialBalanceTable').bootstrapTable('refresh', { url: tbUrl, silent: false });
+                $('#trialBalanceTableLife').bootstrapTable('refresh', { url: tbLUrl, silent: false });
+                $('#trialBalanceTableNonLife').bootstrapTable('refresh', { url: tbNUrl, silent: false });
+            });
+
+            function loadTable(startdate, enddate) {
+                var tbUrl = appConfig.apiURL + "./api/gl/trialbalanceByDate?startdate=" + startdate + '&enddate=' + enddate;
+                var tbLUrl = appConfig.apiURL + "./api/gl/trialbalanceCategoryByDateRange?startdate=" + startdate + '&enddate=' + enddate + '&category=life';
+                var tbNUrl = appConfig.apiURL + "./api/gl/trialbalanceCategoryByDateRange?startdate=" + startdate + '&enddate=' + enddate + '&category=Non-Life';
+                $('#trialBalanceTable').bootstrapTable('refresh', { url: tbUrl, silent: false });
+                $('#trialBalanceTableLife').bootstrapTable('refresh', { url: tbLUrl, silent: false });
+                $('#trialBalanceTableNonLife').bootstrapTable('refresh', { url: tbNUrl, silent: false });
+            }
+
+            init_daterangepicker('reportrange', loadTable);
+
+            function loadStart() {
+
+
+                $('#trialBalanceTable').bootstrapTable({
+                    idField: 'accountno',
+                    url: appConfig.apiURL + "./api/gl/trialbalance?year=" + appyear,
+                    columns: [{
+                        field: 'acc_name',
+                        title: 'Account Name'//,
+                        //checkbox: true
+                    }, {
+                        field: 'accountno',
+                        title: 'Account',
+                        formatter: glcodeFormatter
+                    }, {
+                        field: 'dr_amount',
+                        title: 'Debit (&#8358;,000)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                        field: 'cr_amount',
+                        title: 'Credit (&#8358;,000)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                        field: 'balance',
+                        title: 'Balance (&#8358;,000)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    }/*, {
+                        field: 'company',
+                        title: 'Company'
+                    }*/]//,
+                    /*onEventName: function (arg1, arg2) {
+                        console.log()
+                    }*/
+                });
+
+
+                $('#trialBalanceTable').on('pre-body.bs.table', function () {
+                    var res = $('#trialBalanceTable').bootstrapTable('getData');
+                    tempgld = res;
+                    console.log(res);
+                    //localStorage.setItem('tempd', JSON.stringify($('#journalTab').bootstrapTable('getData')));
+                });
+
+                $('#trialBalanceTableLife').bootstrapTable({
+                    idField: 'acc_name',
+                    url: "./api/gl/trialbalanceByCategory?year=" + appyear + '&category=life',
+                    columns: [{
+                        field: 'accountno',
+                        title: 'Account Name'//,
+                        //checkbox: true
+                    }, {
+                        field: 'accountno',
+                        title: 'GL Code'
+                    }, {
+                        field: 'dr_amount',
+                        title: 'Debit (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }, {
+                        field: 'cr_amount',
+                        title: 'Credit (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }, {
+                        field: 'balance',
+                        title: 'Balance (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }, {
+                        field: 'company',
+                        title: 'Company'
+                    }]//,
+                    /*onEventName: function (arg1, arg2) {
+                        console.log()
+                    }*/
+                });
+
+
+                $('#trialBalanceTableNonLife').bootstrapTable({
+                    idField: 'accountno',
+                    url: "./api/gl/trialbalanceByCategory?year=" + appyear + '&category=Non-Life',
+                    columns: [{
+                        field: 'acc_name',
+                        title: 'Account Name'//,
+                        //checkbox: true
+                    }, {
+                        field: 'accountno',
+                        title: 'GL Code'
+                    }, {
+                        field: 'dr_amount',
+                        title: 'Debit (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }, {
+                        field: 'cr_amount',
+                        title: 'Credit (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }, {
+                        field: 'balance',
+                        title: 'Balance (&#8358;,000)',
+                        formatter: moneyFormatter
+                    }/*, {
+                        field: 'company',
+                        title: 'Company'
+                    }*/]
+                });
+
+                var $table = $('#unlinkedTB');
+                var url_unlinked = appConfig.apiURL + "./api/gl/unknowGLLines?year=" + appyear;
+                $.get(url_unlinked, function (data) {
+                    $table.bootstrapTable('load', {
+                        data: data
+                    });
+                }).fail(function (error, xhr, status) {
+                    toastr.error('Connection Error. This is due to system network error. Kindly contact IT');
+                    $('#unlinkedTB').pleaseWait('stop');
+                });
+
+            }
+
+
+        });
+
+    </script>
+
+    }

@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "GLCode";
+}
+<style>
+    .glcode {
+        font: bold 15px italic;
+    }
+
+    .heads {
+        margin-top: 2%;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Transactions</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="panel card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Transactions
+        </div>
+        <div class="card-body">
+
+            <div class="col-sm-12">
+                <div class="heads">
+                    <div class="col-md-3">
+                        <span>GL Code: </span><span id="code" class="glcode"></span><span> - </span><span id="accName"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group modsp">
+                            <select id="appGL" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="glcodeTrans" cellspacing="0"
+                           data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50" data-show-footer="true"
+                           data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                           data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="viewPaymentModal" class="modal fade" role="dialog">
+            <div class="modal-dialog  modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ledger Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-xs-6">
+                            <p>
+                                <span>Acc Name: </span><span name="acc_name" id="acc_nameSummation"></span>
+                            </p>
+                            <p>
+                                <span>GL No: </span><span name="tgl_crt_acc_number" id="tgl_crt_acc_numberSummation"></span>
+                            </p>
+                            <p>
+                                <span>Side: </span><span name="tgl_slide" id="tgl_slideSummation"></span>
+                            </p>
+                            <p>
+                                <span>Debit: </span><span name="dr_amount" id="dr_amountSummation"></span>
+                            </p>
+                            <p>
+                                <span>Credit: </span><span name="cr_amount" id="cr_amountSummation"></span>
+                            </p>
+
+                            <p>
+                                <span>Balance: </span><span name="balance" id="balanceSummation"></span>
+                            </p>
+                            <p>
+                                <span>Vendor: </span><span name="vendor" id="vendorSummation"></span>
+                            </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p>
+                                <span>Trans Date: </span><span name="vgl_dt" id="vgl_dtSummation"></span>
+                            </p>
+                            <p>
+                                <span>Date Posted: </span><span name="vgl_passed_on" id="vgl_passed_onSummation"></span>
+                            </p>
+                            <p>
+                                <span>Trans Id: </span><span name="vgl_code" id="vgl_codeSummation"></span>
+                            </p>
+                            <p>
+                                <span>Branch Code: </span><span name="branch" id="branchSummation"></span>
+                            </p>
+                            <p>
+                                <span>Details: </span><span name="ref_trans" id="ref_transSummation"></span>
+                            </p>
+                            <p>
+                                <span>Posted By: </span><span name="vgl_passed_by" id="vgl_passed_bySummation"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        function viewPost(index) {
+            localStorage.setItem('glIdex', index);
+            $.get(appConfig.apiURL + 'api/gl/GLById?id=' + index, function (data) {
+                try {
+                    for (var key in data) {
+                        if (key == 'insuredname') {
+                            var lname = data[key].split(' ')[0];
+                            var fname = data[key].split(' ')[1];
+                            $('[name="firstname"]').html(fname);
+                            $('[name="lastname"]').html(lname);
+                        }
+                        if (key == 'businessclass') {
+                            if (data[key] == 'Motor') {
+
+                            } else {
+                                $('.motor').hide();
+                            }
+                        }
+                        $('[name="' + key + '"]').html(data[key]);
+                        if (key == 'vgl_passed_on') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                        if (key == 'vgl_dt') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                        if (key == 'transdate') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                        if (key == 'balance') {
+                            $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                        }
+                        if (key == 'cr_amount') {
+                            $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                        }
+                        if (key == 'dr_amount') {
+                            $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                        }
+                        if (key == 'paymentMode') {
+                            transtype = data[key];
+                        }
+                        if (key == 'approvalForm') {
+                            status = data[key];
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                $('#viewPaymentModal').modal('show');
+            }).fail(function (xhr, status, error) {
+                toastr.error(xhr.responseJSON.message);
+            })
+        }
+
+        $(function () {
+            var glcode = qs['code'];
+            var $glcode = $('#appGL');
+            var productMaps = [];
+            var appyear = localStorage.getItem('app_year');
+            var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+            var today = new Date().addHours(2).toISOString().split('T')[0];
+            //var start = startyear.toISOString().split('T')[0];
+            loadSelect();
+            function loadSelect() {
+                $.get(appConfig.apiURL + 'api/gl/AllChart', function (data) {
+                    for (var counter = 0; counter <= data.length - 1; counter++) {
+                        $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].shortdesc + '</option>');
+                        $glcode.append($option);
+                    }
+                    if (typeof glcode === 'undefined') {
+                    }
+
+                    if (typeof glcode === 'undefined') {
+                        glcode = data[0].glcode;
+                        loadTables(glcode);
+                    } else {
+                        loadTables(glcode);
+                    }
+
+
+                    $glcode.select2();
+                });
+            }
+
+
+
+
+            $('#startdate').val(startyear);
+            $('#enddate').val(today);
+
+            function loadTables(glcode) {
+                $('#code').html(glcode);
+                $('#glcodeTrans').bootstrapTable({
+                    idField: 'glcode',
+                    url: appConfig.apiURL + './api/gl/glcodeTransactions?code=' + glcode + '&startdate=' + startyear + '&enddate=' + today,
+                    columns: [{
+                        field: 'transdate',
+                        title: 'Trans. Date',
+                        formatter: localDateFormatter
+                    }/*, {
+                        field: 'vendor',
+                        title: 'Payee',
+                        footerFormatter: totalTextFormatter
+                    }, {
+                        field: 'vgl_code',
+                        title: 'Voucher No'
+                    }*/, {
+                        field: 'description',
+                        title: 'Transaction Details',
+                        formatter: detailsFormatter
+                    }, {
+                        field: 'debitamt',
+                        title: 'Debit (&#8358;,000)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                        field: 'creditamt',
+                        title: 'Credit (&#8358;,000)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    },
+                    //{
+                    //field: 'balance',
+                    //title: 'Balance (&#8358;,000)',
+                    //    formatter: moneyFormatter,
+                    //    footerFormatter: sumFormatter
+                    //},
+                    {
+                        field: 'balance',
+                        title: 'Balance (&#8358;,000)',
+                        formatter: balanceFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                        field: 'name',
+                        title: 'Member'
+                    }, {
+                        field: 'id',
+                        title: '',
+                        formatter: viewDetailsFormatter
+                    }]//,
+                });
+            }
+
+
+            function viewDetailsFormatter(value, row, index) {
+                console.log(row)
+                var clmNo = row.claimsNo;
+                var amt = row.adjusterFee;
+                var main = '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+                return main;
+                //return (row.grossPremium).toFixed(2);
+            };
+
+            function detailsFormatter(value, row, index) {
+                if (value === 'undefined' || value === null) {
+                    return '<span class="gldetails">' + row.tgl_naratives + '</span>';
+                } else if ((value.indexOf('CN') !== -1) || value.indexOf('DN') !== -1) {
+                    return '<span class="gldetails">' + row.tgl_naratives + '</span>';
+                } else if (row.class_trans === 'RECEIPT' || row.class_trans === 'COMMISSION PAYABLE' || row.class_trans === 'OTHERS EXP'
+                    || row.class_trans === 'Payment Voucher' || row.class_trans === 'Jourbal Voucher') {
+                    return '<span class="gldetails">' + row.tgl_naratives + '</span>';
+                } else {
+                    return '<span class="gldetails">' + value + '</span>';
+                }
+
+            }
+
+
+            $('#load').click(function (e) {
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var glUrl = appConfig.apiURL + './api/gl/glcodeTransactions?code=' + glcode + '&startdate=' + startdate + '&enddate=' + enddate;
+                $('#glcodeTrans').bootstrapTable('refresh', { url: glUrl, silent: false });
+            });
+
+            function loadTable(startdate, enddate) {
+                var glUrl = appConfig.apiURL + './api/gl/glcodeTransactions?code=' + glcode + '&startdate=' + startdate + '&enddate=' + enddate;
+                $('#glcodeTrans').bootstrapTable('refresh', { url: glUrl, silent: false });
+            }
+
+            function loadTable(startdate, enddate, gl) {
+                var glUrl = appConfig.apiURL + './api/gl/glcodeTransactions?code=' + gl + '&startdate=' + startdate + '&enddate=' + enddate;
+                $('#glcodeTrans').bootstrapTable('refresh', { url: glUrl, silent: false });
+            }
+
+
+
+            init_daterangepicker('reportrange', loadTable);
+            $('#glcodeTrans').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            //$(document).on('load-success.bs.table', '#glcodeTrans', function (e, field, row, old, $el) {
+            //    var res = $('#glcodeTrans').bootstrapTable('getData');
+            //    console.log(res);
+            //    localStorage.setItem('tempd', JSON.stringify($('#glcodeTrans').bootstrapTable('getData')));
+            //    //console.log(row)
+            //});
+            $('#glcodeTrans').on('pre-body.bs.table', function () {
+                var res = $('#glcodeTrans').bootstrapTable('getData');
+                tempgld = res;
+            });
+            //$('#glcodeTrans').on('refresh.bs.table', function () {
+            //    var res = $('#glcodeTrans').bootstrapTable('getData');
+            //    console.log(res);
+            //    localStorage.setItem('tempd', JSON.stringify($('#glcodeTrans').bootstrapTable('getData')));
+            //});
+            $(document).on('editable-save.bs.table', '#prodTrans', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + './api/gl/EditMapping', row, function (e) {
+                    console.log(e);
+                    toastr.success('mappings edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' mappings');
+
+                });
+            });
+
+            $('#appGL').on('change', function () {
+                $('#code').html(this.value);
+                var startdate = localStorage.getItem('sdate');
+                var enddate = localStorage.getItem('edate');
+                loadTable(startdate, enddate, this.value);
+            })
+        });
+    </script>
+
+    }

@@ -288,8 +288,9 @@
                             <span>Amount: </span><span name="amount" id="amount"></span>
                         </p>
                         <p>
-                            <span>Requested Date: </span><span name="requestedDate" id="requestedDate"></span>
+                            <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
                         </p>
+                        <!--
                         <p>
                             <span>BVN: </span><span name="bvn" id="bvn"></span>
                         </p>
@@ -298,37 +299,7 @@
                         </p>
                         <p>
                             <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
-                        </p>
-                        <p>
-                            <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
-                        </p>
-                        <p>
-                            <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
-                        </p>
-                        <p>
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <span>Guarantor 1:
-                                </span>
-                            </div>
-                            <div class="col-sm-8">
-                                <span name="guarantorId1" id="guarantorId1"></span>
-                                <br />
-                                <span><b>Savings</b>: </span><label name="guarantorId1Normal"
-                                    style="color: green;"></label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: red;"> </label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: yellow;">
-                                </label>
-                            </div>
-
-                        </div>
-                        </p>
-                        <p>
-                            <span>Guarantor 2: </span><span name="guarantorId2" id="guarantorId1"></span>
-                        </p>
-                        <p>
-                            <span>Guarantor 3: </span><span name="guarantorId3" id="guarantorId1"></span>
-                        </p>
+                        </p>-->
                     </div>
                 </div>
             </div>
@@ -428,7 +399,7 @@
 
 
     function saveReview(type) {
-        var url = '@Html.Raw(Url.Action("LoanApproval","Admin"))';
+        var url = '@Html.Raw(Url.Action("LoanApproval","loans"))';
         window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
 
     }
@@ -461,7 +432,7 @@
 
         
 
-        var url = appConfig.apiURL + 'api/member/loandetail?loadId=' + encodeURIComponent(id);
+        var url = appConfig.adminURL + 'api/loanrequest/loandetail?loadId=' + encodeURIComponent(id);
         $.get(url, function (data) {
             loanDetails = data;
             $('#loadViewModal').pleaseWait('stop');
@@ -646,16 +617,16 @@
         });
     };
     $(function () {
-        var ulonaUrl = appConfig.apiURL + 'api/admin/PendingLoanRequests';
-        var declinelonaUrl = appConfig.apiURL + 'api/admin/DeclinedLoanRequests';
-        var approvelonaUrl = appConfig.apiURL + 'api/admin/UnProcessedLoanRequests';
-        var processlonaUrl = appConfig.apiURL + 'api/admin/ProcessedLoanRequests';
+        var ulonaUrl = appConfig.adminURL + 'api/loanrequest/PendingLoanRequests';
+        var declinelonaUrl = appConfig.adminURL + 'api/loanrequest/DeclinedLoanRequests';
+        var approvelonaUrl = appConfig.adminURL + 'api/loanrequest/UnProcessedLoanRequests';
+        var processlonaUrl = appConfig.adminURL + 'api/loanrequest/ProcessedLoanRequests';
         $('#LoanRequestTab').bootstrapTable({
             idField: 'product',
             url: ulonaUrl,
             exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
             columns: [{
-                field: 'id',
+                field: 'ids',
                 checkbox:true
             },
             {

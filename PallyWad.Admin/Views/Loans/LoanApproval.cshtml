@@ -1,0 +1,420 @@
+﻿@{
+    ViewBag.Title = "Loan Processor";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<style>
+    .hide {
+        display: none;
+    }
+
+    .select2-selection {
+        height: 34px !important;
+        font-size: 13px;
+        font-family: 'Open Sans', sans-serif;
+        border-radius: 0 !important;
+        border: solid 1px #c4c4c4 !important;
+        padding-left: 4px;
+    }
+
+    .select2-selection--multiple {
+        height: 154px !important;
+        width: 366px !important;
+    }
+
+    .select2-selection__choice {
+        height: 40px;
+        line-height: 40px;
+        padding-right: 16px !important;
+        padding-left: 16px !important;
+        background-color: #CAF1FF !important;
+        color: #333 !important;
+        border: none !important;
+        border-radius: 3px !important;
+    }
+
+    .select2-selection__choice__remove {
+        float: right;
+        margin-right: 0;
+        margin-left: 2px;
+    }
+
+    .select2-search--inline .select2-search__field {
+        line-height: 40px;
+        color: #333;
+        width: 100% !important;
+    }
+
+    .select2-container:hover,
+    .select2-container:focus,
+    .select2-container:active,
+    .select2-selection:hover,
+    .select2-selection:focus,
+    .select2-selection:active {
+        outline-color: transparent;
+        outline-style: none;
+    }
+
+    .select2-results__options li {
+        display: block;
+    }
+
+    .select2-selection__rendered {
+        transform: translateY(2px);
+    }
+
+    .select2-selection__arrow {
+        display: none;
+    }
+
+    .select2-results__option--highlighted {
+        background-color: #CAF1FF !important;
+        color: #333 !important;
+    }
+
+    .select2-dropdown {
+        border-radius: 0 !important;
+        box-shadow: 0px 3px 6px 0 rgba(0, 0, 0, 0.15) !important;
+        border: none !important;
+        margin-top: 4px !important;
+        width: 366px !important;
+    }
+
+    .select2-results__option {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 13px;
+        line-height: 24px !important;
+        vertical-align: middle !important;
+        padding-left: 8px !important;
+    }
+
+        .select2-results__option[aria-selected="true"] {
+            background-color: #eee !important;
+        }
+
+    .select2-search__field {
+        font-family: 'Open Sans', sans-serif;
+        color: #333;
+        font-size: 13px;
+        padding-left: 8px !important;
+        border-color: #c4c4c4 !important;
+    }
+
+    .select2-selection__placeholder {
+        color: #c4c4c4 !important;
+    }
+
+    .pull-right {
+        margin-right: 10px;
+    }
+
+    p {
+        margin-left: 5%;
+    }
+
+    .gg {
+        margin-left: 5%;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Loan Processor</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Loan Processor
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6" id="loanProcessView">
+                    <p>
+                        <span>Loan ID: </span><span name="loanId" id="loanId"></span>
+                    </p>
+                    <p>
+                        <span>Member : </span><span name="fullname" id="fullname"></span>
+                    </p>
+                    <p>
+                        <span>Amount: </span><span name="amount" id="amount"></span>
+                    </p>
+                    <p>
+                        <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
+                    </p>
+                    <p>
+                        <span>BVN: </span><span name="bvn" id="bvn"></span>
+                    </p>
+                    <p>
+                        <span>Bank: </span><span name="bankname" id="bank"></span>
+                    </p>
+                    <p>
+                        <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
+                    </p>
+                    <p>
+                        <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
+                    </p>
+                    <p>
+                        <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
+                    </p>
+                    <p>
+
+                        <div class="row gg">
+                            <div class="col-sm-2">
+                                <span>
+                                    Guarantor 1:
+                                </span>
+                            </div>
+                            <div class="col-sm-8">
+                                <span name="guarantorId1" id="guarantorId1"></span>
+                                <br />
+                                <span><b>Savings</b>: </span><label name="guarantorId1Normal" style="color: green;">0</label>
+                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: red;">0 </label></br/>
+                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId1LoanGuanrantee" style="color: red;">0 </label>
+                                <span> <b>Net</b>: </span><label name="guarantorId1Net" style="color: black;"> </label>
+                            </div>
+
+                        </div>
+                    </p>
+                    <p>
+                        <div class="row gg">
+                            <div class="col-sm-2">
+                                <span>
+                                    Guarantor 2:
+                                </span>
+                            </div>
+                            <div class="col-sm-10">
+                                <span name="guarantorId2" id="guarantorId2"></span>
+                                <br />
+                                <span><b> Savings </b>: </span><label name="guarantorId2Normal" style="color: green;">0</label>
+                                <span> <b> Loan</b>: </span><label name="guarantorId2Loans" style="color: red;">0 </label></br/>
+                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId2LoanGuanrantee" style="color: red;">0 </label>
+                                <span> <b>Net </b>: </span><label name="guarantorId2Net" style="color: black;">0 </label>
+                            </div>
+
+                        </div>
+                    </p>
+                    <p>
+                        <div class="row gg">
+                            <div class="col-sm-2">
+                                <span>
+                                    Guarantor 3:
+                                </span>
+                            </div>
+                            <div class="col-sm-10">
+                                <span name="guarantorId3" id="guarantorId3"></span>
+                                <br />
+                                <span><b>Savings</b>: </span><label name="guarantorId3Normal" style="color: green;">0</label>
+                                <span> <b>Loan</b>: </span><label name="guarantorId3Loans" style="color: red;">0 </label><br />
+                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId3LoanGuanrantee" style="color: red;">0 </label>
+                                <span> <b>Net</b>: </span><label name="guarantorId3Net" style="color: black;">0 </label>
+                            </div>
+
+                        </div>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p>
+                        <span>Tenor</span><input type="number" name="duration" id="duration" class="form-control" />
+                    </p>
+                    <p>
+                        <span>Interest Rate</span><input type="number" name="loaninterest" id="loaninterest" class="form-control" />
+                    </p>
+                    <p>
+                        <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="saveReview('Approve')">Approve</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var loanDetails = '';
+        var loanId = qs['loanId'];
+        var memberId = qs['memberId']
+        $('#processingFee').val(0)
+        loadView(loanId);
+
+
+        function saveReview(type) {
+            $('#loanProcessView').pleaseWait();
+            var url = '';
+            if (type == 'Approve') {
+                var duration = $('#duration').val();
+                var loaninterest = $('#loaninterest').val();
+                var processingFee = $('#processingFee').val();
+
+                loanDetails.loaninterest = loaninterest;
+                loanDetails.duration = duration;
+                loanDetails.processState = "Processed";
+                loanDetails.status = "Approved";
+                loanDetails.tenantId = "rr";
+                loanDetails.processingFee = processingFee;
+                loanDetails.approvedBy = localStorage.getItem('uemail');
+                url = appConfig.apiURL + 'api/admin/loanrequestapproved?id=' + loanDetails.id + '&interest=' + loaninterest 
+                + '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
+            } else {
+                loanDetails.processState = "Processed";
+                loanDetails.processState = "Decline";
+                loanDetails.tenantId = "rr";
+                loanDetails.approvedBy = localStorage.getItem('uemail');
+
+                url = appConfig.apiURL + "api/admin/loanrequestdecline?id=" + loanDetails.id;
+            }
+
+
+
+            $.ajax({
+                type: 'PUT',
+                url: url,
+                data: JSON.stringify(loanDetails),
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#loanProcessView').pleaseWait('stop');
+                toastr.success('Loan Request  processed successfully');
+                window.location.href = 'loanrequest';
+                //refreshTables();
+            }).fail(function (request, message, error) {
+                $('#loanProcessView').pleaseWait('stop');
+                toastr.error('error ' + error + 'for processing Loan Request ');
+            });
+
+        }
+
+        function loadLoanType(loancode){
+            var url = appConfig.apiURL + 'api/settings/loantype?loancode=' + encodeURIComponent(loancode);
+            $.get(url, function (data) {
+                try {
+                    for (var key in data) {
+                        $('[name="' + key + '"]').html(data[key]);
+                        $('[name="' + key + '"]').val(data[key]);
+                    }
+                }
+                catch (e) {
+                console.log(e);
+            }
+        }).fail(function (xhr, status, error) {
+            $('#loadViewModal').pleaseWait('stop');
+        });
+        }
+
+        function loadView(id) {
+            $('#loadViewModal').pleaseWait();
+            var url = appConfig.apiURL + 'api/member/loandetail?loadId=' + encodeURIComponent(id);
+            $.get(url, function (data) {
+                loanDetails = data;
+                loadLoanType(data.loancode);
+                $('#loadViewModal').pleaseWait('stop');
+                try {
+                    for (var key in data) {
+                        if (key == 'insuredname') {
+                            var lname = data[key].split(' ')[0];
+                            var fname = data[key].split(' ')[1];
+                            $('[name="firstname"]').html(fname);
+                            $('[name="lastname"]').html(lname);
+                        }
+                        $('[name="' + key + '"]').html(data[key]);
+                        if (key == 'requestDate') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                        if (key == 'memberId') {
+                            var fullname = getMemberById(data[key]).fullname
+                            $('[name="' + key + '"]').html(data[key]);
+                            $('[name="fullname"]').html(fullname);
+                        }
+                        if (key == 'guarantorId1') {
+                            //var fullname = getMemberById(data[key]).fullname
+                            $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
+                            var g1 = getMemberById(data[key]).fullname
+                            getGuarantorOverhead(data[key], key, g1);
+                        }
+                        if (key == 'guarantorId2') {
+                            $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
+                            var g1 = getMemberById(data[key]).fullname
+                            getGuarantorOverhead(data[key], key, g1);
+                        }
+                        if (key == 'guarantorId3') {
+                            $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
+                            var g1 = getMemberById(data[key]).fullname
+                            getGuarantorOverhead(data[key], key, g1);
+                        }
+                        if (key == 'amount') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'loanBal') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'othercoorp') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }).fail(function (xhr, status, error) {
+                $('#loadViewModal').pleaseWait('stop');
+            });
+
+
+            function getGuarantorOverhead(memberId, guarantor, gname) {
+                console.log(guarantor)
+                var sav = 0;
+                var loan = 0;
+                var loanGuan = 0;
+                var url = appConfig.apiURL + "api/Admin/GuarantorOverhead?memberId=" + memberId;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json",
+                }).done(function (data) {
+                    toastr.success('guarantor ' + gname + ' savings and Loan details gotten suucessfully ');
+
+                    for (var key in data) {
+                        var acc = data[key];
+                        for (var v in acc) {
+                            if (v == 'acctype') {
+                                if (((acc[v].indexOf('Loan')) > -1 || (acc[v].indexOf('loan')) > -1) && ((acc[v].indexOf('LoanGuanrantee')) == -1))  {
+                                    loan += parseFloat(data[key].loanBalance);
+                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].loanBalance));
+                                    $('[name="' + guarantor + 'Loans"]').html(currformatter.format(loan));
+                                    
+                                } else if (acc[v] == 'Normal' || acc[v] == 'Savings') {
+                                    sav += parseFloat(data[key].savBalance)
+                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
+                                    $('[name="' + guarantor +  'Normal"]').html(currformatter.format(sav));
+                                    
+                                } else if (acc[v] == 'LoanGuanrantee') {
+                                    $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
+                                    loanGuan = parseFloat(data[key].loanGuarantee)
+                                } else {
+                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
+                                }
+                            }
+                        }
+                    }
+                    var bal = parseFloat(sav) - parseFloat(loan) - parseFloat(loanGuan);
+                    $('[name="' + guarantor + 'Net"]').html(currformatter.format(bal));
+                }).fail(function (request, message, error) {
+                    $('#myModal').pleaseWait('stop');
+                    toastr.error('unable to get guarantor ' + gname + ' savings and Loan details ');
+                });
+            };
+
+        }
+    </script>
+
+
+}

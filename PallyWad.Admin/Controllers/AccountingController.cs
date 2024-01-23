@@ -2,25 +2,19 @@
 
 namespace PallyWad.Admin.Controllers
 {
-    public class LoansController : Controller
+    public class AccountingController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Requests()
+        public IActionResult GL()
         {
             return View();
         }
-        public IActionResult LoanApproval()
+        public IActionResult Chart()
         {
             return View();
         }
-
-        public IActionResult Payments()
-        {
-            return View();
-        }
-        
     }
 }

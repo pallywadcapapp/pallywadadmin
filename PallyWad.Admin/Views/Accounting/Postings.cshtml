@@ -1,0 +1,1044 @@
+
+@{
+    ViewBag.Title = "Payment";
+}
+
+<style>
+    div#pop-up {
+        display: none;
+        position: absolute;
+        width: 280px;
+        padding: 10px;
+        background: #eeeeee;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        font-size: 90%;
+    }
+</style> 
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Payment Voucher</li>
+    </ol>
+    <!-- Example DataTables Card-->
+
+    <div id="tab">
+        <ul> 
+            <li><a href="#tabs-1">Payment</a></li> 
+        </ul>
+        <div id="tabs-1">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>Payments
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#journalModal">Post New PV</a>
+                                <!-- onclick="postNewPV('1')"-->
+                                <table class="table table-bordered" id="journalTab" cellspacing="0" data-show-footer="true" data-query-params=""
+                                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                       data-search="true" data-sort-name="sn" data-sort-order="desc"
+                                       data-pagination="true" data-page-size="50" data-show-export="true" data-show-columns="true" data-show-toggle="true"></table>
+                                <!-- -->
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+
+
+            </div>
+        </div> 
+    </div>
+    
+
+    <div id="viewPaymentModal" class="modal fade" role="dialog">
+        <div class="modal-dialog  modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Payment Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-6">
+                        <p>
+                            <span>Voucher No: </span><span name="voucherNo" id="voucherNoSummation"></span>
+                        </p>
+                        <p>
+                            <span>Name: </span><span name="receivedFrom" id="receivedFromSummation"></span>
+                        </p>
+                        <p>
+                            <span>Cost Center: </span><span name="ccenter" id="ccenterSummation"></span>
+                        </p>
+                        <p>
+                            <span>Trans. Date: </span><span name="transDate" id="transDateSummation"></span>
+                        </p>
+                        <p>
+                            <span>Posting Date: </span><span name="postedDate" id="postedDateSummation"></span>
+                        </p>
+                        <p>
+                            <span>Transaction Type: </span><span name="transType" id="transTypeSummation"></span>
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p>
+                            <span>Amount: </span><span name="amount" id="amountSummation"></span>
+                        </p>
+                        <p>
+                            <span>Branch: </span><span name="branch" id="branchSummation"></span>
+                        </p>
+                        <p>
+                            <span>Bank: </span><span name="bank" id="bankSummation"></span>
+                        </p>
+                        <p>
+                            <span>Cheque No: </span><span name="chequeNo" id="chequeNoSummation"></span>
+                        </p>
+                        <p>
+                            <span>Narration: </span><span name="cashcodeDesc" id="typeSummation"></span>
+                        </p>
+                        <p>
+                            <span>Payment Mode: </span><span name="paymentMode" id="paymodeSummation"></span>
+                        </p>
+                        <p>
+                            <span>Approval Status: </span><span name="approvalForm" id="approvalFormSummation"></span>
+                        </p>
+                    </div>
+                    <div class="col-xs-12">
+                        <p>
+                            <span>Reason:</span><span><b name="reason"></b></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="getPV()" class="btn btn-info">View PV</button>
+                    <a class="btn btn-success" href="ViewCheque" id="viewCheque">View Cheque</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="journalModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Payment Voucher</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!--
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Voucher No. </span><input type="text" placeholder="Voucher No" class="form-control" id="voucherNo" disabled />
+                            </div>
+                        </div>
+                        -->
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Payment Mode. </span>
+                                <select id="paymode" class="form-control">
+                                    <option value="CHEQUE">CHEQUE</option>
+                                    <option value="CASH"> CASH</option>
+                                    <option value="TRANSFER">TRANSFER</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Trans Date. </span><input type="date" placeholder="Trans Date" class="form-control" id="transDate" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Cost Centers</span>
+                                <select id="ccenter" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Account/Bank</span>
+                                <select id="bank" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group modsp hidden">
+                        <span>Transaction Type</span>
+                        <select id="type" class="form-control">
+                            <option value="NORMAL">NORMAL</option>
+                            <option value="REVERSAL">REVERSAL</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Account/Cash Description</span>
+                                <textarea type="text" placeholder="Account/Cash Description" class="form-control" id="cashcodeDesc"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>PAID TO. </span><textarea type="text" placeholder="Received From" class="form-control" id="receivedFrom"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group modsp">
+                                <span>Cheque No. </span><input type="text" placeholder="Cheque No" class="form-control" id="chequeNo" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <span>Amount</span><input type="number" class="form-control" placeholder="Amount" id="amount" />
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="form-group modsp">
+                        <span>Branch</span>
+                        <select id="branch" class="form-control"></select>
+                    </div>
+                    -->
+                    <div class="row hidden">
+                        <div class="col-md-6">
+                            <span><b>Debit</b></span>
+                            <div class="form-group modsp">
+                                <span>Glcode </span><select id="debit" class="glcode form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <span><b>Credit</b></span>
+                            <div class="form-group modsp">
+                                <span>Glcode </span><select id="credit" class="glcode form-control"></select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveJournal()" id="saveJournal">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var appyear = localStorage.getItem('app_year');
+        var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+        var today = new Date().addHours(2).toISOString().split('T')[0];
+            var processByEmail = JSON.parse(localStorage.getItem('uemail'));
+            var processBy = localStorage.getItem('fullname');
+        var status = ''; var transtype = ''; var transId = null;
+            var claimsNo = qs['c'];
+            var policyno = qs['p'];
+            var dncnno = qs['d'];
+            var index = qs['id'];
+            var amount = qs['amount'];
+            var paytype = qs['type'];
+            var transPayType = 'Payment Voucher';
+        var revisedData = [];
+        var accCode = '';
+        function getPV() {
+             var id = JSON.parse(localStorage.getItem('pvIdex'));
+            window.location.href = '@Html.Raw(Url.Action("PV","Certificates"))' + '?id='+ id
+        }
+
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/gl/pv?startdate=' + startyear + '&enddate=' + today;
+            var pnewUrl = appConfig.apiURL + 'api/gl/postedpv?startdate=' + startyear + '&enddate=' + today;
+            var rnewUrl = appConfig.apiURL + 'api/gl/rejectedPostings?startdate=' + startyear + '&enddate=' + today;
+            $('#journalTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+            $('#postedPaymentsTab').bootstrapTable('refresh', { url: pnewUrl, silent: true });
+            $('#rejectedPostingTab').bootstrapTable('refresh', { url: rnewUrl, silent: true });
+        }
+
+        function loadSelect() {
+            var $product = $('#product');
+            var $rproduct = $('#rproduct');
+            var $ccenter = $('#ccenter');
+            var $rccenter = $('#rccenter');
+            var $branch = $('#branch'); 
+            var $banks = $('#accCode');
+            var $bank = $('#bank');
+            var $glcode = $('.glcode');
+            var $option;
+            var $option2;
+
+            $.get(appConfig.apiURL + 'api/settings/product', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    $product.append($option);
+                    //$rproduct.append($option);
+                }
+
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option2 = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+                    //$product.append($option);
+                    $rproduct.append($option2);
+                }
+            });
+
+            $.get(appConfig.apiURL + 'api/admin/members', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].fullname + '</option>');
+                    $ccenter.append($option);
+                    $ccenter.select2();
+                }
+            });
+
+            $.get(appConfig.apiURL + 'api/admin/members', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].fullname + '</option>');
+                    $rccenter.append($option);
+                    $rccenter.select2();
+                }
+            });
+                
+            $.get(appConfig.apiURL + 'api/settings/branches', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].id + '">' + data[counter].name + '</option>');
+                    $branch.append($option);
+                }
+            });
+            $.get(appConfig.apiURL + 'api/settings/banks', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].bankname + '</option>');
+                    $banks.append($option);
+                }
+
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].accountno + '">' + data[counter].bankname + '</option>');
+                    $bank.append($option);
+                }
+                 $bank.select2({ width: '100%' });
+            });
+            $.get(appConfig.apiURL + 'api/chartsofaccount/AllChart', function (data) {
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].glcode + '">' + data[counter].glcode + ' - ' + data[counter].account_name + '</option>');
+                    $glcode.append($option);
+                }
+                $glcode.select2();
+            });
+        }
+
+        function saveJournal() {
+            $('#journalModal').pleaseWait();
+            var year = $('#year').val();
+            var voucherNo = $('#voucherNo').val();
+            var transDate = $('#transDate').val();
+            var cashcodeDesc = $('#cashcodeDesc').val();
+            var chequeNo = $('#chequeNo').val();
+            var receivedFrom = $('#receivedFrom').val();
+            var _amount = $('#amount').val();
+
+
+            var _ccenter = document.getElementById("ccenter");//$('#product');
+            var ccenter = _ccenter.options[_ccenter.selectedIndex].value;
+            
+
+            var _type = document.getElementById("type");
+            var type = _type.options[_type.selectedIndex].value;
+
+            //var _accCode = document.getElementById("accCode");
+            //var accCode = _accCode.options[_accCode.selectedIndex].value;
+
+            var _bank = document.getElementById("bank");
+            var bank = _bank.options[_bank.selectedIndex].value;
+
+            //var _branch = document.getElementById("branch");
+            //var branch = _branch.options[_branch.selectedIndex].value;
+
+            //var _debit = document.getElementById("debit");
+            var debit = '';// _debit.options[_debit.selectedIndex].value;
+
+            //var _credit = document.getElementById("credit");
+            var credit = '';// _credit.options[_credit.selectedIndex].value;
+
+            var _paymode = document.getElementById("paymode");
+            var paymode = _paymode.options[_paymode.selectedIndex].value;
+
+            if (paytype === '' || typeof paytype === 'undefined') {
+                transPayType = 'Payment Voucher';
+            } else {
+                transPayType = paytype;
+            }
+            var pv = {
+                "year": year,
+                "voucherNo": voucherNo,
+                "transDate": transDate,
+                "receivedFrom": receivedFrom,
+                "cashcodeDesc": cashcodeDesc,
+                "chequeNo": chequeNo,
+                "ccenter": ccenter,
+                'amount': _amount,
+                "type": type,
+                'bank': bank,
+                "paymentMode":paymode,
+                "accCode": accCode,
+                'transId': transId,
+                //"branch": branch,
+                "debit": debit,
+                "credit": credit,
+                "transType": transPayType,//"Payment Voucher",
+                "postedBy": processBy,
+                "posterEmail": processByEmail
+            }
+            console.log(pv);
+            var url = appConfig.apiURL + "api/gl/pv";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(pv),
+                contentType: "application/json",
+            }).done(function (data) {
+                 $('#journalModal').pleaseWait('stop');
+                $('#journalModal').modal('hide');
+                alert('Payment Voucher No: ' + data.voucherNo + ' Kindly save/copy this one the PV document' );
+                refreshTables();
+                toastr.success('Voucher ' + type + ' saved successfully');
+            }).fail(function (request, message, error) {
+                $('#journalModal').pleaseWait('stop');
+                toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ' + type);
+            });
+
+        }
+
+        function revisePV() {
+            $('#revisePVModal').pleaseWait();
+            var year = $('#year').val();
+            var voucherNo = $('#voucherNo').val();
+            var transDate = $('#rtransDate').val();
+            var cashcodeDesc = $('#rcashcodeDesc').val();
+            var chequeNo = $('#rchequeNo').val();
+            var receivedFrom = $('#rreceivedFrom').val();
+            var amount = $('#ramount').val();
+
+            var _ccenter = document.getElementById("rccenter");
+            var ccenter = _ccenter.options[_ccenter.selectedIndex].value;
+
+            var _type = document.getElementById("rtype");
+            var type = _type.options[_type.selectedIndex].value;
+
+            //var _accCode = document.getElementById("accCode");
+            //var accCode = _accCode.options[_accCode.selectedIndex].value;
+
+            //var _branch = document.getElementById("branch");
+            //var branch = _branch.options[_branch.selectedIndex].value;
+
+            var _debit = document.getElementById("rdebit");
+            var debit = _debit.options[_debit.selectedIndex].value;
+
+            var _credit = document.getElementById("rcredit");
+            var credit = _credit.options[_credit.selectedIndex].value;
+
+            var _paymode = document.getElementById("rpaymode");
+            var paymode = _paymode.options[_paymode.selectedIndex].value;
+
+            var pv = {
+                "year": year,
+                "voucherNo": voucherNo,
+                "transDate": transDate,
+                "receivedFrom": receivedFrom,
+                "cashcodeDesc": cashcodeDesc,
+                "chequeNo": chequeNo,
+                "ccenter": ccenter,
+                'amount': amount,
+                "type": type,
+                "paymentMode":paymode,
+                //"accCode": accCode,
+                //"branch": branch,
+                "debit": debit,
+                "credit": credit,
+                "transType": transPayType,//"Payment Voucher",
+                "postedBy": processBy,
+                "posterEmail": processByEmail
+            }
+            revisedData.transDate = transDate;
+            revisedData.cashcodeDesc = cashcodeDesc;
+            revisedData.chequeNo = chequeNo;
+            revisedData.receivedFrom = receivedFrom;
+            revisedData.amount = amount;
+            revisedData.debit = debit;
+            revisedData.credit = credit;
+            revisedData.paymentMode = paymode;
+            revisedData.ccenter = ccenter;
+            console.log(revisedData);
+            var url = appConfig.apiURL + "api/gl/pv";
+
+            $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: revisedData,
+                    success: function (result) {
+                        refreshTables();
+                        $('#revisePVModal').pleaseWait('stop');
+                         $('#revisePVModal').modal('hide');
+                        toastr.success(revisedData.voucherNo +  ' updated successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        $('#revisePVModal').pleaseWait('stop');
+                        toastr.error('error updating voucher ' + revisedData.voucherNo);
+                    }
+                });
+            }
+
+        function approvePV(index) {
+            $('#journalTab').pleaseWait();
+            console.log(tempgld[index]);
+            var pv = tempgld[index];
+            pv.approvedBy = processBy;
+            pv.approvedByEmail = processByEmail;
+            var url = appConfig.apiURL + "api/gl/ApprovePV";
+            $.post(url, pv, function (e) {
+                $('#journalTab').pleaseWait('stop');
+                $('#journalTab').modal('hide');
+                refreshTables();
+                toastr.success('Voucher ' + type + ' saved successfully');
+            }).fail(function (error, status, xhr) {
+                $('#journalTab').pleaseWait('stop');
+                toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ' + type);
+
+            });
+        }
+
+        $('#declinePV').click(function (e) {
+            var index = JSON.parse(localStorage.getItem('pvIdex'));
+            _declinePV(index);
+        })
+
+        function __declinePV() {
+
+        }
+        function declinePV(index) {
+            $('#declinePaymentModal').modal('show');
+            localStorage.setItem('pvIdex',index);
+        }
+        function _declinePV(index) {
+            $('#journalTab').pleaseWait();
+            console.log(tempgld[index]);
+            var reason = $('#declineReason').val();
+            var pv = tempgld[index];
+            pv.approvedBy = processBy;
+            pv.approvedByEmail = processByEmail;
+            pv.reason = reason
+            var url = appConfig.apiURL + "api/gl/declinePV";
+            $.post(url, pv, function (e) {
+                $('#journalTab').pleaseWait('stop');
+                $('#journalTab').modal('hide');
+                refreshTables();
+                toastr.success('Voucher ' + type + ' saved successfully');
+            }).fail(function (error, status, xhr) {
+                $('#journalTab').pleaseWait('stop');
+                toastr.error('error ' + error.responseJSON.message + ' for saving Voucher ' + type);
+
+            });
+        }
+
+        function viewPost(index) {
+            localStorage.setItem('pvIdex',index);
+            $.get(appConfig.apiURL + 'api/gl/PVById?id=' + index, function (data) {
+                try {
+                    for (var key in data) {
+                        if (key == 'insuredname') {
+                            var lname = data[key].split(' ')[0];
+                            var fname = data[key].split(' ')[1];
+                            $('[name="firstname"]').html(fname);
+                            $('[name="lastname"]').html(lname);
+                        }
+                        if (key == 'businessclass') {
+                            if (data[key] == 'Motor') {
+
+                            } else {
+                                $('.motor').hide();
+                            }
+                        }
+                        $('[name="' + key + '"]').html(data[key]);
+                        if (key == 'transDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'postedDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'bookingDate') {
+                            //$('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                            $('[name="' + key + '"]').html(moment(new Date(data[key])).format('DD-MMM-YYYY'));
+                        }
+                        if (key == 'amount') {
+                            $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                        }
+                        if (key == 'paymentMode') {
+                            transtype = data[key];
+                        }
+                        if (key == 'approvalForm') {
+                            status = data[key];
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                if (status === 'APPROVED' && transtype === 'CHEQUE') {
+                    $('#viewCheque').removeClass('disabled');
+                } else {
+                    $('#viewCheque').addClass('disabled');
+                }
+                $('#viewPaymentModal').modal('show');
+            }).fail(function (xhr, status, error) {
+                toastr.error(xhr.responseJSON.message);
+            })
+        }
+
+        function revisePost(index) {
+            $.get(appConfig.apiURL + 'api/gl/PVById?id=' + index, function (data) {
+                revisedData = data;
+                console.log(revisedData);
+                var dobDate = new Date(data.transDate);
+                var dobday = ('0' + dobDate.getDate()).slice(-2);
+                var dobmonth = ('0' + (parseInt(dobDate.getMonth()) + 1)).slice(-2);
+                var dobDates = dobDate.getFullYear() + '-' + dobmonth + '-' + dobday;
+                $("#rreceivedFrom").val(data.receivedFrom);
+                $("#rchequeNo").val(data.chequeNo);
+                $("#rcashcodeDesc").val(data.cashcodeDesc);
+                $("#rdebit").val(data.debit);
+                $("#rcredit").val(data.credit);
+                $("#rpaymode").val(data.paymentMode);
+                $("#rccenter").val(data.ccenter);
+                $("#ramount").val(data.amount);
+                $("#rtransDate").val(dobDates);
+                $('#revisePVModal').modal('show');
+            }).fail(function (xhr, status, error) {
+                toastr.error(xhr.responseJSON.message);
+            })
+        }
+
+        function postNewPV(no, payt, dncnno) {
+            if (payt === "Claims" || payt === 'Adjuster Fee') {
+                $.get(appConfig.apiURL + 'api/claims/details?claimsNo=' + no, function (data) {
+                    if (payt === 'Claims') {
+                        $("#receivedFrom").val(data.insuredname);
+                        $("#cashcodeDesc").val(data.clmdesc);
+                        $("#amount").val(data.claimsReserved);
+                        accCode = no;
+                    } else {
+                        $("#receivedFrom").val(data.adjuster);
+                        $("#cashcodeDesc").val(data.adjusterSummary);
+                        $("#amount").val(data.adjusterFee);
+                        accCode = no;
+                    }
+
+
+                    $('#journalModal').modal('show');
+                }).fail(function (xhr, status, error) {
+                    toastr.error(xhr.responseJSON.message);
+                })
+                //$('#amount').val(amount);
+            } else if (payt === 'receipt' || payt === 'returns') {
+                var polno = encodeURIComponent(no);
+                $.get(appConfig.apiURL + 'api/allpolicy/dncnno?policyno=' + no + '&dncnno=' + dncnno, function (data) {
+                     $("#receivedFrom").val('COMPANY');
+                        $("#cashcodeDesc").val(data.otherdetails);
+                        $("#amount").val(data.grossPremium);
+                        accCode = dncnno;
+
+
+
+                    $('#journalModal').modal('show');
+                }).fail(function (xhr, status, error) {
+                    toastr.error(xhr.responseJSON.message);
+                })
+            }else if (payt === 'reinsurance') {
+                var polno = encodeURIComponent(no);
+                $.get(appConfig.apiURL + 'api/reinsurance/DetailsById?id=' + index, function (data) {
+                     $("#receivedFrom").val(data.reinsurer);
+                        $("#cashcodeDesc").val(data.narration);
+                        $("#amount").val(data.netPremium);
+                        accCode = dncnno;
+
+
+
+                    $('#journalModal').modal('show');
+                }).fail(function (xhr, status, error) {
+                    toastr.error(xhr.responseJSON.message);
+                })
+            }else if (payt === 'coinsurance') {
+                var polno = encodeURIComponent(no);
+                $.get(appConfig.apiURL + 'api/AllPolicy/CoinsuredByNo?dncnno=' + dncnno, function (data) {
+                     $("#receivedFrom").val(data.partyName);
+                    $("#cashcodeDesc").val(data.otherdetails);
+                    var gross = data.grossPremium;
+                            var orc = parseFloat(data.orc);
+                            var pmc = parseFloat(data.pmc);
+                            var marSup = parseFloat(data.marSup);
+                            var survey = parseFloat(data.survey); 
+
+                    var amount = parseFloat(gross) - (orc + marSup + pmc + survey);
+                    $("#amount").val(amount);
+                        accCode = dncnno;
+
+
+
+                    $('#journalModal').modal('show');
+                }).fail(function (xhr, status, error) {
+                    toastr.error(xhr.responseJSON.message);
+                })
+            }else if (payt === '_returns') {
+                var polno = encodeURIComponent(no);
+                $.get(appConfig.apiURL + 'api/AllPolicy/dncnno?dncnno=' + dncnno, function (data) {
+                     $("#receivedFrom").val(data.partyName);
+                        $("#cashcodeDesc").val(data.otherdetails);
+                        $("#amount").val(data.netPremium);
+                        accCode = dncnno;
+
+
+
+                    $('#journalModal').modal('show');
+                }).fail(function (xhr, status, error) {
+                    toastr.error(xhr.responseJSON.message);
+                })
+            }
+
+        }
+
+
+        $(function () {
+            console.log(claimsNo)
+            if (!(typeof claimsNo === 'undefined')) {
+                postNewPV(claimsNo,paytype, '');
+            } else if (!(typeof policyno === 'undefined')) {
+                postNewPV(policyno, paytype, dncnno);
+            } else {
+
+            }
+            $('#startdate').val(startyear);
+            $('#enddate').val(today);
+            loadSelect();
+            $('#load').click(function (e) {
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var glUrl = appConfig.apiURL + "./api/gl/pv?startdate=" + startdate + '&enddate=' + enddate;
+                $('#journalTab').bootstrapTable('refresh', { url: glUrl, silent: false });
+            });
+
+            function loadTable(startdate, enddate) {
+                var glUrl = appConfig.apiURL + "./api/gl/pv?startdate=" + startdate + '&enddate=' + enddate;
+                $('#journalTab').bootstrapTable('refresh', { url: glUrl, silent: false });
+            }
+
+            init_daterangepicker('reportrange', loadTable);
+
+            $('#journalTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/gl/pv?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                } , {
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    }, {
+                        field: 'chequeNo',
+                        title: 'Cheque No'
+
+                    },{
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                        field: 'bank',
+                        title: 'Bank'
+
+                    }, {
+                    field: 'debit',
+                        title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                        title: 'Credit Code' ,
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    },
+                    {
+                    field: 'exchangeRate',
+                    title: 'Exchange Rate'
+                    }
+                    , {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                        formatter: localDateFormatter,
+                    sortable: 'true'
+                }, {
+                        filed: 'approvalStatus',
+                        title: '',
+                        formatter: approveFormatter
+
+                }]
+            });
+            $('#journalTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#journalTab').on('pre-body.bs.table', function () {
+                tempgld = [];
+                var res = $('#journalTab').bootstrapTable('getData');
+                tempgld = res;
+            });
+
+            $('#postedPaymentsTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/generalledger/postedpv?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                }, {
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    }, {
+                        field: 'chequeNo',
+                        title: 'Cheque No'
+
+                    }, {
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                    field: 'debit',
+                        title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                    title: 'Credit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                }, {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter,
+                    sortable: 'true'
+                    }, {
+                        field: 'approvalForm',
+                        title: 'State',
+                        formatter: stateSTatusFormatter
+
+                    }, {
+                        field: 'approvalStatus',
+                        title: '',
+                        formatter: viewApproveFormatter
+
+                    }]//,
+                /*onEventName: function (arg1, arg2) {
+                    console.log()
+                }*/
+            });
+            $('#postedPaymentsTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#postedPaymentsTab').on('pre-body.bs.table', function () {
+                tempgld = [];
+                var res = $('#journalTab').bootstrapTable('getData');
+                tempgld = res;
+                console.log(res);
+                //localStorage.setItem('tempd', JSON.stringify($('#journalTab').bootstrapTable('getData')));
+            });
+
+
+
+
+            $('#rejectedPostingTab').bootstrapTable({
+                idField: 'name',
+                url: appConfig.apiURL + 'api/generalledger/rejectedPostings?startdate=' + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'approvalStatus',
+                    title: '',
+                    checkbox: true
+                }, {
+                        field: 'voucherNo',
+                        title: 'Voucher No'
+
+                    }, {
+                        field: 'chequeNo',
+                        title: 'Cheque No'
+
+                    }, {
+                    field: 'receivedFrom',
+                    title: 'Acc. Name.'
+                }, {
+                    field: 'ccenter',
+                    title: 'Cost Center '
+                }, {
+                    field: 'debit',
+                    title: 'Debit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'credit',
+                    title: 'Credit Code',
+                    formatter: glcodeFormatter
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                }, {
+                    field: 'transDate',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter,
+                    sortable: 'true'
+                    }, {
+                        field: 'approvalForm',
+                        title: 'State',
+                        formatter: stateSTatusFormatter
+
+                    }, {
+                        field: 'approvalStatus',
+                        title: '',
+                        formatter: reviseApproveFormatter
+
+                    }]//,
+                /*onEventName: function (arg1, arg2) {
+                    console.log()
+                }*/
+            });
+            $('#rejectedPostingTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            function approveFormatter(value, row, index) {
+                return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+            }
+
+            function viewApproveFormatter(value, row, index) {
+                return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ';
+            }
+
+            function glcodeFormatter(value, row, index) {
+                return '<span class="trigger">' + value + '</span>';
+            }
+
+            function reviseApproveFormatter(value, row, index) {
+                return '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + row.id + ');">VIEW</button> ' +
+                     '<button class="btn btn-danger" id="' + index + '" onclick="revisePost(' + row.id + ');"><i class="fa fa-edit"></i> REVISE</button> ';
+            }
+
+            function stateSTatusFormatter(value, row, index) {
+                if (value === 'DECLINED') {
+                    return '<span class="btn-danger">' + value + '</span>';
+                } else {
+                    return '<span class="btn-success">' + value + '</span>';
+                }
+            }
+
+            //$(document).on('editable-save.bs.table', '#treatyTab', function (e, field, row, old, $el) {
+            //    console.log(row);
+            //    $.post(appConfig.apiURL + 'api/settings/treaty', row, function (e) {
+            //        console.log(e);
+            //        toastr.success('mappings edited successfully');
+            //    }).fail(function (error) {
+            //        toastr.error('error editing ' + error.responseText + ' treaty');
+
+            //    });
+            //});
+
+            $('#paymode').on('change', function (e) {
+                var _paymode = document.getElementById("paymode");
+                var paymode = _paymode.options[_paymode.selectedIndex].value;
+                if (paymode === 'CHEQUE') {
+                    $('#chequeNo').removeClass('disabled');
+                    $('#chequeNo').val('');
+                } else {
+                    $('#chequeNo').addClass('disabled');
+                    $('#chequeNo').val('NIL');
+                }
+                console.log(e);
+            })
+
+            $('#tab').tabs({
+                collapsible: true
+            });
+
+            var moveLeft = 20;
+            var moveDown = 10;
+
+            $('#postedPaymentsTab').on('post-body.bs.table', function () {
+                $(".table tbody > tr > td .trigger").each(function () {
+                    var gl = JSON.parse(localStorage.getItem('glcodes') || "[]");
+                    var gcode = $(this).text();
+                    //console.log(gl[gcode]);
+                    //console.log($(this).text())
+                    //$(this).attr('title', $(this).text());
+                    $(this).attr('title', gl[gcode]);
+                });
+            });
+
+            //$('.trigger').hover(function (e) {
+            //    console.log('pp');
+            //    $('div#pop-up').show();
+            //}, function () {
+            //    $('div#pop-up').hide();
+            //});
+            //$('.trigger').mousemove(function (e) {
+            //    $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+            //});
+
+        });
+
+
+
+    </script>
+}
+
+
+

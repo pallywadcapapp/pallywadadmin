@@ -1,0 +1,921 @@
+@{
+    ViewBag.Title = "Chart of Account";
+}
+
+<link href="css/index_style.css" rel="stylesheet">
+<style>
+    ul,
+    #myGL {
+        list-style-type: none;
+    }
+
+    #myGL {
+        margin: 0;
+        padding: 0;
+    }
+
+    .caret {
+        cursor: pointer;
+        -webkit-user-select: none;
+        /* Safari 3.1+ */
+        -moz-user-select: none;
+        /* Firefox 2+ */
+        -ms-user-select: none;
+        /* IE 10+ */
+        user-select: none;
+    }
+
+    .caret::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .caret-down::before {
+        -ms-transform: rotate(90deg);
+        /* IE 9 */
+        -webkit-transform: rotate(90deg);
+        /* Safari */
+        '
+ transform: rotate(90deg);
+    }
+
+    .nested {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Banks</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Chart of Acc</a></li>
+            <li><a href="#tabs-5">Tier 4</a></li>
+            <li><a href="#tabs-2">Tier 3</a></li>
+            <li><a href="#tabs-3">Tier 2</a></li>
+            <li><a href="#tabs-4">Tier 1</a></li>
+            <li><a href="#tabs-6">Internal Accounts</a></li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="tabs-1">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Banks
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add
+                                    Ledger</a>
+                                <div id="jstree_demo_div"></div>
+                                <ul id="myGL">
+                                    <li><span class="caret">Beverages</span>
+                                        <ul class="nested">
+                                            <li>Water</li>
+                                            <li>Coffee</li>
+                                            <li><span class="caret">Tea</span>
+                                                <ul class="nested">
+                                                    <li>Black Tea</li>
+                                                    <li>White Tea</li>
+                                                    <li><span class="caret">Green Tea</span>
+                                                        <ul class="nested">
+                                                            <li>Sencha</li>
+                                                            <li>Gyokuro</li>
+                                                            <li>Matcha</li>
+                                                            <li>Pi Lo Chun</li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add Ledger</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group modsp">
+                                            <span>GL A </span><select placeholder="Bank Name" class="form-select grpA" 
+                                            id="grpA"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>GL B</span><select placeholder="Bank Code" class="form-control grpB"
+                                            id="grpB"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>GL C</span><select placeholder="Bank Code" class="form-control"
+                                                id="grpC"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>Acc Name</span><input type="text" placeholder="Bank Code"
+                                                class="form-control" id="name" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" onclick="saveGlAcc()"
+                                            id="saveGLLines">Save</button>
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="tabs-5">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Tier 4
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="Tier4Tab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"
+                                       data-editable="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+                    </div>
+                </div>
+                <div id="tabs-2">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Tier 3
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#tier3Modal">Add
+                                    Tier 3</a>
+
+                                <table class="table table-bordered" id="Tier3Tab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                        <div id="tier3Modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add Ledger</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group modsp">
+                                            <span>GL A </span><select placeholder="Bank Name" class="form-select"
+                                             class="grpA"   id="grpA3"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>GL B</span><select placeholder="Bank Code" class="form-control"
+                                              class="grpB"  id="grpB3"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>Acc Name</span><input type="text" placeholder="Bank Code"
+                                                class="form-control" id="name3" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" onclick="saveGlAcc3()"
+                                            id="saveGLLines">Save</button>
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Tier 2
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#tier2Modal">Add
+                                    Tier 2</a>
+
+                                <table class="table table-bordered" id="Tier2Tab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                        <div id="tier2Modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add Ledger</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group modsp">
+                                            <span>GL A </span><select placeholder="GL A" class="form-select"
+                                             class="grpA"   id="grpA2"></select>
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>Acc Name</span><input type="text" placeholder="Account Name"
+                                                class="form-control" id="name2" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" onclick="saveGlAcc2()"
+                                            id="saveGLLines">Save</button>
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="tabs-4">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Tier 1
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#tier1Modal">Add
+                                    Tier 1</a>
+
+                                <table class="table table-bordered" id="Tier1Tab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+                        <div id="tier1Modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add Ledger</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group modsp">
+                                            <span>Acc Name</span><input type="text" placeholder="Add Name"
+                                                class="form-control" id="cbasename" />
+                                        </div>
+                                        <div class="form-group modsp">
+                                            <span>Acc Type </span><select placeholder="Account Type" class="form-select"
+                                             class="acctype"   id="acctype"></select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" onclick="saveGlAcc1()"
+                                            id="saveGLLines">Save</button>
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="tabs-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Internal Accounts
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="IniternalAccTab" width="100%" cellspacing="0"
+                                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"
+                                       data-editable="true"></table>
+
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+<script src="~/Scripts/config.js" type="text/javascript"></script>
+<script>
+        /*init({
+            title: 'Editable',
+            desc: 'Use Plugin: <a href="https://github.com/vitalets/x-editable" target="_blank">x-editable</a> and bootstrap-table-editable.',
+            links: [
+                'https://cdn.jsdelivr.net/npm/x-editable@1.5.1/dist/bootstrap3-editable/css/bootstrap-editable.css',
+                'bootstrap-table.min.css'
+            ],
+            scripts: [
+                'https://cdn.jsdelivr.net/npm/x-editable@1.5.1/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
+                'bootstrap-table.min.js',
+                'extensions/editable/bootstrap-table-editable.min.js'
+            ]
+        })*/
+
+        var reportMap = [];
+
+    function initGenTree(toggler) {
+        //var toggler = document.getElementsByClassName("caret");
+        var i;
+        console.log(toggler)
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i];
+            /*toggler[i].addEventListener("loaded", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+                });*/
+            toggler[i].parentElement.querySelector(".nested").classList.toggle("active");
+            toggler[i].classList.toggle("caret-down");
+
+        }
+    }
+
+    function initTree() {
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+    }
+
+    initTree();
+    function actionFormatter(value, row, index) {
+        return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+    };
+    function refreshTables() {
+        var newUrl = appConfig.apiURL + 'api/settings/Banks';
+        $('#BanksTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+    }
+
+    function saveGlAcc1() {
+        $('#myModal').pleaseWait();
+        var name = $('#cbasename').val();
+        var acctype = $('#acctype').val();
+        var url = appConfig.accountURL + "api/chartsofacc/ChartBase?name=" + name + "&acctype=" + acctype;
+        var acct = {
+
+        }
+         $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(acct),
+            contentType: "application/json",
+        }).done(function (data) {
+            $('#myModal').pleaseWait('stop');
+            $('#myModal').modal('hide');
+            toastr.success('GL  ' + name + ' saved successfully');
+            refreshTables();
+        }).fail(function (request, message, error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving GL ' + name);
+        });
+    }
+    
+    function saveGlAcc2() {
+        $('#myModal').pleaseWait();
+        var name = $('#name2').val();
+        var acctype = $('#grpA2').val();
+        var url = appConfig.accountURL + "api/chartsofacc/Tier2Chart?name=" + name + "&gla=" + acctype;
+        var acct = {
+
+        }
+         $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(acct),
+            contentType: "application/json",
+        }).done(function (data) {
+            $('#myModal').pleaseWait('stop');
+            $('#myModal').modal('hide');
+            toastr.success('GL  ' + name + ' saved successfully');
+            refreshTables();
+        }).fail(function (request, message, error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving GL ' + name);
+        });
+    }
+
+    function saveGlAcc() {
+        $('#myModal').pleaseWait();
+
+        var name = $('#name').val();
+        var gla = $('#grpA').val();
+        var acctype = $('#grpA option:selected').text();
+        var glb = $('#grpB').val();
+        var glc = $('#grpC').val();
+        var acct = {
+            "tenantId": "string",
+            "id": 0,
+            "glaccta": gla,
+            "glacctb": glb,
+            "glacctc": glc,
+            "glacctd": "string",
+            "accountno": "string",
+            "accttype": acctype,
+            "shortdesc": name,
+            "fulldesc": name,
+            "acctlevel": 4,
+            "internalind": true,
+            'reportMap':'',
+            'reportMapSub':'',
+            'balanceSheetMap':''
+        }
+
+        console.log(acct);
+        var url = appConfig.accountURL + "api/chartsofacc/gld";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(acct),
+            contentType: "application/json",
+        }).done(function (data) {
+            $('#myModal').pleaseWait('stop');
+            $('#myModal').modal('hide');
+            toastr.success('GL  ' + name + ' saved successfully');
+            refreshTables();
+        }).fail(function (request, message, error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving GL ' + name);
+        });
+
+    }
+
+    function saveGlAcc3() {
+        $('#myModal').pleaseWait();
+
+        var name = $('#name3').val();
+        var gla = $('#grpA3').val();
+        var acctype = $('#grpA3 option:selected').text();
+        var glb = $('#grpB3').val();
+        var acct = {
+            //"tenantId": "string",
+            "id": 0,
+            "glaccta": gla,
+            "glacctb": glb,
+            "glacctc": 'string',
+            "accountno": "string",
+            "accttype": acctype,
+            "shortdesc": name,
+            "fulldesc": name,
+            "acctlevel": 3,
+            "internalind": true
+        }
+
+        console.log(acct);
+        var url = appConfig.accountURL + "api/chartsofacc/glc";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(acct),
+            contentType: "application/json",
+        }).done(function (data) {
+            $('#myModal').pleaseWait('stop');
+
+            $('#myModal').modal('hide');
+            toastr.success('GL  ' + name + ' saved successfully');
+            refreshTables();
+        }).fail(function (request, message, error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving GL ' + name);
+        });
+
+    }
+
+    function loadSec(val, e) {
+        console.log(val)
+        var mv = val.replace(/\/r/g, '_');
+        var chart_url = appConfig.accountURL + "api/chartsofacc/Tier2ChartAcc?id=" + mv;
+        $.get(chart_url, function (data) {
+            getSecondTier(data, 'root' + e);
+        }).fail(function (error) {
+            //$('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving Bank ');
+
+        });
+    }
+
+    function loadThird(val, e) {
+        var chart_url = appConfig.accountURL + "api/chartsofacc/Tier3ChartAcc?id=" + val;
+        $.get(chart_url, function (data) {
+            console.log(data);
+            getThirdTier(data, 'secparent' + e);
+        }).fail(function (error) {
+            toastr.error('error ' + error + 'for saving Bank ');
+
+        });
+    }
+
+    function loadFourth(ival, e) {
+        console.log(ival);
+        var chart_url = appConfig.accountURL + "api/chartsofacc/Tier4ChartAcc?id=" + ival;
+        $.get(chart_url, function (data) {
+            getFourthTier(data, 'thirdparent' + e);
+        }).fail(function (error) {
+            //$('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving Bank ');
+
+        });
+    }
+
+    /*function viewFourth(val, e){
+            var chart_url = appConfig.apiURL + "api/settings/Tier4ChartAcc?id=" + val;
+        $.get(chart_url, function (data) {
+            getFourthTier(data, 'secparent' + e);
+        }).fail(function (error) {
+            //$('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for saving Bank ');
+
+        });
+    }*/
+
+    function getSecondTier(cht, val) {
+        var parent = $('#' + val);
+        parent.empty();
+        $.each(cht, function (e) {
+            var ss = cht[e].accountno.replace(/\/r/g, '"');
+
+            var element = '<li><span class="caret secparent' + e + '" onclick="loadThird(\'' + ss + '\', ' + e + ')">' + cht[e].fulldesc + '</span> <ul class="nested" id="secparent' + e + '"></ul></li>';
+            parent.append(element);
+        });
+        console.log(parent);
+        var pclass = document.getElementsByClassName(val);
+        initGenTree(pclass)
+    }
+
+    function getThirdTier(cht, val) {
+        var parent = $('#' + val);
+        parent.empty();
+        $.each(cht, function (e) {
+            var ss = cht[e].accountno.replace(/\/r/g, '"');
+            var element = '<li><span class="caret thirdparent' + e + '" onclick="loadFourth(\'' + ss + '\', ' + e + ')">' + cht[e].fulldesc + '</span> <ul class="nested" id="thirdparent' + e + '"></ul></li>';
+            parent.append(element);
+        });
+        console.log(parent);
+        var pclass = document.getElementsByClassName(val);
+        initGenTree(pclass)
+    }
+
+    function getFourthTier(cht, val) {
+        var parent = $('#' + val);
+        parent.empty();
+        $.each(cht, function (e) {
+            var ss = cht[e].accountno.replace(/\/r/g, '"');
+            var element = '<li><span class="caret fourthparent' + e + '" onclick="viewFourth(' + ss + ', ' + e + ')">'
+                + cht[e].accountno + ' - ' + cht[e].fulldesc + '</span> <ul class="nested" id="fourthparent' + e + '"></ul></li>';
+            parent.append(element);
+        });
+        console.log(parent);
+        var pclass = document.getElementsByClassName(val);
+        initGenTree(pclass)
+    }
+
+    $(function () {
+        var chart_url = appConfig.accountURL + "api/chartsofacc/chartbase";
+        $.get(chart_url, function (data) {
+            getRoot(data);
+        }).fail(function (error) {
+            //$('#myModal').pleaseWait('stop');
+            toastr.error('error ' + error + 'for getting chart base ');
+
+        });
+        init();
+
+        function init() {
+            var $gla = $('#grpA');
+            var $glb = $('#grpB');
+            var $glc = $('#grpC');
+            var $gla3 = $('#grpA3');
+            var $glb3 = $('#grpB3');
+            var $gla2 = $('#grpA2');
+
+            var $acctype = $('#acctype');
+            
+            $.get(appConfig.accountURL + 'api/chartsofacc/acctype', function (data) {
+                $acctype.empty();
+                $acctype.append('<option value=""> Select Account Type </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+
+                    $acctype.append($option);
+                }
+                $acctype.select2({
+                    placeholder: "Select a Acount Type",
+                    width:'90%'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get account type list');
+            });
+
+            $.get(appConfig.accountURL + 'api/chartsofacc/ChartAcc3', function (data) {
+                $glc.empty();
+                $glc.append('<option value=""> Select GL </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter].glacctc + '">' + data[counter].shortdesc + '</option>');
+
+                    $glc.append($option);
+                }
+                $glc.select2({
+                    placeholder: "Select a GL",
+                    width:'90%'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get account list');
+            });
+
+            $.get(appConfig.accountURL + 'api/chartsofacc/Tier2Chart', function (data) {
+                $glb.empty();
+                $glb.append('<option value=""> Select GL </option>')
+
+                $glb3.empty();
+                $glb3.append('<option value=""> Select GL </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter].glacctb + '">' + data[counter].shortdesc + '</option>');
+                    $option3 = $('<option value="' + data[counter].glacctb + '">' + data[counter].accttype + ' - ' + data[counter].shortdesc + '</option>');
+
+                    $glb.append($option);
+                     $glb3.append($option3);
+                }
+                $glb.select2({
+                    placeholder: "Select a GL",
+                    width:'90%'
+                });
+                $glb3.select2({
+                    placeholder: "Select a GL",
+                    width:'90%'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get account list');
+            });
+
+            $.get(appConfig.accountURL + 'api/chartsofacc/chartbase', function (data) {
+                $gla.empty();
+                $gla.append('<option value=""> Select GL </option>')
+
+                $gla3.empty();
+                $gla3.append('<option value=""> Select GL </option>')
+
+                $gla2.empty();
+                $gla2.append('<option value=""> Select GL </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter].glaccta + '">' + data[counter].shortdesc + '</option>');
+                    $option3 = $('<option value="' + data[counter].glaccta + '">' + data[counter].shortdesc + '</option>');
+                    $option2 = $('<option value="' + data[counter].glaccta + '">' + data[counter].shortdesc + '</option>');
+
+                    $gla.append($option);
+                    $gla3.append($option3);
+                    $gla2.append($option2);
+                }
+                $gla.select2({
+                    placeholder: "Select a GL A",
+                    width:'90%'
+                });
+                $gla3.select2({
+                    placeholder: "Select a GL A",
+                    width:'90%'
+                });
+                $gla2.select2({
+                    placeholder: "Select a GL A",
+                    width:'90%'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get account list');
+            });
+        }
+
+        $('#jstree_demo_div').jstree();
+
+
+
+        function getRoot(cht) {
+            $('#myGL').empty();
+            $.each(cht, function (e) {
+                //console.log(cht[e].accountno)
+                var ss = cht[e].accountno.replace(/\/r/g, ' ');
+                console.log(ss)
+                var element = '<li><span class="caret root' + e + '" onclick="loadSec(\'' + ss + '\' , ' + e + ' )">' + cht[e].fulldesc + '</span> <ul class="nested" id="root' + e + '"></ul></li>';
+                $('#myGL').append(element);
+                console.log(cht[e]);
+            })
+        }
+        
+        var tier4url = appConfig.accountURL + 'api/chartsofacc/ChartAcc';
+        var tier3url = appConfig.accountURL + 'api/chartsofacc/ChartAcc3';
+        var tier2url = appConfig.accountURL + 'api/chartsofacc/Tier2Chart';
+            var tier1url = appConfig.accountURL + 'api/chartsofacc/chartbase';
+            var internalAccUrl = appConfig.accountURL + 'api/chartsofacc/InternalControl';
+        $('#Tier4Tab').bootstrapTable({
+            idField: 'product',
+            url: tier4url,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'accountno',
+                title: 'Account No'
+            },{
+                field: 'acctlevel',
+                title: 'Level',
+            }, {
+                field: 'accttype',
+                title: 'Type'
+            }, {
+                field: 'fulldesc',
+                title: 'Details'
+            }, {
+                field: 'glaccta',
+                title: 'Level 1'
+            }, {
+                field: 'glacctb',
+                title: 'Level 2'
+            }, {
+                field: 'glacctc',
+                title: 'Level 3'
+                }]
+        });
+            
+        $('#Tier3Tab').bootstrapTable({
+            idField: 'product',
+            url: tier3url,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'accountno',
+                title: 'Account No'
+            },{
+                field: 'acctlevel',
+                title: 'Level',
+            }, {
+                field: 'accttype',
+                title: 'Type'
+            }, {
+                field: 'fulldesc',
+                title: 'Details'
+            }, {
+                field: 'glaccta',
+                title: 'Level 1'
+            }, {
+                field: 'glacctb',
+                title: 'Level 2'
+            }]
+        });
+        $('#Tier2Tab').bootstrapTable({
+            idField: 'product',
+            url: tier2url,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'accountno',
+                title: 'Account No'
+            },{
+                field: 'acctlevel',
+                title: 'Level',
+            }, {
+                field: 'accttype',
+                title: 'Type'
+            }, {
+                field: 'fulldesc',
+                title: 'Details'
+            }, {
+                field: 'glaccta',
+                title: 'Level 1'
+            }]
+        });
+        $('#Tier1Tab').bootstrapTable({
+            idField: 'product',
+            url: tier1url,
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [{
+                field: 'accountno',
+                title: 'Account No'
+            },{
+                field: 'acctlevel',
+                title: 'Level',
+            }, {
+                field: 'accttype',
+                title: 'Type'
+            }, {
+                field: 'fulldesc',
+                title: 'Details'
+            }]
+        });
+
+        $.get(appConfig.accountURL + './api/chartsofacc/AccListBS', function (datas) {
+            reportMap = datas;
+            $('#IniternalAccTab').bootstrapTable({
+                idField: 'product',
+                url: internalAccUrl,
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+                columns: [{
+                    field: 'accountno',
+                    title: 'Account No'
+                }, {
+                    field: 'acctlevel',
+                    title: 'Level',
+                }, {
+                    field: 'accttype',
+                    title: 'Type'
+                }, {
+                    field: 'fulldesc',
+                    title: 'Details'
+                }, {
+                    field: 'reportMap',
+                    title: 'P/L Map',
+                    editable: {
+                        type: 'select',
+                        title: 'Select Input',
+                        placement: 'right',
+                        value: 'Unearned Premium',
+                        mode: 'inline',
+                            source: reportMap
+                        /*source: [
+                            { value: 'Gross Premium Written', text: 'Gross Premium Written' },
+                            { value: 'Unearned Premium', text: 'Unearned Premium' }
+                        ]*/
+
+                    }
+                }, {
+                    field: 'glaccta',
+                    title: 'Level 1'
+                }, {
+                    field: 'glacctb',
+                    title: 'Level 2'
+                }, {
+                    field: 'glacctc',
+                    title: 'Level 3'
+                }]
+            });
+        });
+
+            $(document).on('editable-save.bs.table', '#IniternalAccTab', function (e, field, row, old, $el) {
+                console.log(row);
+
+                $.ajax({
+                    type: 'PUT',
+                    url: appConfig.apiURL + './api/chartsofacc/gld',
+                    data: JSON.stringify(row),
+                    dataType: 'json',
+                    contentType: "application/json",
+                }).done(function (data) {
+                    toastr.success('mappings edited successfully');
+                }).fail(function (request, message, error) {
+                    toastr.error('error editing ' + error.responseText + ' mappings');
+                });
+            });
+
+    });
+</script>
+
+<script>
+
+</script>
+
+
+}

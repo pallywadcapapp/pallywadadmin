@@ -1,0 +1,316 @@
+@{
+    ViewBag.Title = "Members Accounts";
+}
+<style>
+    .savings{
+        color: green;
+    }
+
+    .loans{
+        color: red;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Member Accounts</li>
+    </ol>
+    <!-- Example DataTables Card-->
+
+    <div id="tab">
+        <ul>
+            <li><a href="#tabs-1">Accounts Overview</a></li>
+            <!--<li><a href="#tabs-2">Posted Payments</a></li>-->
+        </ul>
+        <div id="tabs-1">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>Account Overview
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-sm-12">
+                            <div id="ddate" class="pull-right ">
+                                <!--<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
+                                <input type="date" id="tabDate" style="width: 250px;" class="form-control" placeholder="- select date -" />
+                            </div>
+                            <!--<div id="reportrange" class="pull-right"
+                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>-->
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table id="postedSavingsTab" class="table table-bordered" width="100%"
+                                    cellspacing="0" data-show-footer="true" data-pagination="true"
+                                    data-sort-name="memberid" data-sort-order="desc" data-page-size="50"
+                                    data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true"
+                                    data-id-field="memberid" data-show-refresh="true" data-show-export="true"
+                                    data-show-columns="true" data-show-toggle="true" data-search="true">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+            </div>
+        </div>
+    </div>
+    <div id="viewJournalModal" class="modal fade" role="dialog">
+        <div class="modal-dialog  modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Journal Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-6">
+                        <p>
+                            <span>Voucher No: </span><span name="voucherNo" id="voucherNoSummation"></span>
+                        </p>
+                        <p>
+                            <span>Name: </span><span name="receivedFrom" id="receivedFromSummation"></span>
+                        </p>
+                        <p>
+                            <span>Cost Center: </span><span name="ccenter" id="ccenterSummation"></span>
+                        </p>
+                        <p>
+                            <span>Trans. Date: </span><span name="transDate" id="transDateSummation"></span>
+                        </p>
+                        <p>
+                            <span>Posting Date: </span><span name="postedDate" id="postedDateSummation"></span>
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p>
+                            <span>Amount: </span><span name="amount" id="amountSummation"></span>
+                        </p>
+                        <p>
+                            <span>Branch: </span><span name="branch" id="branchSummation"></span>
+                        </p>
+                        <p>
+                            <span>Cheque No: </span><span name="chequeNo" id="chequeNoSummation"></span>
+                        </p>
+                        <p>
+                            <span>Narration: </span><span name="cashcodeDesc" id="typeSummation"></span>
+                        </p>
+                        <p>
+                            <span>Approval Status: </span><span name="approvalForm" id="approvalFormSummation"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="getJV()" class="btn btn-info">View JV</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+<script src="~/Scripts/config.js" type="text/javascript"></script>
+<script>
+    var appyear = localStorage.getItem('app_year');
+    var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+    var today = new Date().addHours(2).toISOString().split('T')[0];
+    //var start = startyear.toISOString().split('T')[0];
+    var processByEmail = JSON.parse(localStorage.getItem('uemail'));
+    var processBy = localStorage.getItem('fullname');
+    var status = ''; var transtype = '';
+    var revisedData = [];
+    var sheetData = [];
+
+    function priceDetailFormatter(value, row, index) {
+        return currformatter.format(value);
+    }
+    
+    function priceFormatter(data) {
+        var field = this.field
+        return currformatter.format(data.map(function (row) {
+            return +row[field]
+        }).reduce(function (sum, i) {
+            return sum + i
+        }, 0))
+    }
+
+    function processFormatter(data) {
+        sheetData = data;
+        var field = 'status';
+        //var allvalid = true;
+        for (var i = 0; i < sheetData.length; i++) {
+            if (data[i][field] == 'Invalid member') {
+                return '<button class="btn btn-success" disabled onclick="process()";>Process</button>';
+            }
+        }
+        return '<button class="btn btn-success" onclick="process()";>Process</button>';
+    }
+
+
+    function operationFormatter(value, row, index) {
+        return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+            ' <ul class="dropdown-menu">' +
+            '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + value + '\')">Verify</a></li>' +
+            ' </ul></div >'
+    }
+    function actionFormatter(value, row, index) {
+        return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+    };
+    function refreshTables() {
+        var newUrl = appConfig.apiURL + 'api/generalledger/journal?startdate=' + startyear + '&enddate=' + today;
+        var pnewUrl = appConfig.apiURL + 'api/generalledger/PostedJournal?startdate=' + startyear + '&enddate=' + today;
+        $('#journalTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        $('#postedSavingsTab').bootstrapTable('refresh', { url: pnewUrl, silent: true });
+    }
+
+    function refreshUploadTable(data) {
+        console.log(data)
+        //var newUrl = appConfig.apiURL + 'api/generalledger/journal?startdate=' + startyear + '&enddate=' + today;
+        $('#scheduleTable').bootstrapTable({ data: data });
+
+        $('#scheduleTable').bootstrapTable('resetView');
+    }
+
+    $('#tabDate').on('change', ()=>{
+            var mdate = $('#tabDate').val();
+            //refreshTables(mdate);
+            loadTable('1971-01-01', mdate);
+        })
+    
+    
+
+        function loadTable(startdate, enddate) {
+            var url = appConfig.apiURL + 'api/Dividends/CAMA?startdate=' + startdate + '&enddate=' + enddate;
+            $('#postedSavingsTab').bootstrapTable('refresh', { url: url, silent: false });
+        }
+
+    $(function () {
+        $('#startdate').val(startyear);
+        $('#enddate').val(today);
+        $('#load').click(function (e) {
+            var startdate = $('#startdate').val();
+            var enddate = $('#enddate').val();
+            var glUrl = appConfig.apiURL + "./api/generalledger/Journal?startdate=" + startdate + '&enddate=' + enddate;
+            $('#journalTab').bootstrapTable('refresh', { url: glUrl, silent: false });
+        });
+
+        
+
+        function valueFormatter(value, row, index){
+            var data = value;
+            console.log(value)
+            return data;
+        }
+
+        function memberFullnameFormatter(value, row, index){
+            var data = value.toString();
+            var result = getMemberById(data).fullname
+            return result;
+        }
+
+        function memberFormatter(value, row, index){
+            var result = '';
+            //$.each(row, function(p){
+            var data = value //row[0];
+            
+            return value;
+        }
+
+        init_daterangepicker('reportrange', loadTable);
+        //init_daterangepicker('reportrange', init);
+
+        init();
+        function init(){
+            var productUrl = appConfig.apiURL + 'api/settings/products';
+                $.ajax({
+                    url: productUrl,
+                    type: "GET",
+                    dataType: "json",
+                    //data: params,
+                    success: function (retorno) {
+                        console.log(retorno);
+                        var columns = [];
+                        columns.push({
+                                field: 'memberId',
+                                title: 'Member Id',
+                                valign: 'middle',
+                                    sortable: true,
+                                //formatter: memberFormatter
+                            });
+                        columns.push({
+                                field: 'memberId',
+                                title: 'Name',
+                                valign: 'middle',
+                                    sortable: true,
+                                formatter: memberFullnameFormatter
+                            });
+                        $.each(retorno, function (key, value) { 
+                            console.log(value.name)
+                                columns.push({
+                                field: value.name,
+                                title: value.name,
+                                valign: 'middle',
+                                editable: {
+                                    type: 'text',
+                                    mode: 'inline'
+                                },
+                                    sortable: true,
+                                   //formatter: valueFormatter
+                                formatter: moneyFormatter,
+                    footerFormatter: sumFormatter
+                            });
+                        });
+                        window.setTimeout(initTable(columns),10000); 
+                    }
+                });
+        }
+
+                
+             function initTable(cols) {
+                 var url = appConfig.apiURL + 'api/Dividends/CAMA?startdate=' + startyear + '&enddate=' + today;
+                 console.log(cols);
+
+                 $('#postedSavingsTab').bootstrapTable({
+                    idField: 'memberId',
+                     url: url,
+                     columns: cols,
+                });
+            };
+
+
+        
+        $('#postedSavingsTab').on('post-body.bs.table', function () {
+            $('[data-tooltip="true"]').tooltip({
+                container: 'body'
+            });
+        });
+        $('#postedSavingsTab').on('pre-body.bs.table', function () {
+            var res = $('#postedSavingsTab').bootstrapTable('getData');
+        });
+
+        $('#tab').tabs({
+            collapsible: true
+        })
+
+        /*$('#postedSavingsTab').on('post-body.bs.table', function () {
+            $(".table tbody > tr > td .trigger").each(function () {
+                var gl = JSON.parse(localStorage.getItem('glcodes') || "[]");
+                var gcode = $(this).text();
+                $(this).attr('title', gl[gcode]);
+            });
+        });*/
+    });
+</script>
+}

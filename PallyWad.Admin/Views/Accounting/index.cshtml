@@ -1,0 +1,307 @@
+@{
+    ViewBag.Title = "GL";
+}
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">General Ledger</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="panel card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>General Ledger
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="reportrange" class="pull-right"
+                        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered" id="GLedger" cellspacing="0" data-show-footer="true"
+                            data-virtual-scroll="true" data-sticky-header="true" data-pagination="true"
+                            data-sort-name="vgl_dt" data-sort-order="desc" data-page-size="50"
+                            data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true"
+                            data-id-field="tgl_crt_acc_number" data-show-refresh="true" data-show-export="true"
+                            data-show-columns="true" data-show-toggle="true" data-search="true" data-show-jump-to="true"
+                            data-show-refresh="true" data-auto-refresh="true" data-reorderable-columns="false"></table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+    </div>
+</div>
+<div id="viewPaymentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ledger Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-6">
+                    <p>
+                        <span>Acc Name: </span><span name="accName" id="acc_nameSummation"></span>
+                    </p>
+                    <p>
+                        <span>Acc No: </span><span name="accountno" id="accountno"></span>
+                    </p>
+                    <p>
+                        <span>Debit: </span><span name="creditamt" id="dr_amountSummation"></span>
+                    </p>
+                    <p>
+                        <span>Credit: </span><span name="debitamt" id="cr_amountSummation"></span>
+                    </p>
+
+                    <p>
+                        <span>Balance: </span><span name="balance" id="balanceSummation"></span>
+                    </p>
+                </div>
+                <div class="col-xs-6">
+                    <p>
+                        <span>Trans Date: </span><span name="transdate" id="vgl_dtSummation"></span>
+                    </p>
+                    <p>
+                        <span>Date Posted: </span><span name="vgl_passed_on" id="vgl_passed_onSummation"></span>
+                    </p>
+                    <p>
+                        <span>Trans Id: </span><span name="refnumber" id="vgl_codeSummation"></span>
+                    </p>
+                    <p>
+                        <span>Branch Code: </span><span name="branch" id="branchSummation"></span>
+                    </p>
+                    <p>
+                        <span>Details: </span><span name="description" id="ref_transSummation"></span>
+                    </p>
+                    <p>
+                        <span>Posted By: </span><span name="gl_posted_by" id="vgl_passed_bySummation"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+
+<script>
+    function actionFormatter(value, row, index) {
+        return '<a href="./gl/tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+    };
+    function viewDetailsFormatter(value, row, index) {
+        var clmNo = row.claimsNo;
+        var amt = row.adjusterFee;
+        var main = '<button class="btn btn-info" id="' + index + '" onclick="viewPost(' + index + ');">VIEW</button> ';
+        return main;
+    };
+
+
+    function diffFormatter(value, row, index) {
+        var val = parseFloat(row.creditamt) - parseFloat(row.debitamt);
+        return moneyFormat(parseFloat(val));
+    }
+    function viewPost(index) {
+        //localStorage.setItem('glIdex', index);
+        var data = tempgld[index];
+        //$.get(appConfig.apiURL + 'api/gl/acctransbyId?id=' + index, function (data) {
+        try {
+            for (var key in data) {
+                $('[name="' + key + '"]').html(data[key]);
+                if (key == 'vgl_passed_on') {
+                    $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                }
+                if (key == 'vgl_dt') {
+                    $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                }
+                if (key == 'transdate') {
+                    $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                }
+                if (key == 'balance') {
+                    var balance = parseFloat(data['creditamt']) - parseFloat(data['debitamt']);
+                    $('[name="' + key + '"]').html(moneyFormat(balance));
+                }
+                if (key == 'cr_amount') {
+                    $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                }
+                if (key == 'dr_amount') {
+                    $('[name="' + key + '"]').html(moneyFormat(data[key]));
+                }
+                if (key == 'paymentMode') {
+                    transtype = data[key];
+                }
+                if (key == 'approvalForm') {
+                    status = data[key];
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        $('#viewPaymentModal').modal('show');
+        /*}).fail(function (xhr, status, error) {
+            toastr.error(xhr.responseJSON.message);
+        })*/
+    }
+
+
+
+    function SaveGLLines() {
+        $('#myModal').pleaseWait();
+        console.log(localStorage.getItem("glline"));
+
+        var e = document.getElementById("company");
+        var eCategory = document.getElementById("category");
+        var repMap = document.getElementById("reportMap");
+        var prod = document.getElementById("product");
+        var company = e.options[e.selectedIndex].value;
+        var accountName = document.getElementById("accname").value;
+        var accountClass = eCategory.options[eCategory.selectedIndex].value;
+        //var reportMap = document.getElementById("reportMap").value;
+        var reportMap = repMap.options[repMap.selectedIndex].value;
+        var taxMap = document.getElementById("taxMap").value;
+        var product = prod.options[prod.selectedIndex].value;
+        var accountCode = localStorage.getItem("glline")
+
+        var newGl = {
+            "glcode": accountCode,
+            "account_name": accountName,
+            "company": company,
+            "category": accountClass,
+            "product": product,
+            "reportMap": reportMap,
+            "mgtCategory": accountClass,
+            "taxmap": taxMap
+        }
+        console.log(newGl);
+        var url = appConfig.apiURL + "./api/generalledger/_mappings";
+        $.post(url, newGl, function (e) {
+            $('#myModal').pleaseWait('stop');
+            toastr.success('GL saved successfully');
+        }).fail(function (error) {
+            $('#myModal').pleaseWait('stop');
+            toastr.error('GL saved error ' + error);
+
+        });
+
+    }
+    $(function () {
+        var productMaps = [];
+        var appyear = localStorage.getItem('app_year');
+        var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+        var today = new Date().addHours(20).toISOString().split('T')[0];
+        $('#startdate').val(startyear);
+        $('#enddate').val(today);
+        $('#GLedger').bootstrapTable({
+            idField: 'glcode',
+            url: appConfig.apiURL + "./api/gl/ledgers?startdate=" + startyear + '&enddate=' + today,
+            columns: [{
+                field: 'accountno',
+                title: '',
+                formatter: viewDetailsFormatter
+            }, {
+                field: 'accName',
+                title: 'Account Name',
+                //footerFormatter: actionFormatter//,
+                //checkbox: true
+            }, {
+                field: 'accountno',
+                title: 'GL Code',
+                formatter: glcodeFormatter
+            }, {
+                field: 'transdate',
+                title: 'Trans. Date',
+                formatter: localDateFormatter
+            }, {
+                field: 'description',
+                title: 'Details',
+                formatter: detailsFormatter
+            }, {
+                field: 'refnumber',
+                title: 'Reference',
+                formatter: actionFormatter
+            }, {
+                field: 'debitamt',
+                title: 'Debit (&#8358;)',//(&#8358;,000)
+                formatter: moneyFormatter,
+                footerFormatter: sumFormatter
+            }, {
+                field: 'creditamt',
+                title: 'Credit (&#8358;)',
+                formatter: moneyFormatter,
+                footerFormatter: sumFormatter
+            },
+            {
+                field: 'creditamt',
+                title: 'Balance (&#8358;)',
+                formatter: diffFormatter//,
+                //footerFormatter: sumFormatter
+            }],
+            showFullscreen: true,
+            search: true,
+            stickyHeader: true,
+            stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10)
+        });
+
+        $('#load').click(function (e) {
+            var startdate = $('#startdate').val();
+            var enddate = $('#enddate').val();
+            var glUrl = appConfig.apiURL + "./api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
+            $('#GLedger').bootstrapTable('refresh', { url: glUrl, silent: false });
+        });
+
+        function glcodeFormatter(value, row, index) {
+            return '<span class="trigger">' + value + '</span>';
+        }
+
+        function detailsFormatter(value, row, index) {
+
+            return '<span class="gldetails">' + value + '</span>';
+        }
+
+        function loadTable(startdate, enddate) {
+            var glUrl = appConfig.apiURL + "./api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
+            $('#GLedger').bootstrapTable('refresh', { url: glUrl, silent: false });
+        }
+
+        init_daterangepicker('reportrange', loadTable);
+        $('#GLedger').on('pre-body.bs.table', function () {
+            var res = $('#GLedger').bootstrapTable('getData');
+            tempgld = res;
+            //localStorage.setItem('tempd', JSON.stringify($('#GLedger').bootstrapTable('getData')));
+        });
+        $('#GLedger').on('post-body.bs.table', function () {
+            $('[data-tooltip="true"]').tooltip({
+                container: 'body'
+            });
+        });
+        $(document).on('editable-save.bs.table', '#GLedger', function (e, field, row, old, $el) {
+            console.log(row);
+            $.post(appConfig.apiURL + './api/generalledger/EditMapping', row, function (e) {
+                console.log(e);
+                toastr.success('mappings edited successfully');
+            }).fail(function (error) {
+                toastr.error('error editing ' + error.responseText + ' mappings');
+
+            });
+        });
+    });
+</script>
+
+}

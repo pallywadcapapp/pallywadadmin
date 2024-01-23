@@ -1,0 +1,423 @@
+﻿@{
+    ViewBag.Title = "P/L";
+}
+<style>
+    .sumborder {
+        border-bottom: 3px double black;
+    }
+
+    .table > tbody > tr.sumborder1 > td {
+        /* border-top: 1px solid #f4f4f4;*/
+        border-top-width: 1px !important;
+        border-top-color: black !important;
+        border-top-style: solid !important;
+    }
+
+    .table > tbody > tr.sumborder > td {
+        border-bottom-width: 1px !important;
+        border-bottom-color: black !important;
+        border-bottom-style: double !important;
+    }
+
+    .gwp {
+        font-style: italic;
+    }
+
+    .formatCurr {
+        /*float: right;*/
+        text-align: right;
+        /*margin-right: 20px;*/
+    }
+
+    .col-sm-6 div {
+        margin-top: 5%;
+    }
+
+    .col-sm-3 div {
+        margin-top: 5%;
+    }
+
+    .col-sm-1 div {
+        margin-top: 5%;
+    }
+
+    hr {
+        color: #000;
+        background: #000;
+        margin-top: -2%;
+        /*width: 75%;*/
+        /*height: 5px;*/
+    }
+
+    .sline {
+        margin-top: -6.5%;
+    }
+
+    .topdiv {
+        margin-top: 8% !important;
+    }
+</style>
+<style>
+    .ph-item,
+    .ph-picture {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">P/L</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div id="tab">
+        <ul>
+            <li><a href="#tabs-1">P/L</a></li>
+        </ul>
+        <div id="tabs-1">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i>P/L
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!--<div class="col-sm-12">
+                            <div id="ddate" class="pull-right ">
+                                
+                                <input type="date" id="tabDate" style="width: 250px;" class="form-control" placeholder="- select date -" />
+                            </div>
+                        </div>-->
+                        <div class="col-sm-12">
+                            <div id="reportrange" class="pull-right"
+                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="PLTab" width="100%" cellspacing="0"
+                                       data-pagination="true" data-sort-name="memberid" data-sort-order="desc"
+                                       data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
+                                       data-show-header="true" data-id-field="memberId" data-show-refresh="true"
+                                       data-show-export="true" data-show-columns="true" data-show-toggle="true"
+                                       data-search="true" data-show-columns-toggle-all="true" data-show-footer="true"
+                                       data-group-by-field="group" data-group-by="true" data-group-by-sum-group="true"
+                                       data-group-By-Init-Expanded="true" data-group-by-toggle="true" data-group-by-show-toggle-icon="true"
+                                       data-loading-template="loadingTemplate">
+                                    <tfoot>
+                                        <tr>
+                                            <th>Total Inccome <span class="totalStars"></span></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap-groupby-sum.js" asp-append-version="true"></script>
+    <script>
+        var sel = '';
+
+        var type = 'pl'
+
+        function loadingTemplate(message) {
+            if (type === 'fa') {
+                return '<i class="fa fa-spinner fa-spin fa-fw fa-2x"></i>'
+            }
+            if (type === 'pl') {
+                return '<div class="ph-item"><div class="ph-picture"></div></div>'
+            }
+        }
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+
+        function viewLoanMore(value, row, index) {
+            if (value == 'null' || value == null) {
+                return '<a href="javascript:void(0);" > Internal</a>';
+            } else {
+                return '<a href="report/member?memberid=' + value + '&sel=' + encodeURIComponent(sel) + '" >' + value + '</a>';
+            }
+
+        }
+
+        function viewShortLoanMore(value, row, index) {
+
+            return '<a href="memberloans?memberid=' + value + '" >' + value + '</a>';
+        }
+
+        function localDateFormatter(value, row, index) {
+            return '<span >' + new Date(value).toLocaleDateString() + '</span>';
+        };
+
+        function refreshTables(date) {
+            date = new Date(date);
+            var newUrl = appConfig.apiURL + 'api/report/montlyprocessed?year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1);
+            $('#PLTab').bootstrapTable('refresh', { url: newUrl, silent: false });
+        }
+        function loadTable(startdate, enddate) {
+            var glUrl = appConfig.apiURL + "./api/pl/pl?startdate=" + startdate + '&enddate=' + enddate;
+            $('#PLTab').bootstrapTable('refresh', { url: glUrl, silent: false });
+        }
+
+        init_daterangepicker('reportrange', loadTable);
+
+        function reloadTable(transtype) {
+            var newUrl = appConfig.apiURL + 'api/report/accreport?transtype=' + transtype;
+            $('#PLTab').bootstrapTable('refresh', { url: newUrl, silent: false });
+        }
+
+        $('#transtype').on('change', function (e) {
+            var value = $(this).find('option:selected').text();
+            var val = $(this).find('option:selected').val();
+            console.log(value);
+            sel = val;
+            reloadTable(val)
+        });
+
+        init();
+
+        function init() {
+            var $loanTypes = $('#transtype');
+            $.get(appConfig.apiURL + 'api/settings/products', function (data) {
+                $loanTypes.empty();
+                $loanTypes.append('<option value="all">Select Type</option>');
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].name + '">' + data[counter].name + '</option>');
+
+                    $loanTypes.append($option);
+                }
+                $loanTypes.select2({
+                    placeholder: "Select Type",
+                    width: 'element'
+                }).on('change', function (e) {
+                    if ($(this).val() && $(this).val().length) {
+                        $(this).next('.select2-container')
+                            .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Loan Types');
+                    }
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get product types list');
+            });
+        }
+
+        function loadView(id) {
+            var data = tempgld[id];
+            try {
+                for (var key in data) {
+                    if (key == 'insuredname') {
+                        var lname = data[key].split(' ')[0];
+                        var fname = data[key].split(' ')[1];
+                        $('[name="firstname"]').html(fname);
+                        $('[name="lastname"]').html(lname);
+                    }
+                    $('[name="' + key + '"]').html(data[key]);
+                    if (key == 'employdate') {
+                        $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                    }
+                    if (key == 'retiredate') {
+                        $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        $(function () {
+
+            $('#tab').tabs({
+                collapsible: true
+            })
+
+            $('#tabDate').on('change', () => {
+                var mdate = $('#tabDate').val();
+                refreshTables(mdate);
+            })
+            var date = new Date();
+            var appyear = localStorage.getItem('app_year');
+            var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+            var today = new Date().addHours(20).toISOString().split('T')[0];
+            var $table = $('#PLTab');
+            var loanUrl = appConfig.apiURL + 'api/pl/pl?startdate=' + startyear + '&enddate=' + (today);
+            $table.bootstrapTable({
+                idField: 'group',
+                url: loanUrl,
+                sortStable: true,
+                columns: [
+                    {
+                        field: 'reportMap',
+                    title: 'Item'
+                }, {
+                    field: 'balance',
+                    title: 'Amount',
+                    formatter: currFormatter,
+                    sortable: true,
+                    footerFormatter: totalPriceFormatter
+                }],
+                groupByFormatter: function (value, index, row) {
+                    console.log(value)
+
+                    var data = value.toString();
+                    var result = data;
+                    var val = row.map(function (irow) {
+                        return +irow['balance']//.substring(1)
+                    }).reduce(function (sum, i) {
+                        return sum + i
+                    }, 0)
+                    return '<div><span><b>' + result + '</b></span><span style="float:right;"><b>Balance ' + currformatter.format(val) + '</b></span></div>';
+                },
+                onPostBody: function () {
+                    var columns = this.columns
+                    console.log(this)
+                    if (columns && columns[0][1].visible) {
+                        $table.treegrid({
+                            treeColumn: 1,
+                            onChange: function () {
+                                $table.bootstrapTable('resetView')
+                            }
+                        })
+                    }
+                }
+            });
+
+            
+
+            function memberFullnameFormatter(value, row, index) {
+                var data = value.toString();
+                var result = getMemberById(data).fullname
+                return result;
+            }
+            function currFormatter(value, row, index) {
+
+                return currformatter.format(value);
+            }
+            function currDurFormatter(value, row, index) {
+                var duration = value;
+                var date = new Date(row.transdate);
+                var today = new Date();
+                console.log(date)
+                console.log('today is ' + (today - date))
+
+                return monthDiff(date, today);
+            }
+
+            function monthDiff(d1, d2) {
+                var months;
+                months = (d2.getFullYear() - d1.getFullYear()) * 12;
+                months -= d1.getMonth();
+                months += d2.getMonth();
+                return months <= 0 ? 0 : months;
+            }
+            function balanceFormatter(value, row, index) {
+                var result = parseFloat(row.credit) - parseFloat(row.debit);
+                return currformatter.format(result);
+            }
+
+            function totalNameFormatter(data) {
+                return data.length
+            }
+            function balanceFormatter(value, row, index) {
+                var result = parseFloat(row.credit) - parseFloat(row.debit);
+                return currformatter.format(result);
+            }
+
+            function totalPriceFormatter(data) {
+                var field = this.field
+                var val = data.map(function (row) {
+                    return +row[field]//.substring(1)
+                }).reduce(function (sum, i) {
+                    return sum + i
+                }, 0)
+
+                return currformatter.format(val);
+            }
+
+            function balancetotalPriceFormatter(data) {
+                var field1 = this.field
+                var field2 = 'debit'
+                console.log(this.field)
+                var val = data.map(function (row) {
+                    return +(parseFloat(row[field1]) - parseFloat(row[field2]))
+                    //return +row[field] //.substring(1)
+                }).reduce(function (sum, i) {
+                    return sum + i
+                }, 0)
+
+                return currformatter.format(val);
+            }
+
+            function grpPriceFormatter(value, row, index) {
+
+                var data = value.toString();
+                var result = getMemberById(data).fullname
+                return result;
+            }
+
+            function viewFormatter(value, row, index) {
+                var id = row.id;
+                var email = row.loanId;
+                return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+                    ' <ul class="dropdown-menu">' +
+                    '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + index + '\')">VIEW</a></li>' +
+                    /*'<li><a id="demo01" class="btn admin" data-toggle="modal" data-target="#editEmailViewModal" onclick="loadEditEmail(\'' + email + '\')">CHANGE EMAIL</a></li>' +
+                    '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#activateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>ACTIVATE</a></li>' +
+                    '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#deactivateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>DEACTIVATE</a></li>' +*/
+                    ' </ul></div >'
+            };
+            $('#PLTab').on('pre-body.bs.table', function () {
+                var res = $('#PLTab').bootstrapTable('getData');
+                tempgld = res;
+                //localStorage.setItem('tempd', JSON.stringify($('#GLedger').bootstrapTable('getData')));
+            });
+            $('#PLTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#PLTab').on('load-success.bs.table', function ($el, row, field, old) {
+                console.log(row);
+                var totalPL = row.reduce(function (a, b) {
+                    return a + parseFloat(b.balance);
+                }, 0);
+                //document.querySelector('.totalStars').innerHTML = totalPL;
+                hideAdmin();
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#PLTab', function (e, field, row, old, $el) {
+                console.log(field);
+                $.post(appConfig.apiURL + 'api/settings/Member', row, function (e) {
+                    console.log(e);
+                    toastr.success('Department ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' Department');
+
+                });
+            });
+
+        });
+    </script>
+
+
+}

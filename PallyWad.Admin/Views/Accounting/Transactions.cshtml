@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Transactions";
+}
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Transactions</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="panel card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Transactions
+        </div>
+        <div class="card-body">
+            <div class="col-sm-12">
+                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                </div>
+                <!--
+                <div class="col-sm-3 form-group">
+                    <span>Start Date</span><input id="startdate" class="form-control mb-2 mr-sm-2" type="date" /><br />
+
+                </div>
+                <div class="col-sm-3 form-group">
+                    <span>End Date</span><input id="enddate" class="form-control mb-2 mr-sm-2" type="date" />
+                </div>
+                <div class="col-sm-6 form-group">
+                    <span></span><br />
+                    <button id="load" type="button" class="btn btn-success">Load</button>
+                </div>
+                -->
+            </div>
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="prodTrans" cellspacing="0" data-show-footer="true"
+                           data-pagination="true" data-sort-name="sn" data-sort-order="desc" data-page-size="50"
+                           data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                           data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
+    </div>
+</div>
+@section Scripts{
+
+    <script>
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+
+        function SaveGLLines() {
+            $('#myModal').pleaseWait();
+            console.log(localStorage.getItem("glline"));
+
+            var e = document.getElementById("company");
+            var eCategory = document.getElementById("category");
+            var repMap = document.getElementById("reportMap");
+            var prod = document.getElementById("product");
+            var company = e.options[e.selectedIndex].value;
+            var accountName = document.getElementById("accname").value;
+            var accountClass = eCategory.options[eCategory.selectedIndex].value;
+            //var reportMap = document.getElementById("reportMap").value;
+            var reportMap = repMap.options[repMap.selectedIndex].value;
+            var taxMap = document.getElementById("taxMap").value;
+            var product = prod.options[prod.selectedIndex].value;
+            var accountCode = localStorage.getItem("glline")
+
+            var newGl = {
+                "glcode": accountCode,
+                "account_name": accountName,
+                "company": company,
+                "category": accountClass,
+                "product": product,
+                "reportMap": reportMap,
+                "mgtCategory": accountClass,
+                "taxmap": taxMap
+            }
+            console.log(newGl);
+            var url = appConfig.apiURL + "./api/generalledger/_mappings";
+            $.post(url, newGl, function (e) {
+                $('#myModal').pleaseWait('stop');
+                toastr.success('GL saved successfully');
+            }).fail(function (error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('GL saved error ' + error);
+
+            });
+
+        }
+        $(function () {
+            var productMaps = [];
+            var appyear = localStorage.getItem('app_year');
+            var startyear = new Date(appyear, 0, 1).addHours(2).toISOString().split('T')[0];
+            var today = new Date().addHours(26).toISOString().split('T')[0]; 
+            //var start = startyear.toISOString().split('T')[0]; 
+            $('#startdate').val(startyear);
+            $('#enddate').val(today);
+            $('#prodTrans').bootstrapTable({
+                idField: 'glcode',
+                url: appConfig.apiURL + "./api/generalledger/transactions?startdate=" + startyear + '&enddate=' + today,
+                columns: [{
+                    field: 'vgl_dt',
+                    title: 'Trans. Date',
+                    formatter: localDateFormatter
+                }, {
+                    field: 'acc_name',
+                    title: 'Account Name',
+                    footerFormatter: totalTextFormatter//,
+                    //checkbox: true
+                }, {
+                    field: 'tgl_crt_acc_number',
+                    title: 'GL Code'
+                }, {
+                    field: 'vgl_ref',
+                    title: 'Details'
+                    }, {
+                        field: 'dr_amount',
+                        title: 'Debit (&#8358;)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                        field: 'cr_amount',
+                        title: 'Credit (&#8358;)',
+                        formatter: moneyFormatter,
+                        footerFormatter: sumFormatter
+                    },
+                    //{
+                    //field: 'balance',
+                    //title: 'Balance (&#8358;)',
+                    //    formatter: moneyFormatter,
+                    //    footerFormatter: sumFormatter
+                    //},
+                    {
+                        field: 'balance',
+                        title: 'Balance (&#8358;)',
+                        formatter: balanceFormatter,
+                        footerFormatter: sumFormatter
+                    }, {
+                    field: 'tgl_slide',
+                    title: 'State'
+                }]//,
+            });
+
+            $('#load').click(function (e) {
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var glUrl = appConfig.apiURL + "./api/generalledger/transactions?startdate=" + startdate + '&enddate=' + enddate;
+                $('#prodTrans').bootstrapTable('refresh', { url: glUrl, silent: false });
+            });
+
+            function loadTable(startdate, enddate) {
+                var glUrl = appConfig.apiURL + "./api/generalledger/transactions?startdate=" + startdate + '&enddate=' + enddate;
+                $('#prodTrans').bootstrapTable('refresh', { url: glUrl, silent: false });
+            }
+
+            init_daterangepicker('reportrange', loadTable);
+            $('#prodTrans').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $('#prodTrans').on('pre-body.bs.table', function () {
+                var res = $('#prodTrans').bootstrapTable('getData');
+                console.log(res);
+                tempgld = res;
+                //localStorage.setItem('tempd', JSON.stringify($('#prodTrans').bootstrapTable('getData')));
+            }); 
+            $(document).on('editable-save.bs.table', '#prodTrans', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + './api/generalledger/EditMapping', row, function (e) {
+                    console.log(e);
+                    toastr.success('mappings edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' mappings');
+
+                });
+            });
+        });
+    </script>
+
+}
+
