@@ -40,6 +40,9 @@
                         <div class="form-group modsp">
                             <span>Name </span><input type="text" placeholder="Name" class="form-control" id="name" />
                         </div>
+                        <div class="form-group modsp col-sm-12">
+                            <span>Document Type</span><select class="form-control" id="doctype"></select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="saveDocuments()" id="saveGLLines">Save</button>
@@ -65,15 +68,37 @@
             $('#DocumentsTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
+        loadSelect();
+        function loadSelect() {
+            var $doctype = $('#doctype');
+
+            $.get(appConfig.setupURL + 'api/Documents/type', function (data) {
+                $doctype.empty();
+                $doctype.append('<option value=""> Select Category </option>')
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    //console.log(counter);
+                    $option = $('<option value="' + data[counter] + '">' + data[counter] + '</option>');
+
+                    $doctype.append($option);
+                }
+                $doctype.select2({
+                    placeholder: "Select an Acc Group",
+                    width: '90%'
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get categories list');
+            });
+        }
 
         function saveDocuments() {
             $('#myModal').pleaseWait();
-
             var name = $('#name').val();
+            var doctype = $('#doctype').val();
             var Documents = {
                 "name": name,
                 "description": name,
-                'status': true,
+                "type": doctype,
+                'status': true
             }
 
             console.log(Documents);
@@ -106,10 +131,14 @@
                     field: 'description',
                     title: 'Description'
                 }, {
+                    field: 'type',
+                    title: 'Type'
+                }, {
                     field: 'status',
                     title: ''
                 }]
             });
+
             $('#DocumentsTab').on('post-body.bs.table', function () {
                 $('[data-tooltip="true"]').tooltip({
                     container: 'body'

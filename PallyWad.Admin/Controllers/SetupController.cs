@@ -20,6 +20,10 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+        public IActionResult AddLoanType()
+        {
+            return View();
+        }
         public IActionResult LoanInterest()
         {
             return View();

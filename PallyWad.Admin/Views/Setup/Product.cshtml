@@ -74,14 +74,14 @@
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
         function refreshTables() {
-            var newUrl = appConfig.apiURL + 'api/settings/Products';
+            var newUrl = appConfig.setupURL + 'api/Product';
             $('#ProductsTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
         loadSelect();
         function loadSelect() {
             var $accountno = $('#accountno');
-            $.get(appConfig.apiURL + 'api/settings/InternalControl', function (data) {
+            $.get(appConfig.accountURL + 'api/chartsofacc/InternalControl', function (data) {
                 for (var counter = 0; counter <= data.length - 1; counter++) {
                     //console.log(counter);
                     $option = $('<option value="' + data[counter].accountno + '">' + data[counter].accountno + ' - ' + data[counter].shortdesc + '</option>');
@@ -146,7 +146,7 @@
             });
             $(document).on('editable-save.bs.table', '#ProductsTab', function (e, field, row, old, $el) {
                 console.log(row);
-                $.post(appConfig.apiURL + 'api/settings/Products', row, function (e) {
+                $.post(appConfig.setupURL + 'api/Product', row, function (e) {
                     console.log(e);
                     toastr.success('Product ' + product + ' edited successfully');
                 }).fail(function (error) {
