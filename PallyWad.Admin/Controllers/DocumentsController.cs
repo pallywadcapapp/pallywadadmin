@@ -2,7 +2,7 @@
 
 namespace PallyWad.Admin.Controllers
 {
-    public class DocumentController : Controller
+    public class DocumentsController : Controller
     {
         public IActionResult Index()
         {

@@ -3,7 +3,7 @@
     ViewBag.Title = "Document";
 }
 
-<link href="css/index_style.css" rel="stylesheet">
+<link href="~/css/index_style.css" rel="stylesheet">
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
@@ -68,6 +68,21 @@
 @section Scripts{
     
     <script>
+
+        function imsgeFormatter(value, row, index) {
+            var url = '';
+            return '<img style="width:50px;height:50px;" src="' + appConfig.userURL + 'api/Documents/FileUploads?filepath=' + encodeURI(value) + ' " />'
+            /*$.get(appConfig.userURL + 'api/Documents/FileUploads?filepath=' + encodeURI(value) , function (e) {
+                console.log(e);
+                url = e;
+                return '<img src="' + url + ' " />'
+            }).fail(function (error) {
+                return '<img src="' + url + ' " />'
+                toastr.error('error editing ' + error.responseText + ' Product');
+
+            });*/
+            
+        }
         function actionFormatter(value, row, index) {
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
@@ -82,23 +97,24 @@
        
         $(function () {
             $('#DocumentTab').bootstrapTable({
-                idField: 'product',
-                url: appConfig.adminURL + 'api/Document',
+                idField: 'doc',
+                url: appConfig.adminURL + 'api/Documents',
                 columns: [{
-                    field: 'configname',
+                    field: 'name',
                     title: 'Name'
                 }, {
-                    field: 'smtp',
-                    title: 'smtp'
+                    field: 'documentRefId',
+                    title: 'Type'
                 }, {
-                    field: 'mailfrom',
-                    title: 'Sender'
+                    field: 'documentNo',
+                    title: 'Document No'
                 },{
-                    field: 'username',
-                    title: 'Username'
+                    field: 'url',
+                    title: 'Preview',
+                    formatter: imsgeFormatter
                 }, {
-                    field: 'password',
-                    title: 'password'
+                    field: 'userId',
+                    title: 'User'
                 }, {
                     field: 'port',
                     title: 'Port'

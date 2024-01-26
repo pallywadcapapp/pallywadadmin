@@ -1,0 +1,136 @@
+﻿@{
+    //ViewData["Title"] = "Collateral";
+    ViewBag.Title = "Collateral";
+}
+
+<link href="~/css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Collateral</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Collateral
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <!--<a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add Collateral Configuration</a>-->
+                <table class="table table-bordered" id="CollateralTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Collateral</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group modsp">
+                            <span>Name </span><input type="text" placeholder="Name" class="form-control" id="configname" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>User Name </span><input type="text" placeholder="User Name" class="form-control" id="username" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Password </span><input type="text" placeholder="Password" class="form-control" id="password" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>SMTP </span><input type="text" placeholder="SMTP" class="form-control" id="smtp" />
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Port </span><input type="text" placeholder="Port" class="form-control" id="port" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveCollateral()" id="saveGLLines">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+        function imsgeFormatter(value, row, index) {
+            var url = '';
+            return '<img style="width:50px;height:50px;" src="' + appConfig.userURL + 'api/Collateral/FileUploads?filepath=' + encodeURI(value) + ' " />'
+            
+
+        }
+        function actionFormatter(value, row, index) {
+            return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
+        };
+        function refreshTables() {
+            var newUrl = appConfig.apiURL + 'api/settings/Collateral';
+            $('#CollateralTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+        $('#type').select2();
+
+
+
+        $(function () {
+            $('#CollateralTab').bootstrapTable({
+                idField: 'doc',
+                url: appConfig.userURL + 'api/Collateral',
+                columns: [{
+                    field: 'name',
+                    title: 'Name'
+                }, {
+                    field: 'CollateralRefId',
+                    title: 'Type'
+                }, {
+                    field: 'CollateralNo',
+                    title: 'Collateral No'
+                }, {
+                    field: 'url',
+                    title: 'Preview',
+                    formatter: imsgeFormatter
+                }, {
+                    field: 'userId',
+                    title: 'User'
+                }, {
+                    field: 'estimatedValue',
+                    title: 'Port',
+                    formatter: moneyFormatter
+                }]
+            });
+            $('#CollateralTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#CollateralTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/settings/Collateral', row, function (e) {
+                    console.log(e);
+                    toastr.success('Product ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' Product');
+
+                });
+            });
+
+        });
+    </script>
+
+
+}

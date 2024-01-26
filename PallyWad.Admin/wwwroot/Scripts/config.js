@@ -5,6 +5,7 @@ var appConfig = {
     'authURL': serviceBaseUrl(),
     'adminURL': adminBaseUrl(),
     'setupURL': setupBaseUrl(),
+    'userURL': userBaseUrl(),
     'accountURL': accountBaseUrl(),
     'managerUrl': managerBaseUrl(),
     'rootApp': 'http://adb.anchorinsuranceng.com:8051/web/'
@@ -107,6 +108,38 @@ function setupBaseUrl() {
         url = url.replace('127.0.0.1', 'localhost');
     } else {
         url = domain.replace('admin', 'setup');
+    }
+
+    const newUrl = url.substr(url.length - 1);
+    if (newUrl === '/') {
+        return url;
+    } else {
+        url = url + '/';
+        return url;
+    }
+}
+function userBaseUrl() {
+    const angularRoute = window.location.pathname + window.location.search;
+    const _url = window.location.href;
+    let domain = '';
+    if (!(angularRoute.substr(angularRoute.length - 1) === '/')) {
+        domain = _url.replace(angularRoute, '');
+    } else {
+        domain = _url;
+    }
+    let url = '';
+
+    if (domain.includes('localhost')) {
+        if (domain.includes('5135')) {
+            url = domain.replace('5135', '5084');
+        } else if (domain.includes('5134')) {
+            url = domain.replace('5134', '6001');
+        }
+    } else if (domain.includes('127.0.0.1')) {
+        url = domain.replace('8080', '4000');
+        url = url.replace('127.0.0.1', 'localhost');
+    } else {
+        url = domain.replace('admin', 'user');
     }
 
     const newUrl = url.substr(url.length - 1);
@@ -445,23 +478,15 @@ $.ajaxSetup({
     beforeSend: function (xhr) {
         try {
             var auth = localStorage.getItem('auth');
-            var expirydate = JSON.parse(auth)['.expires'];
-            auth = JSON.parse(auth).access_token;
-            xhr.setRequestHeader('Epiry', expirydate);
-            //headers: { 'x-my-custom-header': 'some value' }
-            var tenant = localStorage.getItem('tenant');
-            console.log(JSON.parse(tenant));
-            var tenantId = JSON.parse(tenant).clientUrl
-            xhr.setRequestHeader('Tenant', tenantId);
-            //this.setRequestHeader('Access-Control-Allow-Origin', '*');
+            var expirydate = JSON.parse(auth)['expiration'];
+            auth = JSON.parse(auth).token;
+            xhr.setRequestHeader('Expiry', expirydate);
             xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
         } catch(ex){
-            var auth = '';//JSON.parse(auth).access_token;
-            //console.log(auth);
+            var auth = '';
             xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
             xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
         }
-        //xhr.setRequestHeader('Authorization', 'Token 123')
     }
 });
 

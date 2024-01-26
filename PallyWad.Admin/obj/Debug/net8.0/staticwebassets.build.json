@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Wrglncj3Vjq1ZxSH6WfSgUh/c0vX7ZEaziwA5HY1Ehs=",
+  "Hash": "hxeWlxU/trCtyFY48na0oH1cbUNzrfhWS21C/mC+fog=",
   "Source": "PallyWad.Admin",
   "BasePath": "_content/PallyWad.Admin",
   "Mode": "Default",
@@ -33322,6 +33322,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\font-awesome.min.css"
+    },
+    {
+      "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\index_style.css",
+      "SourceId": "PallyWad.Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\",
+      "BasePath": "_content/PallyWad.Admin",
+      "RelativePath": "css/index_style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\index_style.css"
     },
     {
       "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\jquery-ui.css",

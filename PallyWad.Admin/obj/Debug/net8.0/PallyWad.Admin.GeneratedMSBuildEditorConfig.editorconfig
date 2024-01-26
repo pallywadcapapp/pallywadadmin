@@ -94,12 +94,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxVc2Vycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Document/Collateral.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRcQ29sbGF0ZXJhbC5jc2h0bWw=
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Documents/Collateral.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzXENvbGxhdGVyYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Document/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRcSW5kZXguY3NodG1s
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Documents/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Home/Index.cshtml]
@@ -108,6 +108,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Approved.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcQXBwcm92ZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Collaterized.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcQ29sbGF0ZXJpemVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Composites.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcQ29tcG9zaXRlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Declined.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcRGVjbGluZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Index.cshtml]
@@ -120,6 +136,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Payments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcUGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Processed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcUHJvY2Vzc2VkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Requests.cshtml]

@@ -2,7 +2,7 @@
     ViewBag.Title = "Loan Request";
 }
 
-<link href="css/index_style.css" rel="stylesheet">
+<link href="~/css/index_style.css" rel="stylesheet">
 <style>
     .hide {
         display: none;
@@ -116,9 +116,6 @@
     <div id="tabs">
         <ul>
             <li><a href="#tabs-1">Loan Requests</a></li>
-            <li><a href="#tabs-2">Declined Requests</a></li>
-            <li><a href="#tabs-3">Approved Requests</a></li>
-            <li><a href="#tabs-4">Processed Requests</a></li>
         </ul>
         <div class="row">
             <div class="col-sm-12">
@@ -135,69 +132,6 @@
                                     data-show-header="true" data-id-field="accno" data-show-refresh="true"
                                     data-show-export="true" data-show-columns="true" data-show-toggle="true"
                                     data-search="true"></table>
-
-                            </div>
-                        </div>
-                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
-
-
-                    </div>
-                </div>
-                <div id="tabs-2">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-table"></i>Declined Request
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="DeclineRequestTab" width="100%" cellspacing="0"
-                                    data-pagination="true" data-sort-name="name" data-sort-order="desc"
-                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
-                                    data-show-header="true" data-id-field="accno" data-show-refresh="true"
-                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
-                                    data-search="true"></table>
-
-                            </div>
-                        </div>
-                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
-
-
-                    </div>
-                </div>
-                <div id="tabs-3">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-table"></i>Approved Request
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="ApprovedRequestTab" width="100%" cellspacing="0"
-                                    data-pagination="true" data-sort-name="name" data-sort-order="desc"
-                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
-                                    data-show-header="true" data-id-field="accno" data-show-refresh="true"
-                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
-                                    data-search="true" data-click-to-select="true" data-show-footer="true"></table>
-
-                            </div>
-                        </div>
-                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
-
-
-                    </div>
-                </div>
-                <div id="tabs-4">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fa fa-table"></i>Processed Request
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="ProcessedRequestTab" width="100%"
-                                    cellspacing="0" data-pagination="true" data-sort-name="name" data-sort-order="desc"
-                                    data-page-size="50" data-page-list="[ 25, 50, 100, 200, 500, ALL]"
-                                    data-show-header="true" data-id-field="loanId" data-show-refresh="true"
-                                    data-show-export="true" data-show-columns="true" data-show-toggle="true"
-                                    data-search="true" data-show-footer="true" ></table>
 
                             </div>
                         </div>
@@ -618,9 +552,6 @@
     };
     $(function () {
         var ulonaUrl = appConfig.adminURL + 'api/loanrequest/PendingLoanRequests';
-        var declinelonaUrl = appConfig.adminURL + 'api/loanrequest/DeclinedLoanRequests';
-        var approvelonaUrl = appConfig.adminURL + 'api/loanrequest/UnProcessedLoanRequests';
-        var processlonaUrl = appConfig.adminURL + 'api/loanrequest/ProcessedLoanRequests';
         $('#LoanRequestTab').bootstrapTable({
             idField: 'product',
             url: ulonaUrl,
@@ -657,109 +588,6 @@
             }]
         });
 
-        $('#DeclineRequestTab').bootstrapTable({
-            idField: 'product',
-            url: declinelonaUrl,
-            columns: [{
-                field: 'loanId',
-                title: 'Loan Id'
-            },{
-                field: 'memberId',
-                title: 'Member FullName(s)',
-                formatter: fullNameFormatter
-            }, {
-                field: 'amount',
-                title: 'Amount',
-                formatter: moneyFormatter
-            }, {
-                field: 'approvalDate',
-                title: 'Decl Date',
-                formatter: localDateFormatter
-            } ,{
-                field: 'status',
-                title: 'Approval Status'
-            }, {
-                field: 'processState',
-                title: 'Processing State'
-            }, {
-                filed: 'grossPremium',
-                title: '',
-                //formatter: viewFormatter
-            }]
-        });
-
-        $('#ApprovedRequestTab').bootstrapTable({
-            idField: 'product',
-            url: approvelonaUrl,
-            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-            columns: [{
-                field: 'ids',
-                title: '',
-                checkbox: true,
-                event: clickEvent,
-            }, {
-                field: 'loanId',
-                title: 'Loan Id'
-            }, {
-                field: 'amount',
-                title: 'Amount',
-                formatter: moneyFormatter
-            }, {
-                field: 'approvalDate',
-                title: 'Appr Date',
-                formatter: localDateFormatter
-            } ,{
-                field: 'memberId',
-                title: 'Member FullName(s)',
-                formatter: fullNameFormatter
-            }, {
-                field: 'status',
-                title: 'Approval Status'
-            }, {
-                field: 'processState',
-                title: 'Processing State'
-            }, {
-                field: 'id',
-                title: '',
-                formatter: viewFormatter,
-                footerFormatter: proceedFormatter
-            }]
-        });
-
-        $('#ProcessedRequestTab').bootstrapTable({
-            idField: 'product',
-            url: processlonaUrl,
-            columns: [{
-                field: 'ids',
-                checkbox:true
-            },{
-                field: 'loanId',
-                title: 'Loan Id'
-            },{
-                field: 'memberId',
-                title: 'Member FullName(s)',
-                formatter: fullNameFormatter
-            }, {
-                field: 'amount',
-                title: 'Amount',
-                formatter: moneyFormatter
-            }, {
-                field: 'approvalDate',
-                title: 'Appr Date',
-                formatter: localDateFormatter
-            } , {
-                field: 'status',
-                title: 'Approval Status'
-            }, {
-                field: 'processState',
-                title: 'Processing State'
-            }, {
-                filed: 'id',
-                title: '',
-                formatter: viewFormatter
-            }]
-        });
-
         function viewFormatter(value, row, index) {
             var id = row.id;
             var email = row.loanId;
@@ -790,42 +618,6 @@
             });
         });
 
-
-
-$('#ApprovedRequestTab').on('check.bs.table', function (e, row) {
-  checkedRows.push({id: row.id, name: row.memberId, forks: row.forks});
-  console.log(checkedRows);
-});
-$('#ApprovedRequestTab').on('check-all.bs.table', function (e, row) {
-  checkedRows = [];
-  checkedRows = row;
-  console.log(checkedRows);
-});
-
-$('#ApprovedRequestTab').on('uncheck.bs.table', function (e, row) {
-  $.each(checkedRows, function(index, value) {
-    try{
- if (value.id === row.id) {
-      checkedRows.splice(index,1);
-    }
-        }catch{
-
-        }
-  });
-  console.log(checkedRows);
-});
-
-$('#ApprovedRequestTab').on('uncheck-all.bs.table', function (e, row) {
-  checkedRows = [];
-  console.log(checkedRows);
-});
-
-$("#add_cart").click(function() {
-  $("#output").empty();
-  $.each(checkedRows, function(index, value) {
-    $('#output').append($('<li></li>').text(value.id + " | " + value.memberId + " | " + value.forks));
-  });
-});
         $(document).on('editable-save.bs.table', '#LoanRequestTab', function (e, field, row, old, $el) {
             console.log(row);
             $.post(appConfig.apiURL + 'api/settings/LoanRequest', row, function (e) {
