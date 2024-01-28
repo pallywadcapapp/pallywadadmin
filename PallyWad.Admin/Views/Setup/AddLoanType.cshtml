@@ -142,13 +142,13 @@
                     <section>
                         <div class="row">
                             -<div class="form-group modsp col-sm-7">
-                            <span>Loan Code</span><input type="text" required placeholder="Loan Type Code" class="required form-control" id="code" />
+                            <span>Loan Code</span><input type="text" placeholder="Loan Type Code" class="form-control" id="code" />
                         </div>
                         <div class="form-group modsp col-sm-4">
                             <span>Loan Short Name</span><input type="text" placeholder="Loan Short Name" class="form-control" id="shortname" />
                             </div>
                         <div class="form-group modsp col-sm-12">
-                            <span>Loan Description</span><textarea required placeholder="Loan Description" class="required form-control" id="description"></textarea>
+                            <span>Loan Description</span><textarea placeholder="Loan Description" class="form-control" id="description"></textarea>
                             </div>
                             <div class="form-group modsp col-sm-6">
                                 <span>Loan Category</span><select class="select2 form-select" id="category">
@@ -211,22 +211,28 @@
                     <h3>Loan Criteria</h3>
                     <section>
                         <div class="row">
-                        <div class="form-group modsp col-sm-5">
-                            <div class=" form-check form-switch">
-                            <input type="checkbox" class="form-check-input" id="requireGuarantor" />
-                            <label for="requireCollateral">Require Collateral</label>
-                            </div>
+                        <div class="form-group modsp col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="colltype">Require Collateral</span>
+                                    <label class="switch">
+                                        <input id="requireGuarantor" type="checkbox">
+                                        <span class="slider cround"></span>
+                                    </label>
+                                </div>
                         </div>
-                        <div class="form-group modsp col-sm-5">
-                            <div class=" form-check form-switch">
-                            <input type="checkbox" class="form-check-input" id="request_while_running" />
-                            <label for="request_while_running">Can be requested while Loan Running</label>
-                            </div>
+                        <div class="form-group modsp col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="runtype">Can be requested while Loan Running</span>
+                                    <label class="switch">
+                                        <input id="request_while_running" type="checkbox">
+                                        <span class="slider cround"></span>
+                                    </label>
+                                </div>
                         </div>
-                        <div class="form-group modsp col-sm-4">
+                        <div class="form-group modsp col-sm-6">
                             <span>Collaterals</span><select class="form-control" id="collateral" multiple="multiple"></select>
                         </div>
-                        <div class="form-group modsp col-sm-4">
+                        <div class="form-group modsp col-sm-6">
                             <span>Required Documents</span><select class="form-control" id="documents" multiple="multiple"></select>
                         </div>
                         </div>
@@ -278,7 +284,8 @@
             onFinishing: function (event, currentIndex) {
                 //form.validate().settings.ignore = ":disabled";
                 //
-                saveLoanRequest();
+                saveLoanTypes();
+                //saveLoanRequest();
                 return form.valid();
             },
             onFinished: function (event, currentIndex) {
@@ -441,7 +448,7 @@
 
 
         function saveLoanTypes() {
-            $('#myModal').pleaseWait();
+            $('#lrForm').pleaseWait();
 
             var name = $('#name').val();
             var description = $('#description').val();
@@ -457,6 +464,8 @@
             var request_while_running = $('#request_while_running').is(':checked');// .val();
             var age = $('#age').val();
             var collateralPercentage = $('#collateralPercentage').val();
+            var documents = $('#documents').val();
+            var collateral = $('#collateral').val();
             
             var _memgroupacct = document.getElementById("memgroupacct");
             var memgroupacct = _memgroupacct.options[_memgroupacct.selectedIndex].value;
@@ -476,11 +485,11 @@
             var _chargecode = document.getElementById("chargecode");
             var chargecode = _chargecode.options[_chargecode.selectedIndex].value;
             
-            var _document = document.getElementById("document");
+            /*var _document = document.getElementById("document");
             var ldocument = _document.options[_document.selectedIndex].value;
             
             var _collateral = document.getElementById("collateral");
-            var collateral = _collateral.options[_collateral.selectedIndex].value;
+            var collateral = _collateral.options[_collateral.selectedIndex].value;*/
 
             var category = $category.val();
             
@@ -511,8 +520,12 @@
                 category: category,
                 repayOrder: repayOrder,
                 age: age,
-                collateralPercentage: collateralPercentage
+                collateralPercentage: collateralPercentage,
+                loanDocumentRefId: documents,
+                loanCollateralRefId: collateral
             }
+
+            
 
             console.log(LoanTypes);
             var url = appConfig.setupURL + "api/loan";
@@ -522,12 +535,13 @@
                 data: JSON.stringify(LoanTypes),
                 contentType: "application/json", //; charset=utf-8
             }).done(function (data) {
-                $('#myModal').pleaseWait('stop');
-                $('#myModal').modal('hide');
+                $('#lrForm').pleaseWait('stop');
+                $('#lrForm').modal('hide');
                 toastr.success('LoanTypes  ' + shortname + ' saved successfully');
-                refreshTables();
+                window.location.href = 'loantype';
+                //refreshTables();
             }).fail(function (request, message, error) {
-                $('#myModal').pleaseWait('stop');
+                $('#lrForm').pleaseWait('stop');
                 toastr.error('error ' + error + 'for saving LoanType ' + shortname);
             });
         }

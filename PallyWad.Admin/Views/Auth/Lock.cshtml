@@ -85,6 +85,7 @@
     <script src="~/assets/js/app.js"></script>
 
     <script src="~/Scripts/config.js"></script>
+    <script src="~/Scripts/global.js"></script>
     <script>
         $(function () {
             var prev = localStorage.getItem('prev');
@@ -124,7 +125,7 @@
                     //scope: 'CoorpAppCoreAuthApi openid offline_access',
                     refresh_token: refreshToken
                 };
-                var loginUrl = appConfig.authURL + 'api/v1/auth/login'; //'auth/oluso';
+                var loginUrl = appConfig.authURL + 'api/v1/auth/unlock'; //'auth/oluso';
                 $.ajax({
                     type: 'POST',
                     url: loginUrl,
@@ -133,11 +134,11 @@
                     contentType: 'application/json',
                 }).done(function (data) {
 
-                    data.username = username;
+                    /*data.username = username;
                     data.email = username
                     getUsersDetails(data.email);
                     localStorage.setItem('auth', JSON.stringify(data));
-                    sessionStorage.setItem('tokenKey', JSON.stringify(data));
+                    sessionStorage.setItem('tokenKey', JSON.stringify(data));*/
                     $('#formarea').pleaseWait('stop');
                     var url = '@Html.Raw(Url.Action("Index", "Home"))';
                     if (prev === '') {
@@ -149,10 +150,15 @@
 
                 }).fail(showError);
 
-                function showError(error, value, xhr) {
+                function showError(xhr, value, error) {
                     $('#formarea').pleaseWait('stop');
                     toastr.error('unable to signin');
-                    toastr.error(error.responseJSON.error_description);
+                    if (error == 'Unauthorized') {
+                        var url = '@Html.Raw(Url.Action("Index", "Home"))';
+                        window.location.href = url;
+                    }
+                    console.log(error)
+                    //toastr.error(error.responseJSON.error_description);
                 }
             }
             function getUsersDetails(email) {

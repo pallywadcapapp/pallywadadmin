@@ -135,53 +135,62 @@
                     <h3>Select Member</h3>
                     <section>
                         <div class="row">
-                            <div class="col-sm-12 input-group">
-                                <span class="input-group-addon">Member</span>
-                                <select class="required form-control mb-2 mr-sm-2" id="members"></select>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-12 input-group">
+                                        <span class="input-group-addon">Member</span>
+                                        <select class="required form-control mb-2 mr-sm-2" id="members"></select>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Member ID</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="userName"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Last Name</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="lastname"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">First Name</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="firstname"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Sex</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="sex"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Phone No</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="phoneNumber"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Employment Status</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="employmentStatus"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Birth/Incorp Date</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="dob"></span>
+                                    </div>
+                                    <div class="col-sm-6 input-group">
+                                        <span class="input-group-addon">Email Address</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="email"></span>
+                                    </div>
+                                    <div class="col-sm-12 input-group">
+                                        <span class="input-group-addon">Address</span>
+                                        <span class="required form-control mb-2 mr-sm-2" name="address"></span>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Member ID</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="userName"></span>
+                            <div class="col-sm-3">
+                                <div>
+                                    <img style="width:150px; height:150px;" src="~/assets/images/small/img-6.jpg" alt="user icon" id="userimg" />
+                                </div>
                             </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Last Name</span>
-                                <span class="required form-control mb-2 mr-sm-2"name="lastname"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">First Name</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="firstname"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Sav Account No</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="accountno"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Phone No</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="phoneNumber"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Employment Date</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="employdate"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Retirement Date</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="retiredate"></span>
-                            </div>
-                            <div class="col-sm-6 input-group">
-                                <span class="input-group-addon">Email Address</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="email"></span>
-                            </div>
-                            <div class="col-sm-12 input-group">
-                                <span class="input-group-addon">Address</span>
-                                <span class="required form-control mb-2 mr-sm-2" name="address"></span>
-                            </div>
-                            
                         </div>
                     </section>
                     <h3>Loan Details</h3>
                     <section>
                         <div class="row">
-                            <div class="form-group modsp col-sm-3">
+                            <!--<div class="form-group modsp col-sm-3">
                                 <span>Savings Balance </span><input type="text" disabled class="form-control"
                                                                     id="sbalance" name="savingBalance" />
                             </div>
@@ -196,7 +205,7 @@
                             <div class="form-group modsp col-sm-3">
                                 <span>Net Balance </span><input type="text" disabled class="form-control" id="nbalance"
                                                                 name="netBalance" />
-                            </div>
+                            </div>-->
                             <div class="form-group modsp col-sm-6">
                                 <span>Loan Amount </span><input type="number" placeholder="Loan Amount"
                                                                 class="form-control" id="amount" />
@@ -219,8 +228,12 @@
                                 <span>Other Coorperative Loan </span><input type="text" placeholder="Other Coop Loan"
                                                                             class="form-control" id="othercoorp" />
                             </div>
-                            <div class="form-group modsp col-sm-12">
-                                <span>Guarantors</span><select class="form-control" id="guarantors"
+                            <div class="form-group modsp col-sm-6">
+                                <span>Collateral</span><select class="form-control" id="collateral"
+                                                               multiple="multiple"></select>
+                            </div>
+                            <div class="form-group modsp col-sm-9">
+                                <span>Documents</span><select class="form-control" id="documents"
                                                                multiple="multiple"></select>
                             </div>
                         </div>
@@ -242,7 +255,8 @@
         var lb = 0;
         var  savBal = 0; var loanBal = 0; var shortloanBal = 0;
         var selectedOptions = [];
-        var $guarantors = $('#guarantors');
+        var $collateral = $('#collateral');
+        var $documents = $('#documents');
         var form = $("#lrForm");
         form.children("div").steps({
             headerTag: "h3",
@@ -283,15 +297,31 @@
             }
         });
 
+        function getUserImageUrl(value) {
+            var src =appConfig.authURL + 'api/profile/FileUploads?filepath=' + encodeURI(value);
+            $('#userimg').prop("src", src);
+            /*$.get(src, function (_data) {
+                $('#userimg').prop("src", _data);
+            });*/
+            
+        }
+
         function getMember(memberId){
             var usavingsUrl = appConfig.adminURL + 'api/user/userbyid?email=' + memberId;
             $.get(usavingsUrl, function (_data) {
                 try {
-                               
-                    var mydata = _data.member
-                    for (var p in mydata) {
-                        console.log(mydata[p]);
-                        $('[name="'+ p +'"]').html(mydata[p]);
+
+                    
+                    for (var p in _data) {
+                        $('[name="' + p + '"]').html(_data[p]);
+                        if(p == "imgUrl"){
+                            getUserImageUrl(_data[p]);
+                        }
+                        if (p == 'dob') {
+                            var dob = new Date(_data[p]).toLocaleDateString();
+                            console.log(dob)
+                            $('[name="' + p + '"]').html(dob);
+                        }
                     }
                     for (var _key in _data) {
                         if (_key == 'memAcc') {
@@ -361,7 +391,8 @@
 
         function loadDefault() {
             var $members = $('#members');
-            var $guarantors = $('#guarantors');
+            var $collateral = $('#collateral');
+            var $documents = $('#documents');
             var $loanTypes = $('#loanTypes');
 
             $.get(appConfig.adminURL + 'api/user/AllUsers', function (data) {
@@ -388,7 +419,7 @@
                 toastr.error('unable to get members list');
             });
 
-            $.get(appConfig.apiURL + 'api/member/LoanTypes', function (data) {
+            $.get(appConfig.setupURL + 'api/loan', function (data) {
                 $loanTypes.empty();
                 for (var counter = 0; counter <= data.length - 1; counter++) {
                     $option = $('<option value="' + data[counter].loancode + '">' + data[counter].category + ' ' + data[counter].loandesc + '</option>');
@@ -407,35 +438,55 @@
             }).fail(function (e) {
                 toastr.error('unable to get loan types list');
             });
-            $.get(appConfig.apiURL + 'api/member/guarantors', function (data) {
-                $guarantors.empty();
+            $.get(appConfig.userURL + 'api/collateral', function (data) {
+                $collateral.empty();
                 for (var counter = 0; counter <= data.length - 1; counter++) {
-                    $option = $('<option value="' + data[counter].guarantorId + '">' + data[counter].guarantorId + ' - ' + data[counter].guarantorName + '</option>');
+                    $option = $('<option value="' + data[counter].colleteralId + '">' + data[counter].colleteralId + ' - ' + data[counter].name + '</option>');
 
-                    $guarantors.append($option);
+                    $collateral.append($option);
                 }
-                $guarantors.select2({
-                    placeholder: "Select Guarantors",
+                $collateral.select2({
+                    placeholder: "Select Available Collateral",
                     width: 'element'
                 }).on('change', function (e) {
                     if ($(this).val() && $(this).val().length) {
                         $(this).next('.select2-container')
-                            .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Guarantors');
+                            .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Collateral');
                     }
                 });
             }).fail(function (e) {
-                toastr.error('unable to get guarantors list');
+                toastr.error('unable to get available collateral list');
+            });
+
+            $.get(appConfig.userURL + 'api/documents', function (data) {
+                $documents.empty();
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].documentRefId + '">' + data[counter].documentRefId + ' - ' + data[counter].name + '</option>');
+
+                    $documents.append($option);
+                }
+                $documents.select2({
+                    placeholder: "Select Available Documents",
+                    width: 'element'
+                }).on('change', function (e) {
+                    if ($(this).val() && $(this).val().length) {
+                        $(this).next('.select2-container')
+                            .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Documents');
+                    }
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get available Documents list');
             });
         }
 
         function saveLoanRequest() {
             $('#lrForm').pleaseWait();
-
-            var guarantors = $guarantors.val();
-
-            var guarantorId1 = guarantors[0];
-            var guarantorId2 = guarantors[1];
-            var guarantorId3 = guarantors[2];
+            var $collateral = $('#collateral');
+            var $documents = $('#documents');
+            var collateral = [];
+            collateral = $collateral.val();
+            var documents = [];
+            documents = $documents.val();
 
             var bankaccountno = $('#bankaccountno').val();
             var amount = $('#amount').val();
@@ -452,9 +503,8 @@
                 loanBal: lb,
                 loancode: loanTypes,
                 netBal: netBal,
-                guarantorId1: guarantorId1,
-                guarantorId2: guarantorId2,
-                guarantorId3: guarantorId3,
+                collateralRefId: collateral,
+                documentIdRefs: documents,
                 processState: 'pending',
                 status: 'Pending',
                 loanId: 'rrr',
@@ -465,7 +515,7 @@
             }
 
             console.log(LoanRequest);
-            var url = appConfig.apiURL + "api/admin/LoanRequest";
+            var url = appConfig.userURL + "api/LoanRequest";
             $.ajax({
                 type: 'POST',
                 url: url,
