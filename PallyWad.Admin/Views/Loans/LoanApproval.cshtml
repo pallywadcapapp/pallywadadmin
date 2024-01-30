@@ -156,7 +156,7 @@
                     <p>
                         <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
                     </p>
-                    <p>
+                    <!--<p>
                         <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
                     </p>
                     <p>
@@ -213,7 +213,7 @@
                             </div>
 
                         </div>
-                    </p>
+                    </p>-->
                 </div>
                 <div class="col-sm-6">
                     <p>
@@ -264,7 +264,7 @@
                 loanDetails.tenantId = "rr";
                 loanDetails.processingFee = processingFee;
                 loanDetails.approvedBy = localStorage.getItem('uemail');
-                url = appConfig.apiURL + 'api/admin/loanrequestapproved?id=' + loanDetails.id + '&interest=' + loaninterest 
+                url = appConfig.adminURL + 'api/loanrequest/loanrequestapproved?id=' + loanDetails.id + '&interest=' + loaninterest 
                 + '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
             } else {
                 loanDetails.processState = "Processed";
@@ -272,7 +272,7 @@
                 loanDetails.tenantId = "rr";
                 loanDetails.approvedBy = localStorage.getItem('uemail');
 
-                url = appConfig.apiURL + "api/admin/loanrequestdecline?id=" + loanDetails.id;
+                url = appConfig.adminURL + "api/loanrequest/loanrequestdecline?id=" + loanDetails.id;
             }
 
 
@@ -285,7 +285,7 @@
             }).done(function (data) {
                 $('#loanProcessView').pleaseWait('stop');
                 toastr.success('Loan Request  processed successfully');
-                window.location.href = 'loanrequest';
+                window.location.href = 'requests';
                 //refreshTables();
             }).fail(function (request, message, error) {
                 $('#loanProcessView').pleaseWait('stop');
@@ -295,7 +295,7 @@
         }
 
         function loadLoanType(loancode){
-            var url = appConfig.apiURL + 'api/settings/loantype?loancode=' + encodeURIComponent(loancode);
+            var url = appConfig.setupURL + 'api/loan/bycode?loancode=' + encodeURIComponent(loancode);
             $.get(url, function (data) {
                 try {
                     for (var key in data) {
@@ -313,7 +313,7 @@
 
         function loadView(id) {
             $('#loadViewModal').pleaseWait();
-            var url = appConfig.apiURL + 'api/member/loandetail?loadId=' + encodeURIComponent(id);
+            var url = appConfig.adminURL + 'api/loanRequest/loandetail?loanId=' + encodeURIComponent(id);
             $.get(url, function (data) {
                 loanDetails = data;
                 loadLoanType(data.loancode);
@@ -335,21 +335,9 @@
                             $('[name="' + key + '"]').html(data[key]);
                             $('[name="fullname"]').html(fullname);
                         }
-                        if (key == 'guarantorId1') {
-                            //var fullname = getMemberById(data[key]).fullname
+                        if (key == 'collateralId') {
                             $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                            var g1 = getMemberById(data[key]).fullname
-                            getGuarantorOverhead(data[key], key, g1);
-                        }
-                        if (key == 'guarantorId2') {
-                            $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                            var g1 = getMemberById(data[key]).fullname
-                            getGuarantorOverhead(data[key], key, g1);
-                        }
-                        if (key == 'guarantorId3') {
-                            $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                            var g1 = getMemberById(data[key]).fullname
-                            getGuarantorOverhead(data[key], key, g1);
+                            var g1 = getMemberById(data[key]).fullname;
                         }
                         if (key == 'amount') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
@@ -367,51 +355,6 @@
             }).fail(function (xhr, status, error) {
                 $('#loadViewModal').pleaseWait('stop');
             });
-
-
-            function getGuarantorOverhead(memberId, guarantor, gname) {
-                console.log(guarantor)
-                var sav = 0;
-                var loan = 0;
-                var loanGuan = 0;
-                var url = appConfig.apiURL + "api/Admin/GuarantorOverhead?memberId=" + memberId;
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    contentType: "application/json",
-                }).done(function (data) {
-                    toastr.success('guarantor ' + gname + ' savings and Loan details gotten suucessfully ');
-
-                    for (var key in data) {
-                        var acc = data[key];
-                        for (var v in acc) {
-                            if (v == 'acctype') {
-                                if (((acc[v].indexOf('Loan')) > -1 || (acc[v].indexOf('loan')) > -1) && ((acc[v].indexOf('LoanGuanrantee')) == -1))  {
-                                    loan += parseFloat(data[key].loanBalance);
-                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].loanBalance));
-                                    $('[name="' + guarantor + 'Loans"]').html(currformatter.format(loan));
-                                    
-                                } else if (acc[v] == 'Normal' || acc[v] == 'Savings') {
-                                    sav += parseFloat(data[key].savBalance)
-                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
-                                    $('[name="' + guarantor +  'Normal"]').html(currformatter.format(sav));
-                                    
-                                } else if (acc[v] == 'LoanGuanrantee') {
-                                    $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
-                                    loanGuan = parseFloat(data[key].loanGuarantee)
-                                } else {
-                                    //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
-                                }
-                            }
-                        }
-                    }
-                    var bal = parseFloat(sav) - parseFloat(loan) - parseFloat(loanGuan);
-                    $('[name="' + guarantor + 'Net"]').html(currformatter.format(bal));
-                }).fail(function (request, message, error) {
-                    $('#myModal').pleaseWait('stop');
-                    toastr.error('unable to get guarantor ' + gname + ' savings and Loan details ');
-                });
-            };
 
         }
     </script>

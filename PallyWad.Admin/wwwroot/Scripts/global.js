@@ -643,9 +643,9 @@ function mergeSingleJSONObject(obj1, obj2) {
 };
 
 function getMemberById(valuetofind){
-    var array = JSON.parse(sessionStorage.getItem('appm'));
+    var array = JSON.parse(sessionStorage.getItem('lm'));
     for (i = 0; i < array.length; i++) {
-        if (array[i]['memberid'] === valuetofind) {
+        if (array[i]['email'] === valuetofind) {
             return array[i];
         }
     }

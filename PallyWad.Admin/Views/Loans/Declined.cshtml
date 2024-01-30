@@ -315,7 +315,8 @@
 
         function fullNameFormatter(value, row, index) {
             try {
-                var fullname = getMemberById(value).fullname
+                var member = getMemberById(value);
+                var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
                 return fullname;
             } catch {
                 window.location.href = '../Auth/Login'

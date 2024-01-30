@@ -32,11 +32,26 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+        public IActionResult LoanProcessor()
+        {
+            return View();
+        }
+        public IActionResult LoanCollaterizer()
+        {
+            return View();
+        }
+        
 
         public IActionResult Payments()
         {
             return View();
         }
+
+        public IActionResult LoanPrintPreview()
+        {
+            return View();
+        }
         
+
     }
 }

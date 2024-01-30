@@ -111,6 +111,8 @@
 
             localStorage.removeItem('fullname');
             localStorage.setItem('prev', '');
+            sessionStorage.removeItem('lm');
+            sessionStorage.removeItem('tokenKey');
             var prev = localStorage.getItem('prev');
             toastr.options = {
                 "closeButton": false,
@@ -210,7 +212,8 @@
                     data: JSON.stringify(loginData)
                 }).done(function (data) {
                     data.username = username;
-                    data.email = username
+                    data.email = username;
+                    localStorage.setItem('auth', JSON.stringify(data));
                     initMembers(data);
                     //getUsersDetails(data);
                 }).fail(showError);
@@ -245,7 +248,7 @@
             }
 
             function getUsersDetails(data) {
-                localStorage.setItem('auth', JSON.stringify(data));
+                
                 sessionStorage.setItem('tokenKey', JSON.stringify(data));
                 localStorage.setItem('uemail', JSON.stringify(data.email));
                 if (prev === '') {
@@ -264,6 +267,19 @@
                     url: memUrl
                 }).done(function (data) {
                     sessionStorage.setItem('appm', JSON.stringify(data));
+                    initAllMembers(logindata);
+                }).fail(showError);
+            }
+
+            function initAllMembers(logindata) {
+                var memUrl = appConfig.authURL + 'api/profile/members';
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json',
+                    url: memUrl,
+                    headers: { 'Authorization': 'Bearer ' + logindata.token }
+                }).done(function (data) {
+                    sessionStorage.setItem('lm', JSON.stringify(data));
                     getUsersDetails(logindata);
                 }).fail(showError);
             }

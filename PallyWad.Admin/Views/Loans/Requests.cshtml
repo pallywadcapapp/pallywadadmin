@@ -313,7 +313,8 @@
         
     function fullNameFormatter(value, row, index) {
         try{
-            var fullname = getMemberById(value).fullname
+                var member = getMemberById(value);
+                var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
         return fullname;
         }catch{
             window.location.href = '../Auth/Login'
@@ -338,12 +339,12 @@
 
     }
     function processReview(type) {
-        var url = '@Html.Raw(Url.Action("LoanProcessor","Admin"))';
+        var url = '@Html.Raw(Url.Action("LoanProcessor","loans"))';
         window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
 
     }
     function printPreview() {
-        var url = '@Html.Raw(Url.Action("LoanprintPreview","Admin"))';
+        var url = '@Html.Raw(Url.Action("LoanprintPreview","loans"))';
         window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
 
     }
@@ -366,7 +367,7 @@
 
         
 
-        var url = appConfig.adminURL + 'api/loanrequest/loandetail?loadId=' + encodeURIComponent(id);
+        var url = appConfig.adminURL + 'api/loanrequest/loandetail?loanId=' + encodeURIComponent(id);
         $.get(url, function (data) {
             loanDetails = data;
             $('#loadViewModal').pleaseWait('stop');
@@ -379,37 +380,26 @@
                         $('[name="lastname"]').html(lname);
                     }
                     $('[name="' + key + '"]').html(data[key]);
-                    if (key == 'dob') {
-                        $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
-                    }
+                        if (key == 'requestDate') {
+                            var val = moment(new Date(data[key])).format('DD-MMM-YYYY');
+                        $('[name="' + key + '"]').html(val);
+                        }
+                        if (key == 'amount') {
+                var currformatter = new Intl.NumberFormat('en-NG', {
+                    style: 'currency',
+                    currency: 'NGN',
+                    currencySign: "accounting",
+                });
+                var main = currformatter.format(data[key]);
+                $('[name="' + key + '"]').html(main);
+
+                        }
                     if (key == 'memberId') {
-                        var fullname = getMemberById(data[key]).fullname
+                            var member = getMemberById(data[key]);
+                            var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
+                        //var fullname = getMemberById(data[key]).fullname
                         $('[name="' + key + '"]').html(data[key]);
                         $('[name="fullname"]').html(fullname);
-                    }
-
-                    if (key == 'guarantorId1') {
-                        var g1 = getMemberById(data[key]).fullname
-                        console.log(g1);
-                        getGuarantorOverhead(data[key], key, g1);
-                        $('[name="' + key + '"]').html(g1);
-                        //$('[name="fullname"]').html(fullname);
-                    }
-
-                    if (key == 'guarantorId2') {
-                        var g1 = getMemberById(data[key]).fullname;
-                        console.log(g1);
-                        $('[name="' + key + '"]').html(g1);
-                        getGuarantorOverhead(data[key], key, g1);
-                        //$('[name="fullname"]').html(fullname);
-                    }
-
-                    if (key == 'guarantorId3') {
-                        var g1 = getMemberById(data[key]).fullname;
-                        console.log(g1);
-                        $('[name="' + key + '"]').html(g1);
-                        getGuarantorOverhead(data[key], key, g1);
-                        //$('[name="fullname"]').html(fullname);
                     }
                 }
             } catch (e) {
