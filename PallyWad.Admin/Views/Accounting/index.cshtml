@@ -189,7 +189,7 @@
             "taxmap": taxMap
         }
         console.log(newGl);
-        var url = appConfig.apiURL + "./api/generalledger/_mappings";
+        var url = appConfig.apiURL + "api/generalledger/_mappings";
         $.post(url, newGl, function (e) {
             $('#myModal').pleaseWait('stop');
             toastr.success('GL saved successfully');
@@ -209,7 +209,7 @@
         $('#enddate').val(today);
         $('#GLedger').bootstrapTable({
             idField: 'glcode',
-            url: appConfig.apiURL + "./api/gl/ledgers?startdate=" + startyear + '&enddate=' + today,
+            url: appConfig.accountURL + "api/gl/ledgers?startdate=" + startyear + '&enddate=' + today,
             columns: [{
                 field: 'accountno',
                 title: '',
@@ -262,7 +262,7 @@
         $('#load').click(function (e) {
             var startdate = $('#startdate').val();
             var enddate = $('#enddate').val();
-            var glUrl = appConfig.apiURL + "./api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
+            var glUrl = appConfig.accountURL + "api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
             $('#GLedger').bootstrapTable('refresh', { url: glUrl, silent: false });
         });
 
@@ -276,7 +276,7 @@
         }
 
         function loadTable(startdate, enddate) {
-            var glUrl = appConfig.apiURL + "./api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
+            var glUrl = appConfig.accountURL + "api/gl/ledgers?startdate=" + startdate + '&enddate=' + enddate;
             $('#GLedger').bootstrapTable('refresh', { url: glUrl, silent: false });
         }
 
@@ -293,7 +293,7 @@
         });
         $(document).on('editable-save.bs.table', '#GLedger', function (e, field, row, old, $el) {
             console.log(row);
-            $.post(appConfig.apiURL + './api/generalledger/EditMapping', row, function (e) {
+            $.post(appConfig.accountURL + 'api/generalledger/EditMapping', row, function (e) {
                 console.log(e);
                 toastr.success('mappings edited successfully');
             }).fail(function (error) {

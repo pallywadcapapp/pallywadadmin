@@ -219,7 +219,25 @@
             loanDetails.status = "Approved";
             loanDetails.tenantId = "rr";
             loanDetails.approvedBy = localStorage.getItem('uemail');
-                url = appConfig.apiURL + 'api/admin/ProcessLoanRequest';
+                url = appConfig.adminURL + 'api/loanrequest/ProcessLoanRequest';
+                    $.ajax({
+                        type: 'PUT',
+                        url: url,
+                        data: JSON.stringify(loanDetails),
+                        contentType: "application/json",
+                    }).done(function (data) {
+                        $('#loanProcessView').pleaseWait('stop');
+                        toastr.success('Loan Request  processed successfully');
+                        window.location.href = 'Processed';
+                        //refreshTables();
+                    }).fail(function (request, message, error) {
+                        $('#loanProcessView').pleaseWait('stop');
+                        toastr.error('error ' + request + 'for processing Loan Request ');
+                        toastr.error(request.responseText);
+                        $('#process').prop('disabled', false);
+                        console.log(request);
+                    });
+
             }
         }else{
             loanDetails.processState = "Processed";
@@ -228,28 +246,29 @@
             loanDetails.approvedBy = localStorage.getItem('uemail');
 
                 url = appConfig.apiURL + "api/admin/loanrequestdecline?id=" + loanDetails.id;
+                $.ajax({
+                    type: 'PUT',
+                    url: url,
+                    data: JSON.stringify(loanDetails),
+                    contentType: "application/json",
+                }).done(function (data) {
+                    $('#loanProcessView').pleaseWait('stop');
+                    toastr.success('Loan Request  processed successfully');
+                    window.location.href = 'declined';
+                    //refreshTables();
+                }).fail(function (request, message, error) {
+                    $('#loanProcessView').pleaseWait('stop');
+                    toastr.error('error ' + request + 'for processing Loan Request ');
+                    toastr.error(request.responseText);
+                    $('#process').prop('disabled', false);
+                    console.log(request);
+                });
+
         }
         
 
         
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: JSON.stringify(loanDetails),
-                contentType: "application/json",
-            }).done(function (data) {
-                $('#loanProcessView').pleaseWait('stop');
-                toastr.success('Loan Request  processed successfully');
-                window.location.href = 'loanrequest';
-                //refreshTables();
-            }).fail(function (request, message, error) {
-                $('#loanProcessView').pleaseWait('stop');
-                toastr.error('error ' + request + 'for processing Loan Request ');
-                toastr.error(request.responseText);
-        $('#process').prop('disabled', false);
-                console.log(request);
-            });
-
+         
     }
 
 function etype(elementId){    

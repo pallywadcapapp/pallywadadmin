@@ -146,6 +146,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcTG9hblByb2Nlc3Nvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/LoanRepayments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcTG9hblJlcGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/LoanSchedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcTG9hblNjaGVkdWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/LoanTrans.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcTG9hblRyYW5zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/LoanTransDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcTG9hblRyYW5zRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/VS Project/PallyWad Project/PallyWad/PallyWad.Admin/Views/Loans/Payments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hbnNcUGF5bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

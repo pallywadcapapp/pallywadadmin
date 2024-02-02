@@ -169,8 +169,8 @@
 
 <div>
                <div class="col-sm-12">
-            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#loadReviewModal" onclick="__saveReview('Decline')">Decline</button>
-            <button type="button" class="btn btn-primary approve" onclick="saveReview('Approve')">Process</button>
+            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#loadReviewModal" onclick="__saveReview('Decline')" id="decline">Decline</button>
+            <button type="button" class="btn btn-primary approve" onclick="saveReview('Approve')" id="processed">Process</button>
                     <button type="button" class="btn btn-primary pull-left" onclick="printPage()"><i class="fa fa-print"></i>Print</button>
                 </div>
 </div>
@@ -303,6 +303,10 @@ function etype(elementId){
                     if (key == 'processingFee') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }
+                        if (key == 'processState') {
+                        $('#decline').hide();
+                        $('#processed').hide();
+                        } 
                     if (key == 'loanBal') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }

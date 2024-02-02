@@ -69,6 +69,20 @@
 
     <script>
 
+        function fullNameFormatter(value, row, index) {
+            try {
+                var member = getMemberById(value);
+                var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
+                return fullname;
+            } catch {
+                window.location.href = '../Auth/Login'
+            }
+
+        }
+
+        function previewImageFormatter(value, row,index){
+            return '<button>Preview Image</button>'
+        }
         function imsgeFormatter(value, row, index) {
             var url = '';
             return '<img style="width:50px;height:50px;" src="' + appConfig.userURL + 'api/Collateral/FileUploads?filepath=' + encodeURI(value) + ' " />'
@@ -95,22 +109,20 @@
                     field: 'name',
                     title: 'Name'
                 }, {
-                    field: 'CollateralRefId',
-                    title: 'Type'
-                }, {
-                    field: 'CollateralNo',
-                    title: 'Collateral No'
-                }, {
-                    field: 'url',
-                    title: 'Preview',
-                    formatter: imsgeFormatter
+                    field: 'colleteralId',
+                    title: 'Id'
                 }, {
                     field: 'userId',
-                    title: 'User'
+                    title: 'User',
+                    formatter: fullNameFormatter
                 }, {
                     field: 'estimatedValue',
-                    title: 'Port',
+                    title: 'Estimated Value',
                     formatter: moneyFormatter
+                }, {
+                    field: 'id',
+                    title: '',
+                    formatter: previewImageFormatter
                 }]
             });
             $('#CollateralTab').on('post-body.bs.table', function () {
