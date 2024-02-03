@@ -318,8 +318,14 @@ function etype(elementId){
                         loadUserDocuments(data[key]);
                     }
                     if (key == 'loanUserCollaterals') {
-                        loanUserCollaterals(data[key]);
+                        //loanUserCollaterals(data[key]);
+                            
+                            
                     }
+                        if (key == 'collateralId') {
+                            var docList = data[key];
+                            singleLoanUserCollaterals(data[key]);
+                        }
                 }
             } catch (e) {
                 console.log(e);
@@ -342,7 +348,6 @@ function etype(elementId){
                     $.get(appConfig.adminURL + 'api/collaterals/userCollById?id=' + ecoll.userCollaterallId, function (data) {
                         collPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
                             'api/documents/fileuploads?filepath=' + data.url + '" /></div>';
-                        //$docElement.innerHTML = docPrevElements;
 
                         if (e >= docs.length) {
                             $collElement.innerHTML = collPrevElements + '</div>';
@@ -356,6 +361,29 @@ function etype(elementId){
                 }
             }
 
+        function singleLoanUserCollaterals(coll) {
+            var collPrevElements = '<div class="row">';
+            var $collElement = document.getElementById('collPrev');
+            var size = coll.length;
+            if (coll == null) {
+                collPrevElements = '<h6>No User Collateral Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                //$.each(coll, function (e) {
+                    var ecoll = coll;
+                $.get(appConfig.adminURL + 'api/collateral/Files?id=' + ecoll, function (data) {
+                    $.each(data, function (e) {
+                        console.log(data[e])
+                        collPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
+                            'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                       
+                        $collElement.innerHTML = collPrevElements + '</div>';
+                    });
+                    })
+
+               // });
+            }
+        }
             function loadUserDocuments(docs) {
                 var docPrevElements = '<div class="row">';
                 var $docElement = document.getElementById('docPrev');

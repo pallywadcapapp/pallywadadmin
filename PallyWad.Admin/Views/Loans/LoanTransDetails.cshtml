@@ -192,9 +192,9 @@
         }else{
             loanDetails.repay = 1;
         }
-        var url = appConfig.apiURL + "api/admin/loanclearance?id=" + loanDetails.id;
+        var url = appConfig.adminURL + "api/loans/loanclearance?id=" + loanDetails.id;
             $.ajax({
-                type: 'POST',
+                type: 'PUT',
                 url: url,
                 data: JSON.stringify(loanDetails),
                 contentType: "application/json",
@@ -202,7 +202,6 @@
                 $('#loanProcessView').pleaseWait('stop');
                 toastr.success('Loan '+ status +' successfully');
                 window.location.href = 'loantrans';
-                //refreshTables();
             }).fail(function (request, message, error) {
                 $('#loanProcessView').pleaseWait('stop');
                 toastr.error('error ' + request + 'for processing Loan ');
@@ -216,7 +215,7 @@
 
     function loadView(id) {
         $('#loanProcessView').pleaseWait();
-        var url = appConfig.apiURL + 'api/admin/loantransdetail?loanId=' + encodeURIComponent(id);
+        var url = appConfig.adminURL + 'api/loans/loantransdetail?loanId=' + encodeURIComponent(id);
         $.get(url, function (data) {
             loanDetails = data;
             $('#loanProcessView').pleaseWait('stop');

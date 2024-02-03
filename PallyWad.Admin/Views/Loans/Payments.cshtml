@@ -1,5 +1,246 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    //ViewData["Title"] = "Banks";
+    ViewBag.Title = "Banks";
+}
+
+<link href="~/css/index_style.css" rel="stylesheet">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Bank Deposits</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Bank Deposits
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <a id="demo02" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add Member Depost</a>
+                <table class="table table-bordered" id="BanksTab" width="100%" cellspacing="0"
+                       data-pagination="true" data-sort-name="name" data-sort-order="desc" data-page-size="50"
+                       data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="accno" data-show-refresh="true"
+                       data-show-export="true" data-show-columns="true" data-show-toggle="true" data-search="true"></table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Bank Deposit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group modsp">
+                            <span>Member Name </span><select placeholder="Member Name" class="form-select" id="memberId"></select>
+                        </div>
+
+                        <div class="form-group modsp">
+                            <span>Select Loan: </span>
+                            <select name="loanId" id="loanId" class="form-select"></select>
+                        </div>
+                        <div class="form-group modsp">
+                            <span>Amount Deposited</span><input type="number" placeholder="Amount Deposited" class="form-control" id="amount" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="saveBankDepost()" id="saveBankDepost">Post</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script>
+        var $members = $('#memberId');
+        $('#memberId').on('change', function (e) {
+            var value = $(this).find('option:selected').text();
+            var memberId = $(this).val();
+            loadMember(memberId)
+        });
+        function refreshTables() {
+            var newUrl = appConfig.adminURL + 'api/BankDeposit/Deposits';
+            $('#BanksTab').bootstrapTable('refresh', { url: newUrl, silent: true });
+        }
+
+        function depositFormatter(value, row, index) {
+            var url = '@Html.Raw(Url.Action("DepositsProcessor", "Loans"))';
+            url += '?Id=' + encodeURIComponent(row.id) + '&memberId=' + encodeURIComponent(row.memberId)
+            if (row.status == "Pending") {
+                return '<span><a href="' + url + '" class="btn btn-danger"> Process </a></span>';
+            } else {
+                return '<span>' + row.processState + '</span>'
+            }
+
+        }
+
+        loadDefault();
+
+        function loadDefault() {
+            $.get(appConfig.adminURL + 'api/user/AllActiveUsers', function (data) {
+                $members.empty();
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    var fullname = data[counter].lastname + " " + data[counter].firstname + " " + data[counter].othernames
+                    $option = $('<option value="' + data[counter].userName + '">' + fullname + '</option>');
+
+                    $members.append($option);
+                }
+                $members.select2({
+                    placeholder: "Select Members",
+                    width: 'element'
+                }).on('change', function (e) {
+                    if ($(this).val() && $(this).val().length) {
+                        $(this).next('.select2-container')
+                            .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Members');
+                    }
+                });
+            }).fail(function (e) {
+                toastr.error('unable to get members list');
+            });
+        }
+
+        function saveBankDepost() {
+            $('#myModal').pleaseWait();
+
+            var memberId = $('#memberId').val();
+            var amount = $('#amount').val();
+            var loanRefId = $('#loanId').val();
+            var name = $("#memberId option:selected").text();
+
+            var BankDeposits = {
+                "id": 0,
+                "depositId": "string",
+                "amount": amount,
+                "memberId": memberId,
+                "channel":"manual",
+                "otherdetails":"",
+                'fullname': name,
+                'loanRefId': loanRefId,
+                "status": "Pending",
+                "processState": "Pending",
+                "requestDate": "2023-06-29T08:40:26.512Z",
+                //"approvalDate": "",
+                "approvedBy": "",
+                "postedBy": ""
+            }
+
+            console.log(BankDeposits);
+            var url = appConfig.adminURL + "api/BankDeposit/Deposit";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(BankDeposits),
+                dataType: 'json',
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#myModal').pleaseWait('stop');
+                $('#myModal').modal('hide');
+                toastr.success('Bank Deposit for  ' + name + ' saved successfully');
+                refreshTables();
+            }).fail(function (request, message, error) {
+                $('#myModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for saving Bank Deposit for ' + name);
+            });
+
+        }
+
+        function loadMember(memberId) {
+            var $loan = $('#loanId');
+
+            $('#loanProcessView').pleaseWait();
+
+
+            $.get(appConfig.adminURL + 'api/loans/ActiveLoan?memberId=' + memberId, function (data) {
+                $loan.empty();
+                $loan.append('<option value="select">Select Loan</option>');
+                for (var counter = 0; counter <= data.length - 1; counter++) {
+                    $option = $('<option value="' + data[counter].loanrefnumber + '">' + currformatter.format(data[counter].loanamount) + ' - ' + data[counter].loanrefnumber + ' - ' + data[counter].description + '</option>');
+                    $loan.append($option);
+                }
+                //$members.select2({ width: '100%' });
+                $loan.select2({
+                    placeholder: "Select Loan",
+                    width: 'element'
+                })
+                    .on('change', function (e) {
+                        if ($(this).val() && $(this).val().length) {
+                            console.log($(this).val())
+                            //getMember($(this).val());
+                            $(this).next('.select2-container')
+                                .find('li.select2-search--inline input.select2-search__field').attr('placeholder', 'Select Loan');
+                        }
+                    });
+
+            }).fail(function (e) {
+                toastr.error('unable to get members loan history');
+                
+            });
+        }
+        $(function () {
+            $('#BanksTab').bootstrapTable({
+                idField: 'product',
+                url: appConfig.adminURL + 'api/BankDeposit/Deposits',
+                columns: [{
+                    field: 'fullname',
+                    title: 'Name'
+                }, {
+                    field: 'memberId',
+                    title: 'Member Id'
+                }, {
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter
+                }, {
+                    field: 'loanDeductAmount',
+                    title: 'Loan Amount',
+                    formatter: moneyFormatter
+                }, {
+                    field: 'loanRefId',
+                    title: 'Loan ID'
+                }, {
+                    field: 'requestDate',
+                    title: 'Date Requested',
+                    formatter: dateFormatter
+                }, {
+                    field: 'status',
+                    title: 'status'
+                }, {
+                    field: 'requestDate',
+                    title: '',
+                    formatter: depositFormatter
+                }]
+            });
+            $('#BanksTab').on('post-body.bs.table', function () {
+                $('[data-tooltip="true"]').tooltip({
+                    container: 'body'
+                });
+            });
+            $(document).on('editable-save.bs.table', '#BanksTab', function (e, field, row, old, $el) {
+                console.log(row);
+                $.post(appConfig.apiURL + 'api/bankdeposit', row, function (e) {
+                    console.log(e);
+                    toastr.success('Bank ' + product + ' edited successfully');
+                }).fail(function (error) {
+                    toastr.error('error editing ' + error.responseText + ' Bank');
+
+                });
+            });
+
+        });
+    </script>
+
+
 }
