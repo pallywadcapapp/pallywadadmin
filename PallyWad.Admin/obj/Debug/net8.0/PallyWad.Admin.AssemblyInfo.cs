@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PallyWad.Admin")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b155ed8f069f6274ca9961384295e2e3fd10ab7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bf2ac6f6481ef3db642786a689191cda6d149e1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PallyWad.Admin")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PallyWad.Admin")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

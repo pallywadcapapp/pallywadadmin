@@ -63,5 +63,17 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult PasswordCode()
+        {
+            return View();
+        }
+
+        public IActionResult NewPassWord()
+        {
+            return View();
+        }
+        
+
     }
 }

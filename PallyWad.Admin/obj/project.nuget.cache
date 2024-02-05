@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "DcsdeEIwHR49a6bb+4HTm04rQFQa+Sr8SoxIZidyGxIEweYmHpHVPylgrphIalogrpDgCpsm+Lmw8s48DLMpDA==",
+  "success": true,
+  "projectFilePath": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\PallyWad.Admin.csproj",
+  "expectedPackageFiles": [
+    "D:\\appconf\\dotnet\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512"
+  ],
+  "logs": []
+}

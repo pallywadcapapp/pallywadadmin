@@ -7153,6 +7153,10 @@
       "PackagePath": "staticwebassets\\js\\jquery.pleaseWait.js"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.segmentedInput.js",
+      "PackagePath": "staticwebassets\\js\\jquery.segmentedInput.js"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.steps.js",
       "PackagePath": "staticwebassets\\js\\jquery.steps.js"
     },

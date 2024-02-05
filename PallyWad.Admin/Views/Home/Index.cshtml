@@ -29,8 +29,8 @@
                                         <i class="fas fa-tasks text-gradient-success"></i>
                                     </div>
                                     <div class="col-10 text-right">
-                                        <h5 class="mt-0 mb-1"><span id="ploans"></span></h5>
-                                        <p class="mb-0 font-12 text-muted">Total Loans</p>
+                                        <h5 class="mt-0 mb-1"><span id="ploans">0</span></h5>
+                                        <p class="mb-0 font-12 text-muted">Total Loan Requests</p>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                         <i class="far fa-gem text-gradient-danger"></i>
                                     </div>
                                     <div class="col-10 text-right">
-                                        <h5 class="mt-0 mb-1">62</h5>
+                                        <h5 class="mt-0 mb-1"><span id="rActiveloans">0</span></h5>
                                         <p class="mb-0 font-12 text-muted">Active Loans</p>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                         <i class="fas fa-users text-gradient-warning"></i>
                                     </div>
                                     <div class="col-10 text-right">
-                                        <h5 class="mt-0 mb-1">14</h5>
+                                        <h5 class="mt-0 mb-1"><span id="rUsers">0</span></h5>
                                         <p class="mb-0 font-12 text-muted">Total Subscribers</p>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                                         <i class="fas fa-database text-gradient-primary"></i>
                                     </div>
                                     <div class="col-10 text-right">
-                                        <h5 class="mt-0 mb-1">&#8358;15562</h5>
+                                        <h5 class="mt-0 mb-1">&#8358;<span id="rLSumm">0</span></h5>
                                         <p class="mb-0 font-12 text-muted">Loan Summation</p>
                                     </div>
                                 </div>
@@ -175,10 +175,25 @@
 
         function loadDefault() {
         var ploans = $('#ploans');
+            var rActiveloans = $('#rActiveloans');
+            var rUsers = $('#rUsers');
+            var rLSumm = $('#rLSumm');
 
         $.get(appConfig.adminURL + 'api/report/loanrequest', function (data) {
             ploans.html(data);
         });
+
+            $.get(appConfig.adminURL + 'api/report/activeloans', function (data) {
+                rActiveloans.html(data);
+            });
+
+            $.get(appConfig.adminURL + 'api/report/users', function (data) {
+                rUsers.html(data);
+            });
+
+            $.get(appConfig.adminURL + 'api/report/loanSummation', function (data) {
+                rLSumm.html(moneyFormatter(data));
+            });
     }
     $(function () {
         loadDefault();

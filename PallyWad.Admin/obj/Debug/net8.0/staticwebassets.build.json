@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hxeWlxU/trCtyFY48na0oH1cbUNzrfhWS21C/mC+fog=",
+  "Hash": "QHYHtx8G2seKSjKkQMFjA4O1PF2WmKyzdHaD6tqri7k=",
   "Source": "PallyWad.Admin",
   "BasePath": "_content/PallyWad.Admin",
   "Mode": "Default",
@@ -33854,6 +33854,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\jquery.pleaseWait.js"
+    },
+    {
+      "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.segmentedInput.js",
+      "SourceId": "PallyWad.Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\",
+      "BasePath": "_content/PallyWad.Admin",
+      "RelativePath": "js/jquery.segmentedInput.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\jquery.segmentedInput.js"
     },
     {
       "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jQuery.SimpleCart.js",
