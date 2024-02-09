@@ -679,8 +679,8 @@
                 console.log(event);
                 console.log(request);
                 if (request.status === 401) {
-                    var url = '@Html.Raw(Url.Action("Lock", "Auth"))';
-                    //window.location.href = url;
+                    var url = '@Html.Raw(Url.Action("Login", "Auth"))';
+                    window.location.href = url;
                 }
                 if (request.statusText === 'Unauthorized') {
                     var url = '@Html.Raw(Url.Action("Login", "Auth"))';

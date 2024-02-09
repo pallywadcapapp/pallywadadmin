@@ -129,7 +129,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-sm-6" id="loanProcessView">
+                <div class="col-sm-6" id="loanCollateralView">
                     <p>
                         <span>Loan ID: </span><span name="loanId" id="loanId"></span>
                     </p>
@@ -143,6 +143,15 @@
                         <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                     </p>
                     <p>
+                        <span>Monthly Interest Rate (%): </span><span name="loanmonthlyinterest" id="loanmonthlyinterest"></span>
+                    </p>
+                    <p>
+                        <span>Monthly Interest Amount: </span><span name="monthlyrepay" id="monthlyrepay"></span>
+                    </p>
+                    <p>
+                        <span>Total Monthly Repayment: </span><span name="monthtotalrepay" id="monthtotalrepay"></span>
+                    </p>
+                    <p>
                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
                     </p>
                     <p>
@@ -154,22 +163,8 @@
                     <p>
                         <span>Approval Date: </span><input class="form-control" type="date" name="approvalDate" id="approvalDate" />
                     </p>
-                    <p>
-                        <span>BVN: </span><span name="bvn" id="bvn"></span>
-                    </p>
-                    <p>
-                        <span>Bank: </span><span name="bankname" id="bank"></span>
-                    </p>
-                    <p>
-                        <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
-                    </p>
-                    <p>
-                        <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
-                    </p>
-                    <p>
-                        <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
-                    </p>
-                    </div>
+
+                </div>
                     <div class="col-sm-6">
                     <h5>Documents Preview</h5>
                     <div id="docPrev"></div>
@@ -304,30 +299,25 @@ function etype(elementId){
                         }
                            
                         }
-                    if (key == 'memberId') {
-                        var fullname = getMemberById(data[key]).fullname
-                        $('[name="' + key + '"]').html(data[key]);
-                        $('[name="fullname"]').html(fullname);
-                    }
-                    if (key == 'guarantorId1') {
-                        //var fullname = getMemberById(data[key]).fullname
-                        $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                        var g1 = getMemberById(data[key]).fullname
-                        getGuarantorOverhead(data[key], key, g1);
-                    }
-                    if (key == 'guarantorId2') {
-                        $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                        var g1 = getMemberById(data[key]).fullname
-                        getGuarantorOverhead(data[key], key, g1);
-                    }
-                    if (key == 'guarantorId3') {
-                        $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
-                        var g1 = getMemberById(data[key]).fullname
-                        getGuarantorOverhead(data[key], key, g1);
-                    }
+
+                        if (key == 'memberId') {
+                            var member = getMemberById(data[key]);
+                            var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
+                            $('[name="' + key + '"]').html(data[key]);
+                            $('[name="fullname"]').html(fullname);
+                        }
                     if (key == 'amount') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                    }
+                        }
+                        if (key == 'monthtotalrepay') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'monthlyrepay') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'loanmonthlyinterest') {
+                            $('[name="' + key + '"]').html((data[key]).toFixed(2));
+                        }
                     if (key == 'processingFee') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }

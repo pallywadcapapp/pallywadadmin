@@ -19,31 +19,31 @@
         </div>
         <div class="card-body">
             <div class="row" id="myHeader">
-                <div class="form-group">
-                    <span>Coop Name </span><input type="text" placeholder="Cooperative Name" class="form-control"
-                        id="coyname" />
+                <div class="form-group col-md-12">
+                    <span>Org. Name </span><input type="text" placeholder="Organisation Name" class="form-control"
+                                                  id="name" />
                 </div>
-                <div class="form-group">
-                    <span>Coop Address</span><input type="text" placeholder="Cooperative address" class="form-control"
-                        id="coyaddress" />
+                <div class="form-group col-md-12">
+                    <span>Org. Address</span><input type="text" placeholder="Organisation address" class="form-control"
+                                                    id="address" />
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-12">
                     <span>Phone No </span><input type="text" placeholder="Phone No" class="form-control"
-                        id="phonenumber1" />
+                                                 id="phoneno" />
                 </div>
-                <div class="form-group">
-                    <span>Mobile No</span><input type="text" placeholder="Mobile No" class="form-control"
-                        id="phonenumber2" />
+                <div class="form-group col-md-12">
+                    <span>Bank</span><input type="text" placeholder="bank" class="form-control"
+                                            id="bank" />
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-12">
+                    <span>Account No</span><input type="text" placeholder="accountno" class="form-control"
+                                                     id="accountno" />
+                </div>
+                <div class="form-group col-md-12">
                     <span>Email Address </span><input type="text" placeholder="Email Address" class="form-control"
-                        id="emailaddress" />
+                        id="email" />
                 </div>
-                <div class="form-group">
-                    <span>Year Begin</span><input type="date" placeholder="Year Begin" class="form-control"
-                        id="yearbegin" />
-                </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <span>Year End </span><input type="date" placeholder="Year End" class="form-control"
                         id="yearend" />
                 </div>
@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <span>Savings Amount</span><input type="number" placeholder="Savings Amount" class="form-control"
                         id="withdrawamt" />
-                </div>
+                </div>-->
                 <div>
                     <button type="button" onclick="saveHeader();" id="save" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
                 </div>
@@ -76,22 +76,25 @@
     function saveHeader() {
         $('#myHeader').pleaseWait();
 
-        var savingsIntRate = $('#savingsIntRate').val();
-        var withdrawamt = $('#withdrawamt').val();
-        var sharevalue = $('#sharevalue').val();
-        var yearend = $('#yearend').val();
-        var emailaddress = $('#emailaddress').val();
-        var phonenumber1 = $('#phonenumber1').val();
-        var phonenumber2 = $('#phonenumber2').val();
-        
-        header.savingsIntRate = savingsIntRate;
-        header.withdrawamt = withdrawamt;
-        header.sharevalue = sharevalue;
-        header.yearend = yearend;
-        header.emailaddress = emailaddress;
-        header.phonenumber1 = phonenumber1;
-        header.phonenumber2 = phonenumber2;
-        var url = appConfig.apiURL + "api/settings/basicsettings";
+        // var savingsIntRate = $('#savingsIntRate').val();
+        // var withdrawamt = $('#withdrawamt').val();
+        // var sharevalue = $('#sharevalue').val();
+            var bank = $('#bank').val();
+            var email = $('#email').val();
+            var phoneno = $('#phoneno').val();
+            var address = $('#address').val();
+            var accountno = $('#accountno').val();
+            var name = $('#name').val();
+            //var bank = $('#bank').val();
+
+            header.bank = bank;
+            header.address = address;
+            header.accountno = accountno;
+            header.name = name;
+            header.email = email;
+            header.phoneno = phoneno;
+            //header.name = phonenumber2;
+        var url = appConfig.setupURL + "api/company";
         $.ajax({
             type: 'PUT',
             url: url,
@@ -139,7 +142,7 @@
     return type;
    }
     $(function () {
-        var url = appConfig.apiURL + 'api/settings/header';
+        var url = appConfig.setupURL + 'api/company';
         $.get(url, (data) => {
             header = data;
             console.log(data);

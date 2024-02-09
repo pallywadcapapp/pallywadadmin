@@ -191,7 +191,7 @@
                 depositDetails.tenantId = "rr";
                 depositDetails.approvedBy = localStorage.getItem('uemail');
                 depositDetails.approvalDate = approvalDate;
-                url = appConfig.apiURL + 'api/BankDeposit/processDeposit';
+                url = appConfig.adminURL + 'api/BankDeposit/processDeposit';
             } else {
                 depositDetails.processState = "Processed";
                 depositDetails.status = "Declined";
@@ -211,7 +211,7 @@
             }).done(function (data) {
                     $('#FundsProcessView').pleaseWait('stop');
                 toastr.success('Loan Request  processed successfully');
-                window.location.href = 'BankDeposits';
+                window.location.href = 'payments';
                 //refreshTables();
             }).fail(function (request, message, error) {
                     $('#FundsProcessView').pleaseWait('stop');

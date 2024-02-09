@@ -145,6 +145,15 @@
                         <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                     </p>
                     <p>
+                        <span>Monthly Interest Rate (%): </span><span name="loanmonthlyinterest" id="loanmonthlyinterest"></span>
+                    </p>
+                    <p>
+                        <span>Monthly Interest Amount: </span><span name="monthlyrepay" id="monthlyrepay"></span>
+                    </p>
+                    <p>
+                        <span>Total Monthly Repayment: </span><span name="monthtotalrepay" id="monthtotalrepay"></span>
+                    </p>
+                    <p>
                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
                     </p>
                     <p>
@@ -342,12 +351,16 @@
                         if (key == 'processingFee') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
-                        if (key == 'loanBal') {
+                        if (key == 'monthtotalrepay') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
-                        if (key == 'othercoorp') {
+                        if (key == 'monthlyrepay') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
+                        if (key == 'loanmonthlyinterest') {
+                            $('[name="' + key + '"]').html((data[key]).toFixed(2));
+                        } 
+
                         if (key == 'loanUserDocuments') {
                             var docList = data[key];
                             loadUserDocuments(data[key]);

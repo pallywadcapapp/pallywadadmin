@@ -156,71 +156,20 @@
                     <p>
                         <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
                     </p>
-                    <!--<p>
-                        <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
-                    </p>
-                    <p>
-
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>
-                                    Guarantor 1:
-                                </span>
-                            </div>
-                            <div class="col-sm-8">
-                                <span name="guarantorId1" id="guarantorId1"></span>
-                                <br />
-                                <span><b>Savings</b>: </span><label name="guarantorId1Normal" style="color: green;">0</label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: red;">0 </label></br/>
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId1LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net</b>: </span><label name="guarantorId1Net" style="color: black;"> </label>
-                            </div>
-
-                        </div>
-                    </p>
-                    <p>
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>
-                                    Guarantor 2:
-                                </span>
-                            </div>
-                            <div class="col-sm-10">
-                                <span name="guarantorId2" id="guarantorId2"></span>
-                                <br />
-                                <span><b> Savings </b>: </span><label name="guarantorId2Normal" style="color: green;">0</label>
-                                <span> <b> Loan</b>: </span><label name="guarantorId2Loans" style="color: red;">0 </label></br/>
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId2LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net </b>: </span><label name="guarantorId2Net" style="color: black;">0 </label>
-                            </div>
-
-                        </div>
-                    </p>
-                    <p>
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>
-                                    Guarantor 3:
-                                </span>
-                            </div>
-                            <div class="col-sm-10">
-                                <span name="guarantorId3" id="guarantorId3"></span>
-                                <br />
-                                <span><b>Savings</b>: </span><label name="guarantorId3Normal" style="color: green;">0</label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId3Loans" style="color: red;">0 </label><br />
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId3LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net</b>: </span><label name="guarantorId3Net" style="color: black;">0 </label>
-                            </div>
-
-                        </div>
-                    </p>-->
                 </div>
                 <div class="col-sm-6">
                     <p>
                         <span>Tenor</span><input type="number" name="duration" id="duration" class="form-control" />
                     </p>
+
                     <p>
-                        <span>Interest Rate</span><input type="number" name="loaninterest" id="loaninterest" class="form-control" />
+                        <span>Monthly Interest Amount (&#8358;) </span><input type="number" name="monthlyrepay" id="monthlyrepay" class="form-control" />
+                    </p>
+                    <p>
+                        <span>Monthly Interest Rate (%)</span><input type="number" name="mloaninterest" id="mloaninterest" class="form-control" />
+                    </p>
+                    <p>
+                        <span>Annual Interest Rate(%)</span><input type="number" disabled name="loaninterest" id="loaninterest" class="form-control" />
                     </p>
                     <p>
                         <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
@@ -256,6 +205,8 @@
                 var duration = $('#duration').val();
                 var loaninterest = $('#loaninterest').val();
                 var processingFee = $('#processingFee').val();
+                var monthlyrepay = $('#monthlyrepay').val();
+                var loanmonthlyinterest = $('#mloaninterest').val();
 
                 loanDetails.loaninterest = loaninterest;
                 loanDetails.duration = duration;
@@ -264,7 +215,10 @@
                 loanDetails.tenantId = "rr";
                 loanDetails.processingFee = processingFee;
                 loanDetails.approvedBy = localStorage.getItem('uemail');
-                url = appConfig.adminURL + 'api/loanrequest/loanrequestapproved?id=' + loanDetails.id + '&interest=' + loaninterest 
+                loanDetails.monthlyrepay = monthlyrepay;
+                loanDetails.loanmonthlyinterest = loanmonthlyinterest;
+                loanDetails.approvalDate = new Date();
+                url = appConfig.adminURL + 'api/loanrequest/loanrequestapproved';// '?id=' + loanDetails.id + '&interest=' + loaninterest 
                 + '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
             } else {
                 loanDetails.processState = "Processed";
@@ -357,6 +311,30 @@
             });
 
         }
+
+        $(function () {
+            $('#monthlyrepay').change(function (e) {
+                var repay = ($(this).val());
+                var amount = loanDetails.amount;
+                var tenor = parseFloat($('#duration').val());
+
+                var intrate = (repay * 100 * 12) / (amount * tenor);
+                var mintrate = (repay * 100) / (amount * tenor);
+                $('#loaninterest').val(intrate);
+                $('#mloaninterest').val(mintrate);
+            });
+
+            $('#mloaninterest').change(function (e) {
+                var ml = ($(this).val());
+                var amount = loanDetails.amount;
+                var tenor = $('#duration').val();
+
+                var intrate = (ml * 12);
+                var mintrate = (ml * amount * tenor) / 100;
+                $('#monthlyrepay').val(mintrate);
+                $('#loaninterest').val(intrate);
+            })
+        })
     </script>
 
 
