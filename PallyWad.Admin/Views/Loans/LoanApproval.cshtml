@@ -167,13 +167,43 @@
                     </p>
                 </div>
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>
+                    <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#loadReviewModal" onclick="__saveReview('Decline')">Decline</button>
                     <button type="button" class="btn btn-primary pull-right" onclick="saveReview('Approve')">Approve</button>
                 </div>
             </div>
         </div>
         <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
 
+
+    </div>
+</div>
+<div id="loadReviewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h4 class="modal-title"> <span name="category"></span>Decline Request</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            <span>Kindly Provide reasons for declining this loan request</span>
+                        </div>
+                        <div>
+                            <span>Reason : </span><textarea name="reason" id="reason" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-success">
+                <button type="button" class="btn btn-primary" onclick="declineRequest('Approve')">
+                    Decline
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -237,6 +267,33 @@
                 toastr.error('error ' + error + 'for processing Loan Request ');
             });
 
+        }
+
+        function declineRequest() {
+            $('#loadReviewModal').pleaseWait();
+            var reason = $('#reason').val();
+            loanDetails.status = "Declined";
+            loanDetails.processState = "Declined";
+            loanDetails.reason = reason;
+            loanDetails.approvedBy = localStorage.getItem('uemail');
+
+            url = appConfig.adminURL + 'api/loanrequest/loanrequestdecline?id=' + loanDetails.id +
+                '&reason=' + encodeURI(reason);
+
+            $.ajax({
+                type: 'PUT',
+                url: url,
+                data: JSON.stringify(loanDetails),
+                contentType: "application/json",
+            }).done(function (data) {
+                $('#loadReviewModal').pleaseWait('stop');
+                toastr.success('Loan Request  processed successfully');
+                window.location.href = 'declined';
+                //refreshTables();
+            }).fail(function (request, message, error) {
+                $('#loadReviewModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for processing Loan Request ');
+            });
         }
 
         function loadLoanType(loancode){

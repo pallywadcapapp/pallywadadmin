@@ -304,8 +304,11 @@ function etype(elementId){
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }
                         if (key == 'processState') {
-                        $('#decline').hide();
-                        $('#processed').hide();
+                            if(data[key] == 'Processed'){
+                                $('#decline').hide();
+                                $('#processed').hide();
+                            }
+                       
                         } 
                     if (key == 'loanBal') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
