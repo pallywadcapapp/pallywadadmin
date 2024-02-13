@@ -122,12 +122,12 @@
         <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Loan Processor</li>
+        <li class="breadcrumb-item active">Loan Approval</li>
     </ol>
     <!-- Example DataTables Card-->
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fa fa-table"></i>Loan Processor
+            <i class="fa fa-table"></i>Loan Approval
         </div>
         <div class="card-body">
             <div class="row">
@@ -139,38 +139,29 @@
                         <span>Member : </span><span name="fullname" id="fullname"></span>
                     </p>
                     <p>
+                        <span>Product : </span><span name="category" id="category"></span>
+                    </p>
+                    <p>
                         <span>Amount: </span><span name="amount" id="amount"></span>
                     </p>
                     <p>
                         <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
-                    </p>
-                    <p>
-                        <span>BVN: </span><span name="bvn" id="bvn"></span>
-                    </p>
-                    <p>
-                        <span>Bank: </span><span name="bankname" id="bank"></span>
-                    </p>
-                    <p>
-                        <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
-                    </p>
-                    <p>
-                        <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
                     </p>
                 </div>
                 <div class="col-sm-6">
                     <p>
                         <span>Tenor</span><input type="number" name="duration" id="duration" class="form-control" />
                     </p>
+                    <p>
+                        <span>Interest Rate(%)</span><input type="number" name="loaninterest" id="loaninterest" class="form-control" />
+                    </p>
 
                     <p>
-                        <span>Monthly Interest Amount (&#8358;) </span><input type="number" name="monthlyrepay" id="monthlyrepay" class="form-control" />
+                        <span>Monthly Interest Amount (&#8358;) </span><input type="number" disabled name="monthlyrepay" id="monthlyrepay" class="form-control" />
                     </p>
-                    <p>
+                    <!--<p>
                         <span>Monthly Interest Rate (%)</span><input type="number" name="mloaninterest" id="mloaninterest" class="form-control" />
-                    </p>
-                    <p>
-                        <span>Annual Interest Rate(%)</span><input type="number" disabled name="loaninterest" id="loaninterest" class="form-control" />
-                    </p>
+                    </p>-->
                     <p>
                         <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
                     </p>
@@ -206,7 +197,7 @@
                 var loaninterest = $('#loaninterest').val();
                 var processingFee = $('#processingFee').val();
                 var monthlyrepay = $('#monthlyrepay').val();
-                var loanmonthlyinterest = $('#mloaninterest').val();
+                //var loanmonthlyinterest = $('#mloaninterest').val();
 
                 loanDetails.loaninterest = loaninterest;
                 loanDetails.duration = duration;
@@ -216,7 +207,7 @@
                 loanDetails.processingFee = processingFee;
                 loanDetails.approvedBy = localStorage.getItem('uemail');
                 loanDetails.monthlyrepay = monthlyrepay;
-                loanDetails.loanmonthlyinterest = loanmonthlyinterest;
+                loanDetails.loanmonthlyinterest = loaninterest; // loanmonthlyinterest;
                 loanDetails.approvalDate = new Date();
                 url = appConfig.adminURL + 'api/loanrequest/loanrequestapproved';// '?id=' + loanDetails.id + '&interest=' + loaninterest 
                 + '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
@@ -239,7 +230,7 @@
             }).done(function (data) {
                 $('#loanProcessView').pleaseWait('stop');
                 toastr.success('Loan Request  processed successfully');
-                window.location.href = 'requests';
+                window.location.href = 'approved';
                 //refreshTables();
             }).fail(function (request, message, error) {
                 $('#loanProcessView').pleaseWait('stop');
@@ -273,6 +264,7 @@
                 loadLoanType(data.loancode);
                 $('#loadViewModal').pleaseWait('stop');
                 try {
+                    var amount = 1; var interest = 1;
                     for (var key in data) {
                         if (key == 'insuredname') {
                             var lname = data[key].split(' ')[0];
@@ -285,7 +277,8 @@
                             $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
                         }
                         if (key == 'memberId') {
-                            var fullname = getMemberById(data[key]).fullname
+                            var member = getMemberById(data[key]);
+                            var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
                             $('[name="' + key + '"]').html(data[key]);
                             $('[name="fullname"]').html(fullname);
                         }
@@ -293,15 +286,27 @@
                             $('[name="' + key + '"]').html(getMemberById(data[key]).fullname);
                             var g1 = getMemberById(data[key]).fullname;
                         }
+                        if (key == 'category') {
+                            $('[name="' + key + '"]').html((data[key]).toUpper());
+                        } 
                         if (key == 'amount') {
+                            amount = data[key];
+                            var intrate = (data[key] * interest) / (100)
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                            console.log(intrate)
+                            $('[name="monthlyrepay"]').val((intrate));
+                        }
+                        if (key == 'loanamount') {
+                            
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
-                        if (key == 'loanBal') {
-                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                        }
-                        if (key == 'othercoorp') {
-                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                        }
+                        if (key == 'loaninterest') {
+                            interest = data[key];
+                            var intrate = (data[key] * amount) / (100)
+                            $('[name="' + key + '"]').html((data[key]));
+                            console.log(intrate)
+                            $('[name="monthlyrepay"]').val((intrate));
+                        } 
                     }
                 } catch (e) {
                     console.log(e);
@@ -313,15 +318,13 @@
         }
 
         $(function () {
-            $('#monthlyrepay').change(function (e) {
+            $('#loaninterest').change(function (e) {
                 var repay = ($(this).val());
                 var amount = loanDetails.amount;
                 var tenor = parseFloat($('#duration').val());
 
-                var intrate = (repay * 100 * 12) / (amount * tenor);
-                var mintrate = (repay * 100) / (amount * tenor);
-                $('#loaninterest').val(intrate);
-                $('#mloaninterest').val(mintrate);
+                var intrate = (repay * amount) / (100);
+                $('#monthlyrepay').val(intrate);
             });
 
             $('#mloaninterest').change(function (e) {
