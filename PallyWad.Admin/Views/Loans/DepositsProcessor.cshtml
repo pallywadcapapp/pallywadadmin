@@ -131,7 +131,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-xs-6" id="FundsProcessView">
+                <div class="col-md-6" id="FundsProcessView">
                     <p>
                         <span>Funds ID: </span><span name="depositId" id="depositId"></span>
                     </p>
@@ -154,7 +154,7 @@
                         <span>Other Details: </span><span name="otherdetails" id="otherdetails"></span>
                     </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-md-6">
                     <h5>Payment Documents Preview</h5>
                     <div id="docPrev"></div>
                 </div>
@@ -290,7 +290,7 @@
                 collPrevElements = '<h6>No User Payment Document Uploaded</h6>'
                 $collElement.innerHTML = collPrevElements + '</div>';
             } else {
-                collPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
+                collPrevElements += '<div class="col-sm-6 card"><img style="width:350px;height:350px;" src="' + appConfig.userURL +
                     'api/payments/imageUrl?id=' + coll.id + '" /></div>';
                 $collElement.innerHTML = collPrevElements + '</div>';
                 
