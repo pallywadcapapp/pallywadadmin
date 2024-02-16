@@ -131,7 +131,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-xs-12" id="FundsProcessView">
+                <div class="col-xs-6" id="FundsProcessView">
                     <p>
                         <span>Funds ID: </span><span name="depositId" id="depositId"></span>
                     </p>
@@ -142,13 +142,10 @@
                         <span>Amount: </span><span name="amount" id="amount"></span>
                     </p>
                     <p>
-                        <span>Loan Amount Deductible: </span><span name="loanDeductAmount" id="loanDeductAmount"></span>
-                    </p>
-                    <p>
                         <span>Loan ID: </span><span name="loanRefId" id="loanRefId"></span>
                     </p>
                     <p>
-                        <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
+                        <span>Payment Date: </span><span name="requestDate" id="requestDate"></span>
                     </p>
                     <p>
                         <span>Posting Date: </span><input name="approvalDate" id="approvalDate" type="date" class="form-input" />
@@ -156,6 +153,10 @@
                     <p>
                         <span>Other Details: </span><span name="otherdetails" id="otherdetails"></span>
                     </p>
+                </div>
+                <div class="col-sm-6">
+                    <h5>Payment Documents Preview</h5>
+                    <div id="docPrev"></div>
                 </div>
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>
@@ -237,7 +238,8 @@
                             var fullname = getMemberById(data[key]).fullname
                             $('[name="' + key + '"]').html(data[key]);
                             $('[name="fullname"]').html(fullname);
-                        }
+                            loanUserCollaterals(data)
+                        } 
                         if (key == 'amount') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                             }
@@ -253,6 +255,48 @@
             });
         }
 
+        function loadUserDocuments(docs) {
+            var docPrevElements = '<div class="row">';
+            var $docElement = document.getElementById('docPrev');
+            var size = docs.length;
+            if (size < 1) {
+                collPrevElements = '<h6>No Payyment Document Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                $.each(docs, function (e) {
+                    var edocs = docs[e];
+                    $.get(appConfig.adminURL + 'api/documents/userDocById?id=' + edocs.userDocumentlId, function (data) {
+                        docPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
+                            'api/documents/fileuploads?filepath=' + data.url + '" /></div>';
+                        //$docElement.innerHTML = docPrevElements;
+
+                        if (e >= docs.length) {
+                            $docElement.innerHTML = docPrevElements + '</div>';
+                        } else {
+                            $docElement.innerHTML = docPrevElements + '</div>';
+                        }
+
+                    })
+
+                });
+            }
+        }
+
+        function loanUserCollaterals(coll) {
+            var collPrevElements = '<div class="row">';
+            var $collElement = document.getElementById('docPrev');
+            var size = coll.length;
+            if (size < 1) {
+                collPrevElements = '<h6>No User Payment Document Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                collPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
+                    'api/payments/imageUrl?id=' + coll.id + '" /></div>';
+                $collElement.innerHTML = collPrevElements + '</div>';
+                
+               
+            }
+        }
         $(function(){
             $('#approvalDate').val(new Date().toISOString().split('T')[0]);
         })
