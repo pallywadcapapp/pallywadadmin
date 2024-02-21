@@ -133,16 +133,43 @@
             <div class="row">
                 <div class="col-sm-6" id="loanProcessView">
                     <p>
+                        <span>Loan Category: </span><span name="category" id="category"></span>
+                    </p>
+                    <p>
                         <span>Loan ID: </span><span name="loanId" id="loanId"></span>
                     </p>
                     <p>
-                        <span>Member : </span><span name="fullname" id="fullname"></span>
+                        <span>Member : </span><b><span name="fullname" id="fullname"></span></b>
                     </p>
                     <p>
-                        <span>Product : </span><span name="category" id="category"></span>
+                        <span>Amount: </span><b><span name="amount" id="amount"></span></b>
                     </p>
                     <p>
-                        <span>Amount: </span><span name="amount" id="amount"></span>
+                        <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
+                    </p>
+                    <p>
+                        <span>Request Interest Rate(%): </span><span name="preferredRate" id="preferredRate"></span>
+                    </p>
+                    <p>
+                        <span>Loan Purpose: </span><b><span name="purpose" id="purpose"></span></b>
+                    </p>
+                    <div class="business">
+
+                        <p>
+                            <span> Business Name: </span><b><span name="businessname" id="businessname"></span></b>
+                        </p>
+                        <p>
+                            <span> Business Sector: </span><b><span name="sector" id="sector"></span></b>
+                        </p>
+                        <p>
+                            <span> Years in Business: </span><b><span name="age" id="age"></span></b>
+                        </p>
+                    </div>
+                    <p>
+                        <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
+                    </p>
+                    <p>
+                        <span>Tenor(Months): </span><span name="duration" id="duration"></span>
                     </p>
                     <p>
                         <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
@@ -159,16 +186,22 @@
                     <p>
                         <span>Monthly Interest Amount (&#8358;) </span><input type="number" disabled name="monthlyrepay" id="monthlyrepay" class="form-control" />
                     </p>
-                    <!--<p>
-                        <span>Monthly Interest Rate (%)</span><input type="number" name="mloaninterest" id="mloaninterest" class="form-control" />
-                    </p>-->
                     <p>
                         <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
                     </p>
                 </div>
+                <div class="form-group modsp col-sm-12">
+                    <div class="input-group" style="margin-left:5%">
+                        <label class="switch">
+                            <input id="certifyApproval" onchange="certify()" type="checkbox">
+                            <span class="slider cround"></span>
+                        </label>
+                        <span class="input-group-addon" id="colltype">&nbsp;&nbsp; Certify All Documents</span>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#loadReviewModal" onclick="__saveReview('Decline')">Decline</button>
-                    <button type="button" class="btn btn-primary pull-right" onclick="saveReview('Approve')">Approve</button>
+                    <button type="button" class="btn btn-primary pull-right" id="appr" disabled onclick="saveReview('Approve')">Approve</button>
                 </div>
             </div>
         </div>
@@ -218,7 +251,14 @@
         $('#processingFee').val(0)
         loadView(loanId);
 
-
+        function certify() {
+            var ischecked = $('#certifyApproval').is(':checked');
+            if (ischecked) {
+                $('#appr').prop('disabled', false);
+            }else{
+                $('#appr').prop('disabled', true);
+            }
+        }
         function saveReview(type) {
             $('#loanProcessView').pleaseWait();
             var url = '';
@@ -332,6 +372,13 @@
                         $('[name="' + key + '"]').html(data[key]);
                         if (key == 'requestDate') {
                             $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        }
+                        if (key == 'category') {
+                            if (data[key] == "Personal Loan") {
+                                $('.business').hide()
+                            } else {
+                                $('.business').show()
+                            }
                         }
                         if (key == 'memberId') {
                             var member = getMemberById(data[key]);

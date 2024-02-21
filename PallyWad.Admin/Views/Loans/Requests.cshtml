@@ -241,7 +241,7 @@
                 <button type="button" class="btn btn-warning" onclick="printPreview()">Loan Preview</button>
                 <button type="button" class="btn btn-primary process" onclick="processReview('Approve')">Fund
                     Account</button>
-                <button type="button" class="btn btn-primary approve" onclick="saveReview('Approve')">Process</button>
+                <!--<button type="button" class="btn btn-primary approve" onclick="saveReview('Approve')">Process</button>-->
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -345,7 +345,7 @@
     }
     function printPreview() {
         var url = '@Html.Raw(Url.Action("LoanprintPreview","loans"))';
-        window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+        window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId) + '&form=request';
 
     }
 

@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\assets\\css\\icons.css.map"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\css\\imgPreview.css",
+      "PackagePath": "staticwebassets\\assets\\css\\imgPreview.css"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\css\\style.css",
       "PackagePath": "staticwebassets\\assets\\css\\style.css"
     },
@@ -5003,6 +5007,10 @@
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\images\\logo.png",
       "PackagePath": "staticwebassets\\assets\\images\\logo.png"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\images\\pdf.png",
+      "PackagePath": "staticwebassets\\assets\\images\\pdf.png"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\assets\\images\\small\\img-1.jpg",

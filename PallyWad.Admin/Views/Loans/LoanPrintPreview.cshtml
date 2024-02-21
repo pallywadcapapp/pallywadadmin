@@ -3,6 +3,7 @@
 }
 
 <link href="~/css/index_style.css" rel="stylesheet">
+<link href="~/assets/css/imgPreview.css" rel="stylesheet" type="text/css">
 <style>
     .hide {
         display: none;
@@ -132,17 +133,38 @@
             <div class="row">
                 <div class="col-sm-6" id="loanProcessView">
                     <p>
+                        <span>Loan Category: </span><span name="category" id="category"></span>
+                    </p>
+                    <p>
                         <span>Loan ID: </span><span name="loanId" id="loanId"></span>
                     </p>
                     <p>
-                        <span>Member : </span><span name="fullname" id="fullname"></span>
+                        <span>Member : </span><b><span name="fullname" id="fullname"></span></b>
                     </p>
                     <p>
-                        <span>Amount: </span><span name="amount" id="amount"></span>
+                        <span>Amount: </span><b><span name="amount" id="amount"></span></b>
                     </p>
                     <p>
                         <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                     </p>
+                    <p>
+                        <span>Request Interest Rate(%): </span><span name="preferredRate" id="preferredRate"></span>
+                    </p>
+                    <p>
+                        <span>Loan Purpose: </span><b><span name="purpose" id="purpose"></span></b>
+                    </p>
+                    <div class="business">
+
+                        <p>
+                            <span> Business Name: </span><b><span name="businessname" id="businessname"></span></b>
+                        </p>
+                        <p>
+                            <span> Business Sector: </span><b><span name="sector" id="sector"></span></b>
+                        </p>
+                        <p>
+                            <span> Years in Business: </span><b><span name="age" id="age"></span></b>
+                        </p>
+                    </div>
                     <p>
                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
                     </p>
@@ -208,13 +230,26 @@
     </div>
 </div>
 
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+
 @section Scripts{
 
 <script src="~/Scripts/config.js" type="text/javascript"></script>
 <script>
     var loanDetails = '';
     var loanId = qs['loanId'];
-    var memberId = qs['memberId']
+        var memberId = qs['memberId'];
+        var formr = qs['form'];
     loadView(loanId);
 
     function printPage(){
@@ -251,8 +286,13 @@ printwin.print();
         }
 
         function saveReview(type) {
-            var url = '@Html.Raw(Url.Action("LoanApproval", "loans"))';
-            window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+            
+            //var url = '@Html.Raw(Url.Action("LoanApproval", "loans"))';
+            if (formr == 'request') {
+                var url = '@Html.Raw(Url.Action("LoanApproval", "loans"))';
+                window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
+            }
+            
 
         }
 function etype(elementId){    
@@ -290,6 +330,13 @@ function etype(elementId){
                         }
 
                     }
+                    if (key == 'category') { 
+                        if (data[key] == "Personal Loan") {
+                            $('.business').hide()
+                        } else { 
+                            $('.business').show()
+                        }
+                    }
                     if (key == 'memberId') {
                         var member = getMemberById(data[key]);
                         var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
@@ -305,8 +352,8 @@ function etype(elementId){
                     }
                         if (key == 'processState') {
                             if(data[key] == 'Processed'){
-                                $('#decline').hide();
-                                $('#processed').hide();
+ $('#decline').hide();
+                        $('#processed').hide();
                             }
                        
                         } 
@@ -374,11 +421,18 @@ function etype(elementId){
             } else {
                 //$.each(coll, function (e) {
                     var ecoll = coll;
+                var url = '@Html.Raw(Url.Action("images", "assets"))';
                 $.get(appConfig.adminURL + 'api/collateral/Files?id=' + ecoll, function (data) {
                     $.each(data, function (e) {
                         console.log(data[e])
-                        collPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
-                            'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        if (data[e].fileurl.indexOf('.pdf') == -1) {
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        } else { 
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' +
+                                url + '/pdf.png" '+ 'alt=' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        }
                        
                         $collElement.innerHTML = collPrevElements + '</div>';
                     });
@@ -398,8 +452,14 @@ function etype(elementId){
                     $.each(docs, function (e) {
                         var edocs = docs[e];
                         $.get(appConfig.adminURL + 'api/documents/userDocById?id=' + edocs.userDocumentlId, function (data) {
-                            docPrevElements += '<div class="col-sm-6 card"><img style="width:150px;height:150px;" src="' + appConfig.userURL +
-                                'api/documents/fileuploads?filepath=' + data.url + '" /></div>';
+                            if (data.url.indexOf('.pdf') == -1) {
+                                docPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="'
+                                    + appConfig.userURL + 'api/documents/fileuploads?filepath=' + data.url + '" /></div>';
+                            } else {
+                            docPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="'
+                                + 'assets/images/pdf.png' + '" /></div>';
+                            }
+                        
                             //$docElement.innerHTML = docPrevElements;
 
                             if (e >= docs.length) {
@@ -420,6 +480,50 @@ function etype(elementId){
             toastr.error('unable to process request approval ');
             toastr.error(error.responseText);
             console.log(error);
+        }
+        var modal = document.getElementById("myModal");
+    function previewImages(id) {
+            var modal = document.getElementById("myModal");
+
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            img.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+    }
+
+    function previewImage(id) {
+            
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            if (id.src.indexOf('pdf.png') == -1) {
+                modal.style.display = "block";
+                modalImg.src = id.src;
+                captionText.innerHTML = id.alt;
+        } else {
+            window.location.href= id.alt
+        }
+          
+    }
+
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
         }
 </script>
 
