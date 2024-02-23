@@ -3,6 +3,7 @@
 }
 
 <link href="~/css/index_style.css" rel="stylesheet">
+<link href="~/assets/css/imgPreview.css" rel="stylesheet" type="text/css">
 <style>
     .hide {
         display: none;
@@ -123,68 +124,119 @@
         <li class="breadcrumb-item active">Loan Processor</li>
     </ol>
     <!-- Example DataTables Card-->
-    <div class="card mb-3">
-        <div class="card-header">
-            <i class="fa fa-table"></i>Loan Processor
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-6" id="loanCollateralView">
-                    <p>
-                        <span>Loan ID: </span><span name="loanId" id="loanId"></span>
-                    </p>
-                    <p>
-                        <span>Member : </span><span name="fullname" id="fullname"></span>
-                    </p>
-                    <p>
-                        <span>Amount: </span><span name="amount" id="amount"></span>
-                    </p>
-                    <p>
-                        <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
-                    </p>
-                    <p>
-                        <span>Monthly Interest Rate (%): </span><span name="loanmonthlyinterest" id="loanmonthlyinterest"></span>
-                    </p>
-                    <p>
-                        <span>Monthly Interest Amount: </span><span name="monthlyrepay" id="monthlyrepay"></span>
-                    </p>
-                    <p>
-                        <span>Total Monthly Repayment: </span><span name="monthtotalrepay" id="monthtotalrepay"></span>
-                    </p>
-                    <p>
-                        <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
-                    </p>
-                    <p>
-                        <span>Tenor(Months): </span><span name="duration" id="duration"></span>
-                    </p>
-                    <p>
-                        <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
-                    </p>
-                    <p>
-                        <span>Approval Date: </span><input class="form-control" type="date" name="approvalDate" id="approvalDate" />
-                    </p>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Loan Details</a></li>
+            <li><a href="#tabs-2">Evidence Uploads</a></li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="tabs-1">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>Loan Processor
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="loanProcessView">
+                                <div class="col-sm-6">
+                                    <p>
+                                        <span>Loan ID: </span><span name="loanId" id="loanId"></span>
+                                    </p>
+                                    <p>
+                                        <span>Member : </span><span name="fullname" id="fullname"></span>
+                                    </p>
+                                    <p>
+                                        <span>Amount: </span><b><span name="amount" id="amount"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Interest Rate(%): </span><b><span name="loaninterest" id="loaninterest"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Monthly Interest Amount: </span><b><span name="monthlyrepay" id="monthlyrepay"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
+                                    </p>
+                                    <p>
+                                        <span>Tenor(Months): </span><span name="duration" id="duration"></span>
+                                    </p>
+                                    <p>
+                                        <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
+                                    </p>
+                                    <p>
+                                        <span>Collateral: </span><b><span name="collateral" id="collateral"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Estimated Collateral Value: </span><b><span name="estimatedCollateralValue" id="estimatedCollateralValue"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Collateral Value: </span><b><span name="collateralValue" id="collateralValue"></span></b>
+                                    </p>
+                                    <p>
+                                        <span>Pre Approval Date: </span><span name="approvalDate" id="approvalDate"></span>
+                                    </p>
+                                    <p>
+                                        <span>Collateral Collection Date: </span><span name="collaterizedDate" id="collaterizedDate"></span>
+                                    </p>
+                                    <p>
+                                        <span>Processed Date: </span><input type="date" class="form-control" name="processedDate" id="processedDate" />
+                                    </p>
 
-                </div>
-                    <div class="col-sm-6">
-                    <h5>Documents Preview</h5>
-                    <div id="docPrev"></div>
-                    <h5>Collateral Preview</h5>
-                    <div id="collPrev"></div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <h5>Documents Preview</h5>
+                                    <div id="docPrev"></div>
+                                    <h5>Collateral Preview</h5>
+                                    <div id="collPrev"></div>
+                                </div>
+                                <div class="col-sm-12">
+                                </div>
+
+                                <div class="form-group modsp col-sm-12">
+                                    <div class="input-group" style="margin-left:5%">
+                                        <label class="switch">
+                                            <input id="certifyApproval" onchange="certify()" type="checkbox">
+                                            <span class="slider cround"></span>
+                                        </label>
+                                        <span class="input-group-addon" id="colltype">&nbsp;&nbsp; Certify All Documents and Payment</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <!--<button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>-->
+                                    <button type="button" disabled id="process" class="btn btn-primary pull-right" onclick="saveReview('Approve')">Process</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
                     </div>
-                    <div class="col-sm-12">
+                </div>
+                <div id="tabs-2">
+                    <div class="row text-center">
+                        <div class="col-sm-12">
+                            <h5>Collected Collateral Documents Preview</h5>
+                            <div id="colCollPrev"></div>
+                        </div>
+                    </div>
 
-                   
+
                 </div>
-                <div class="col-sm-12">
-                    <!--<button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>-->
-                    <button type="button" id="process" class="btn btn-primary pull-right" onclick="saveReview('Approve')">Process</button>
-                </div>
+
             </div>
-        </div>
-    <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
-
 
 </div>
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
 </div>
 
 @section Scripts{
@@ -202,16 +254,16 @@
         $('#process').prop('disabled', true);
         var url = '';
         if(type=='Approve'){
-            var approvalDate = $('#approvalDate').val();
-            if(approvalDate == ''){
+            var processedDate = $('#processedDate').val();
+            if(processedDate == ''){
                 $('#loanProcessView').pleaseWait('stop');
-                toastr.error('Please select a valid Approval Date ');
+                toastr.error('Please select a valid Processing Date ');
                 exit;
             }else{
                 
-            loanDetails.approvalDate = approvalDate;
+            loanDetails.processedDate = processedDate;
             loanDetails.processState = "Processed";
-            loanDetails.status = "Approved";
+            loanDetails.status = "Processed";
             loanDetails.tenantId = "rr";
             loanDetails.approvedBy = localStorage.getItem('uemail');
                 url = appConfig.adminURL + 'api/loanrequest/ProcessLoanRequest';
@@ -292,13 +344,23 @@ function etype(elementId){
                     if (key == 'approvalDate') {
                         if(data[key] == null){
                              var d = new Date().toISOString().split('T')[0];
-                            $('[id="' + key + '"]').val(d);
+                                $('[id="' + key + '"]').html(d);
                         }else{
                              var d = new Date(data[key]).toISOString().split('T')[0];
-                            $('[id="' + key + '"]').val(d);
+                                $('[id="' + key + '"]').html(d);
                         }
-                           
+
                         }
+                        if (key == 'collaterizedDate') {
+                            if (data[key] == null) {
+                                var d = new Date().toISOString().split('T')[0];
+                                $('[id="' + key + '"]').html(d);
+                            } else {
+                                var d = new Date(data[key]).toISOString().split('T')[0];
+                                $('[id="' + key + '"]').html(d);
+                            }
+
+                        } 
 
                         if (key == 'memberId') {
                             var member = getMemberById(data[key]);
@@ -309,6 +371,12 @@ function etype(elementId){
                     if (key == 'amount') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
+                        if(key == 'collateralValue') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'estimatedCollateralValue') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        } 
                         if (key == 'monthtotalrepay') {
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
@@ -320,13 +388,25 @@ function etype(elementId){
                         }
                     if (key == 'processingFee') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                    }
-                    if (key == 'loanBal') {
-                        $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                    }
-                    if (key == 'othercoorp') {
-                        $('[name="' + key + '"]').html(currformatter.format(data[key]));
-                    }
+                                } 
+                    if (key == 'processState') {
+                        if(data[key]== "Processed"){
+                            window.location.href = 'Processed';
+                        }
+                    } 
+
+
+                        if (key == 'loanUserDocuments') {
+                            var docList = data[key];
+                            loadUserDocuments(data[key]);
+                        }
+                        if (key == 'loanUserCollaterals') {
+                            //loanUserCollaterals(data[key]);
+                        }
+                        if (key == 'collateralId') {
+                            var docList = data[key];
+                            singleLoanUserCollaterals(data[key]);
+                        }
                 }
             } catch (e) {
                 console.log(e);
@@ -336,47 +416,125 @@ function etype(elementId){
         });
 
         
-    function getGuarantorOverhead(memberId, guarantor, gname) {
-        console.log(guarantor)
-        var sav = 0;
-        var loan = 0;
-        var loanGuan = 0;
-        var url = appConfig.apiURL + "api/Admin/GuarantorOverhead?memberId=" + memberId;
-        $.ajax({
-            type: 'GET',
-            url: url,
-            contentType: "application/json",
-        }).done(function (data) {
-            toastr.success('guarantor ' + gname + ' savings and Loan details gotten suucessfully ');
+   
+    }
 
-            for (var key in data) {
-                var acc = data[key];
-                for (var v in acc) {
-                    if (v == 'acctype') {
-                        if (acc[v] == 'Loans') {
-                            $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].loanBalance));
-                            loan = data[key].loanBalance;
-                        } else if (acc[v] == 'Normal')  {
-                            $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
-                            sav = data[key].savBalance
-                        } else if (acc[v] == 'LoanGuanrantee')  {
-                            $('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
-                            loanGuan = data[key].loanGuarantee
-                        }else {
-                            //$('[name="' + guarantor + acc[v] + '"]').html(currformatter.format(data[key].savBalance));
+        function loadUserDocuments(docs) {
+            var docPrevElements = '<div class="row">';
+            var $docElement = document.getElementById('docPrev');
+            var size = docs.length;
+            if (size < 1) {
+                collPrevElements = '<h6>No User Document Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                $.each(docs, function (e) {
+                    var edocs = docs[e];
+                    $.get(appConfig.adminURL + 'api/documents/userDocById?id=' + edocs.userDocumentlId, function (data) {
+                        docPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.userURL +
+                            'api/documents/fileuploads?filepath=' + data.url + '" /></div>';
+                        //$docElement.innerHTML = docPrevElements;
+
+                        if (e >= docs.length) {
+                            $docElement.innerHTML = docPrevElements + '</div>';
+                        } else {
+                            $docElement.innerHTML = docPrevElements + '</div>';
                         }
+
+                    })
+
+                });
+            }
+        }
+
+        function singleLoanUserCollaterals(coll) {
+            var collPrevElements = '<div class="row">';
+            var $collElement = document.getElementById('collPrev');
+            var size = coll.length;
+            if (coll == null) {
+                collPrevElements = '<h6>No User Collateral Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                //$.each(coll, function (e) {
+                var ecoll = coll;
+                var url = '@Html.Raw(Url.Action("images", "assets"))';
+                $.get(appConfig.adminURL + 'api/collateral/Files?id=' + ecoll, function (data) {
+                    $.each(data, function (e) {
+                        console.log(data[e])
+                        if (data[e].fileurl.indexOf('.pdf') == -1) {
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        } else {
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' +
+                                url + '/pdf.png" ' + 'alt=' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        }
+
+                        $collElement.innerHTML = collPrevElements + '</div>';
+                    });
+                })
+
+                // });
+            }
+        }
+
+                function CollectedCollaterals(loanId) {
+                    var collPrevElements = '<div class="row">';
+                    var $collElement = document.getElementById('colCollPrev');
+                    if (loanId == null) {
+                        collPrevElements = '<h6>Invalid Loan ID</h6>'
+                        $collElement.innerHTML = collPrevElements + '</div>';
+                    } else {
+                        var url = '@Html.Raw(Url.Action("images", "assets"))';
+                        $.get(appConfig.adminURL + 'api/collateral/loadedCollateral?loanId=' + loanId, function (data) {
+                            $.each(data, function (e) {
+                                //if (data[e].fileurl.indexOf('.pdf') == -1) {
+                                collPrevElements += '<div class="col-sm-3 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.adminURL +
+                                        'api/collateral/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                                /*} else {
+                                    collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' +
+                                        url + '/pdf.png" ' + 'alt=' + appConfig.adminURL +
+                                        'api/collateral/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                                }*/
+
+                                $collElement.innerHTML = collPrevElements + '</div>';
+                            })
+                        })
+
+                       
                     }
                 }
-            }
-            var bal = parseFloat(sav) - parseFloat(loan) - parseFloat(loanGuan);
-            $('[name="' + guarantor + 'Net"]').html(currformatter.format(bal));
-        }).fail(function (request, message, error) {
-            $('#myModal').pleaseWait('stop');
-            toastr.error('unable to get guarantor ' + gname + ' savings and Loan details ');
-        });
-    };
+                CollectedCollaterals(loanId);
+        var modal = document.getElementById("myModal");
+        function previewImage(id) {
 
-    }
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            if (id.src.indexOf('pdf.png') == -1) {
+                modal.style.display = "block";
+                modalImg.src = id.src;
+                captionText.innerHTML = id.alt;
+            } else {
+                window.location.href = id.alt
+            }
+
+        }
+
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        function certify() {
+            var ischecked = $('#certifyApproval').is(':checked');
+            if (ischecked) {
+                $('#process').prop('disabled', false);
+            } else {
+                $('#process').prop('disabled', true);
+            }
+        }
 
         function showError(error, value, xhr) {
             $('#strWorkspace').pleaseWait('stop');

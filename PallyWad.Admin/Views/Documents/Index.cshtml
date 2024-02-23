@@ -4,6 +4,7 @@
 }
 
 <link href="~/css/index_style.css" rel="stylesheet">
+<link href="~/assets/css/imgPreview.css" rel="stylesheet" type="text/css">
 <div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
@@ -28,7 +29,7 @@
             </div>
         </div>
         <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
-        <div id="myModal" class="modal fade" role="dialog">
+        <div id="_myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -65,13 +66,25 @@
     </div>
 </div>
 
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+
 @section Scripts{
     
     <script>
 
         function imsgeFormatter(value, row, index) {
             var url = '';
-            return '<img style="width:50px;height:50px;" src="' + appConfig.userURL + 'api/Documents/FileUploads?filepath=' + encodeURI(value) + ' " />'
+            return '<img onclick="previewImage(this)" class="myImg" style="width:50px;height:50px;" src="' + appConfig.userURL + 'api/Documents/FileUploads?filepath=' + encodeURI(value) + ' " />'
             /*$.get(appConfig.userURL + 'api/Documents/FileUploads?filepath=' + encodeURI(value) , function (e) {
                 console.log(e);
                 url = e;
@@ -83,9 +96,44 @@
             });*/
             
         }
+        function fullNameFormatter(value, row, index) {
+            try {
+                var member = getMemberById(value);
+                var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
+                return fullname;
+            } catch {
+                window.location.href = '../Auth/Login'
+            }
+
+        }
+
+        function viewFormatter(value, row, index) {
+            var id = row.id;
+            var email = row.loanId;
+            var status = row.status;
+            var key = row.processState;
+            return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
+                ' <ul class="dropdown-menu">' +
+                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + email + '\', \'' + status + '\', \'' + key + '\')">VIEW</a></li>' +
+                //'<li><a id="demo02" class="btn admin" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">REVIEW</a></li>' +
+                ' </ul></div >'
+        };
+
         function actionFormatter(value, row, index) {
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
+
+        function documentFormatter(value, row, index) {
+            var url = '@Html.Raw(Url.Action("DocumentsProcessor", "Loans"))';
+            url += '?Id=' + encodeURIComponent(row.id) + '&memberId=' + encodeURIComponent(row.memberId)
+            if (row.status == false) {
+                return '<span><a href="' + url + '" class="btn btn-danger"> Process </a></span>';
+            } else {
+                return '<span>' + row.processState + '</span>'
+            }
+
+        }
+
         function refreshTables() {
             var newUrl = appConfig.apiURL + 'api/settings/Document';
             $('#DocumentTab').bootstrapTable('refresh', { url: newUrl, silent: true });
@@ -93,7 +141,27 @@
 
         $('#type').select2();
 
+        var modal = document.getElementById("myModal");
+        function previewImage(id) {
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            if (id.src.indexOf('pdf.png') == -1) {
+                modal.style.display = "block";
+                modalImg.src = id.src;
+                captionText.innerHTML = id.alt;
+            } else {
+                window.location.href = id.alt
+            }
 
+        }
+
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
        
         $(function () {
             $('#DocumentTab').bootstrapTable({
@@ -103,7 +171,7 @@
                     field: 'name',
                     title: 'Name'
                 }, {
-                    field: 'documentRefId',
+                    field: 'doctype',
                     title: 'Type'
                 }, {
                     field: 'documentNo',
@@ -114,10 +182,12 @@
                     formatter: imsgeFormatter
                 }, {
                     field: 'userId',
-                    title: 'User'
+                    title: 'User',
+                    formatter: fullNameFormatter
                 }, {
-                    field: 'port',
-                    title: 'Port'
+                    filed: 'userId',
+                    title: '',
+                    formatter: documentFormatter
                 }]
             });
             $('#DocumentTab').on('post-body.bs.table', function () {

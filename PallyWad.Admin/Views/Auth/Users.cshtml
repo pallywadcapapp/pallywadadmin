@@ -88,31 +88,19 @@
                             <div class="row">
                                 <div class="col-xs-4">
                                     <p>
-                                        <span>FirstName: </span><span name="firstName" id="firstnameSummation"></span>
+                                        <span>FirstName: </span><span name="firstname" id="firstnameSummation"></span>
                                     </p>
                                     <p>
-                                        <span>LastName: </span><span name="lastName" id="lastnameSummation"></span>
+                                        <span>LastName: </span><span name="lastname" id="lastnameSummation"></span>
                                     </p>
                                     <p>
-                                        <span>Unit: </span><span name="unit" id="unitSummation"></span>
-                                    </p>
-                                    <p>
-                                        <span>Branch: </span><span name="location" id="branchSummation"></span>
-                                    </p>
-                                    <p>
-                                        <span>Home Address: </span><span name="homeAddress" id="HomeAddressSummation"></span>
+                                        <span>Home Address: </span><span name="address" id="address"></span>
                                     </p>
                                     <p>
                                         <span>Phone No: </span><span name="phoneNumber" id="phoneNoSummation"></span>
                                     </p>
                                     <p>
                                         <span>Email: </span><span name="email" id="emailSummation"></span>
-                                    </p>
-                                    <p>
-                                        <span>Nationality: </span><span name="nationality" id="nationalitySummation"></span>
-                                    </p>
-                                    <p>
-                                        <span>Religion: </span><span name="religion" id="religionSummation"></span>
                                     </p>
                                     <p>
                                         <span>DOB: </span><span name="dob" id="dobSummation"></span>
@@ -322,7 +310,7 @@
         }
         function loadEditView(id) {
             $('#editUserModal').pleaseWait();
-            var eurl = appConfig.authURL + 'api/admin/UserById?email=' + id;
+            var eurl = appConfig.authURL + 'api/account/UserById?email=' + id;
             $.get(eurl, function (data) {
                 userdata = data;
                 $('#editUserModal').pleaseWait('stop');
@@ -349,7 +337,7 @@
         }
         function loadView(id) {
             $('#userViewModal').pleaseWait();
-            var url = appConfig.authURL + 'api/admin/UserById?email=' + id;
+            var url = appConfig.authURL + 'api/profile/UserById?email=' + id;
              $.get(url, function (data) {
                  $('#userViewModal').pleaseWait('stop');
                  try {
@@ -388,11 +376,11 @@
             return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
                 ' <ul class="dropdown-menu">' +
                 '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#userViewModal" onclick="loadView(\'' + email + '\')">VIEW</a></li>' +
-                '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">EDIT USER</a></li>' +
-                '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#editEmailViewModal" onclick="loadEditEmail(\'' + email + '\',\'' + memberId + '\')">CHANGE EMAIL</a></li>' +
+                //'<li><a id="demo02" class="btn" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">EDIT USER</a></li>' +
+                //'<li><a id="demo01" class="btn" data-toggle="modal" data-target="#editEmailViewModal" onclick="loadEditEmail(\'' + email + '\',\'' + memberId + '\')">CHANGE EMAIL</a></li>' +
                 '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#activateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>ACTIVATE</a></li>' +
                 '<li><a id="demo02" class="btn" data-toggle="modal" data-target="#deactivateUserModal" onclick="loadEditView(\'' + email + '\')"><i class="fa fa-plus"></i>DEACTIVATE</a></li>' +
-                '<li><a id="demo02" class="btn Administrator" onclick="CompleteReg(\'' + memberId + '\')"><i class="fa fa-plus"></i>Fix Reg</a></li>' +
+                //'<li><a id="demo02" class="btn Administrator" onclick="CompleteReg(\'' + memberId + '\')"><i class="fa fa-plus"></i>Fix Reg</a></li>' +
                 ' </ul></div >'
         };
 
@@ -512,11 +500,12 @@
                     field: 'userName',
                     title: 'Member ID'
                 }, {
-                    field: 'email',
-                    title: 'Email'
+                    field: 'dob',
+                    title: 'DOB',
+                    formatter:localDateFormatter
                 }, {
                         field: 'sex',
-                        title: 'Sex'
+                        title: 'Gender'
                 }, {
                         field: 'phoneNumber',
                         title: 'Phone Number'

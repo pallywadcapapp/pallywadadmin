@@ -225,7 +225,7 @@
                             <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
                         </p>
                         <p>
-                            <span>Approved Date: </span><span name="approvalDate" id="approvalDate"></span>
+                            <span>Collaterized Date: </span><span name="collaterizedDate" id="collaterizedDate"></span>
                         </p>
                         <!--
                         <p>
@@ -241,7 +241,7 @@
                 </div>
             </div>
             <div class="modal-footer bg-success">
-                <button type="button" class="btn btn-warning" onclick="printPreview()">Print Preview</button>
+                <!--<button type="button" class="btn btn-warning" onclick="printPreview()">Print Preview</button>-->
                 <button type="button" class="btn btn-primary process" onclick="processReview('Approve')">
                     Fund
                     Account
@@ -385,6 +385,9 @@
                         if (key == 'approvalDate') {
                             $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
                         }
+                        if (key == 'collaterizedDate') {
+                            $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                        } 
                         if (key == 'memberId') {
                             var member = getMemberById(data[key]);
                             var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
@@ -536,11 +539,12 @@
                     formatter: moneyFormatter
                 }, {
                     field: 'requestDate',
-                    title: 'Req Date',
+                    title: 'Requested Date',
                     formatter: localDateFormatter
                 }, {
-                    field: 'status',
-                    title: 'Approval Status'
+                    field: 'collaterizedDate',
+                    title: 'Collaterized Date',
+                    formatter: localDateFormatter
                 }, {
                     field: 'processState',
                     title: 'Processing State'

@@ -200,21 +200,14 @@
                                         <span>Member : </span><span name="fullname" id="fullname"></span>
                                     </p>
                                     <p>
-                                        <span>Amount: </span><span name="amount" id="amount"></span>
+                                        <span>Amount: </span><b><span name="amount" id="amount"></span></b>
                                     </p>
                                     <p>
                                         <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                                     </p>
                                     <p>
-                                        <span>Monthly Interest Rate (%): </span><span name="loanmonthlyinterest" id="loanmonthlyinterest"></span>
-                                    </p>
-                                    <p>
                                         <span>Monthly Interest Amount: </span><span name="monthlyrepay" id="monthlyrepay"></span>
                                     </p>
-                                    <p>
-                                        <span>Total Monthly Repayment: </span><span name="monthtotalrepay" id="monthtotalrepay"></span>
-                                    </p>
-                                    <p>
                                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
                                     </p>
                                     <p>
@@ -226,6 +219,10 @@
                                     <p>
                                         <span>Estimated Collateral Value: </span><span name="estimatedCollateralValue" id="estimatedCollateralValue"></span>
                                     </p>
+                                    <p>
+                                        <span>Collateral: </span><span name="collateral" id="collateral"></span>
+                                    </p>
+                                    <p>
                                     <p>
                                         <span>Collateral Value: </span><input class="form-control" type="number" name="collateralValue" id="collateralValue" />
                                     </p>
@@ -388,7 +385,13 @@
                     loanDetails.status = "Collaterized";
                     loanDetails.tenantId = "rr";
                     loanDetails.approvedBy = localStorage.getItem('uemail');
-                    url = appConfig.adminURL + 'api/loanrequest/ApproveLoanRequestCollateral?id=' + loanDetails.id + '&collateralValue=' + collateralValue;
+
+                    if (collateralValue < 1 ) {
+                        toastr.error('Kindly eenter the approved collateral value ');
+                    }else { 
+                        url = appConfig.adminURL + 'api/loanrequest/ApproveLoanRequestCollateral?id=' + loanDetails.id + '&collateralValue=' + collateralValue;
+                    }
+                    
                 }
             } else {
                 loanDetails.processState = "Processed";

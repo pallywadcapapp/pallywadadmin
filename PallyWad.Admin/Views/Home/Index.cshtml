@@ -199,25 +199,24 @@
         loadDefault();
         $('#PaymentTab').bootstrapTable({
             idField: 'product',
-            url: appConfig.setupURL + 'api/Product',
+                url: appConfig.adminURL + 'api/BankDeposit/PendingDeposits',
             columns: [{
-                field: 'name',
-                title: 'Product Name'
+                field: 'loanRefId',
+                title: 'Product Ref'
             }, {
-                field: 'type',
+                field: 'fullname',
                 title: 'Client Name'
             }, {
                 field: 'channel',
                 title: 'Payment Channel'
                 }, {
-                    field: 'isDefault',
-                    title: 'Payment Date'
+                    field: 'requestDate',
+                    title: 'Payment Date',
+                    formatter: localDateFormatter
                 }, {
-                    field: 'isDefault',
-                    title: 'Amount'
-                }, {
-                    field: 'isDefault',
-                    title: 'Payment Status'
+                    field: 'amount',
+                    title: 'Amount',
+                    formatter: moneyFormatter
                 }]
         });
         $('#PaymentTab').on('post-body.bs.table', function () {
