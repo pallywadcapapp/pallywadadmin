@@ -212,44 +212,42 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-success">
+            <div class="modal-header bg-primary">
                 <h4 class="modal-title">Loan <span name="loanId"></span> Details</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-4">
                         <p>
-                            <span>Loan ID: </span><span name="loanId" id="loanId"></span>
+                            <span>Loan ID: </span><span name="loanrefnumber" id="loanrefnumber"></span>
                         </p>
                         <p>
                             <span>Member : </span><span name="fullname" id="fullname"></span>
                         </p>
                         <p>
-                            <span>Amount: </span><span name="amount" id="amount"></span>
+                            <span>Type: </span><span name="loancode" id="loancode"></span>
                         </p>
                         <p>
-                            <span>Requested Date: </span><span name="requestedDate" id="requestedDate"></span>
+                        <p>
+                            <span>Capital Balance: </span><span name="loanamount" id="loanamount"></span>
                         </p>
                         <p>
-                            <span>BVN: </span><span name="bvn" id="bvn"></span>
+                            <span>Interest Payable: </span><span name="interestamt" id="interestamt"></span>
                         </p>
                         <p>
-                            <span>Bank: </span><span name="bank" id="bank"></span>
+                            <span>Capital Paid: </span><span name="cappaymentcount" id="cappaymentcount"></span>
                         </p>
                         <p>
-                            <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
+                            <span>Interest Rate: </span><span name="interestRate" id="interestRate"></span>
                         </p>
                         <p>
-                            <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
-                        </p>
-                        <p>
-                            <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
+                            <span>Repayment Date: </span><span name="repaymentDate" id="repaymentDate"></span>
                         </p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer bg-success">
-                <button type="button" class="btn btn-primary processed" onclick="saveReview('Approve')">Process</button>
+                <!--<button type="button" class="btn btn-primary processed" onclick="saveReview('Approve')">Process</button>-->
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -289,6 +287,11 @@
         function actionFormatter(value, row, index) {
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
         };
+        function loanrefFormatter(value, row, index) {
+            return '<a href="./LoanRepaymentDetails?loanid=' + value + '" >' + value + '</a>';
+        };
+
+        //
         function refreshTables() {
             var newUrl = appConfig.apiURL + 'api/settings/LoanRequest';
             $('#LoanRequestTab').bootstrapTable('refresh', { url: newUrl, silent: true });
@@ -303,7 +306,7 @@
 
         function loadView(id) {
             $('#loadViewModal').pleaseWait();
-            var url = appConfig.apiURL + 'api/member/loandetail?loadId=' + encodeURIComponent(id);
+            var url = appConfig.adminURL + 'api/loans/repayydetails?id=' + encodeURIComponent(id);
             $.get(url, function (data) {
                 loanDetails = data;
                 $('#loadViewModal').pleaseWait('stop');
@@ -316,37 +319,26 @@
                             $('[name="lastname"]').html(lname);
                         }
                         $('[name="' + key + '"]').html(data[key]);
-                        if (key == 'dob') {
+                        if (key == 'repaymentDate') {
                             $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
                         }
+                        if (key == 'loanamount') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'interestamt') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'interestbalance') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
+                        if (key == 'cappaymentcount') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
                         if (key == 'memberId') {
-                            var fullname = getMemberById(data[key]).fullname
+                            var member = getMemberById(data[key]);
+                            var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
                             $('[name="' + key + '"]').html(data[key]);
                             $('[name="fullname"]').html(fullname);
-                        }
-
-                        if (key == 'guarantorId1') {
-                            var g1 = getMemberById(data[key]).fullname
-                            console.log(g1);
-                            getGuarantorOverhead(data[key], key, g1);
-                            $('[name="' + key + '"]').html(g1);
-                            //$('[name="fullname"]').html(fullname);
-                        }
-
-                        if (key == 'guarantorId2') {
-                            var g1 = getMemberById(data[key]).fullname;
-                            console.log(g1);
-                            $('[name="' + key + '"]').html(g1);
-                            getGuarantorOverhead(data[key], key, g1);
-                            //$('[name="fullname"]').html(fullname);
-                        }
-
-                        if (key == 'guarantorId3') {
-                            var g1 = getMemberById(data[key]).fullname;
-                            console.log(g1);
-                            $('[name="' + key + '"]').html(g1);
-                            getGuarantorOverhead(data[key], key, g1);
-                            //$('[name="fullname"]').html(fullname);
                         }
 
                         if (key == 'processState') {
@@ -386,7 +378,8 @@
                         formatter: nameFormatter
                     }, {
                     field: 'loanrefnumber',
-                    title: 'Loan Id'
+                    title: 'Loan Id',
+                    formatter: loanrefFormatter
                 }, {
                     field: 'loanamount',
                     title: 'Amount',
@@ -424,10 +417,10 @@
             }
             function viewFormatter(value, row, index) {
                 var id = row.id;
-                var email = row.loanId;
+                var email = row.loanrefnumber;
                 return '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" > Action <span class="caret" ></span ></button >' +
                     ' <ul class="dropdown-menu">' +
-                    '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + email + '\')">VIEW</a></li>' +
+                    '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + id + '\')">VIEW</a></li>' +
                     //'<li><a id="demo02" class="btn admin" data-toggle="modal" data-target="#editUserModal" onclick="loadEditView(\'' + email + '\')">REVIEW</a></li>' +
                     ' </ul></div >'
             };

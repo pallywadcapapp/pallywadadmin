@@ -76,7 +76,13 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult LoanRepaymentDetails()
+        {
+            return View();
+        }
         
+
 
 
 

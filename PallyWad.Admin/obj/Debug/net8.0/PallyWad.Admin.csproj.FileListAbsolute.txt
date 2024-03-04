@@ -1,10 +1,10 @@
-D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.exe
-D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.dll
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\appsettings.Development.json
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\appsettings.json
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.staticwebassets.runtime.json
+D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.exe
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.deps.json
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.runtimeconfig.json
+D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.dll
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\bin\Debug\net8.0\PallyWad.Admin.pdb
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\obj\Debug\net8.0\PallyWad.Admin.GeneratedMSBuildEditorConfig.editorconfig
 D:\VS Project\PallyWad Project\PallyWad\PallyWad.Admin\obj\Debug\net8.0\PallyWad.Admin.AssemblyInfoInputs.cache

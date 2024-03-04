@@ -126,107 +126,129 @@
     <div class="card mb-3" id="detail">
         <div class="card-header">
             <i class="fa fa-table"></i><span style="margin-left: 10%;" name="fullname"></span>
-            <span> LOAN PREVIEW</span>
+            <span> LOAN SETUP REVIEW</span>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-6" id="loanProcessView">
-                    <p>
-                        <span>Account No: </span><span name="accountno" id="accountno"></span>
-                    </p>
-                    <p>
-                        <span>Category : </span><span name="category" id="category"></span>
-                    </p>
-                    <p>
-                        <span>Loan Desc: </span><span name="loandesc" id="loandesc"></span>
-                    </p>
-                    <p>
-                        <span>Loan Code: </span><span name="loancode" id="loancode"></span>
-                    </p>
-                    <p>
-                        <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
-                    </p>
-                    <p>
-                        <span>Tenor(Months): </span><span name="duration" id="duration"></span>
-                    </p>
-                    <p>
-                        <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
-                    </p>
-                    <p>
-                        <span>Approval Date: </span><span name="approvalDate" id="approvalDate"></span>
-                    </p>
-                    <p>
-                        <span>BVN: </span><span name="bvn" id="bvn"></span>
-                    </p>
-                    <p>
-                        <span>Bank: </span><span name="bankname" id="bank"></span>
-                    </p>
-                    <p>
-                        <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
-                    </p>
-                    <p>
-                        <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
-                    </p>
-                    <p>
-                        <span>Other Coorp: </span><span name="othercoorp" id="othercoorp"></span>
-                    </p>
-                    </div>
-                    <div class="col-sm-6">
-
-                    <p>
-                       
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>Guarantor 1:
-                                </span>
-                            </div>
-                            <div class="col-sm-8">
-                                <span name="guarantorId1" id="guarantorId1"></span>
-                                <br />
-                                <span><b>Savings</b>: </span><label name="guarantorId1Normal" style="color: green;">0</label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId1Loans" style="color: red;">0 </label></br/>
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId1LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net</b>: </span><label name="guarantorId1Net" style="color: black;"> </label>
-                            </div>
-
-                        </div>
-                    </p>
-                    <p>
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>Guarantor 2:
-                                </span>
-                            </div>
-                            <div class="col-sm-10">
-                                <span name="guarantorId2" id="guarantorId2"></span>
-                                <br />
-                                <span><b> Savings </b>: </span><label name="guarantorId2Normal" style="color: green;">0</label>
-                                <span> <b> Loan</b>: </span><label name="guarantorId2Loans" style="color: red;">0 </label></br/>
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId2LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net </b>: </span><label name="guarantorId2Net" style="color: black;">0 </label>
-                            </div>
-
-                        </div>
-                    </p>
-                    <p>
-                        <div class="row gg">
-                            <div class="col-sm-2">
-                                <span>Guarantor 3:
-                                </span>
-                            </div>
-                            <div class="col-sm-10">
-                                <span name="guarantorId3" id="guarantorId3"></span>
-                                <br />
-                                <span><b>Savings</b>: </span><label name="guarantorId3Normal" style="color: green;">0</label>
-                                <span> <b>Loan</b>: </span><label name="guarantorId3Loans" style="color: red;">0 </label><br/>
-                                <span> <b>Loan Guaranteed</b>: </span><label name="guarantorId3LoanGuanrantee" style="color: red;">0 </label>
-                                <span> <b>Net</b>: </span><label name="guarantorId3Net" style="color: black;">0 </label>
-                            </div>
-
-                        </div>
-                    </p>
-                </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i>Loan Setup
             </div>
+            <div class="card-body">
+                <form id="lrForm">
+                    <div>
+                        <h3>Loan Definition</h3>
+                        <section>
+                            <div class="row">
+                                -<div class="form-group modsp col-sm-7">
+                                    <span>Loan Code</span><input type="text" placeholder="Loan Type Code" class="form-control" id="loancode" name="loancode" />
+                                </div>
+                                <div class="form-group modsp col-sm-4">
+                                    <span>Loan Short Name</span><input type="text" placeholder="Loan Short Name" class="form-control" id="shortname" name="shortname" />
+                                </div>
+                                <div class="form-group modsp col-sm-12">
+                                    <span>Loan Description</span><textarea placeholder="Loan Description" class="form-control" id="loandesc" name="loandesc"></textarea>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Loan Category</span><select class="select2 form-select" id="category">
+                                        <option value="Long Term">Select Loan Category</option>
+                                    </select>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Deduction Order</span><select class="select2 form-select" id="repayOrder">
+                                        <option value="1">Select Repayment Priority</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </section>
+                        <h3>Loan Details</h3>
+                        <section>
+                            <div class="row">
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Duration</span><input type="number" value="1" placeholder="Loan Duration" class="form-control" id="duration" name="duration" />
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Interest Rate</span><input type="number" placeholder="Interest Rate" class="form-control" id="loaninterest" name="loaninterest" />
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Processing Rate</span><input type="number" placeholder="Processing Rate" class="form-control" id="processrate" name="processrate" />
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Processing Amount</span><input type="number" placeholder="Processing Amount" class="form-control" id="processamt" name="processamt" />
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Interest Type</span><select class="form-select" id="loanInterestType">
+                                        <option value="0"> - Select Interest Type -</option>
+                                        <option value="General">General</option>
+                                        <option value="reducing balance"> Reducing Balance </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Min Age</span><input type="number" placeholder="minimum age" class="form-control" id="age" name="age" />
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Min Coll Percentage</span><input type="number" placeholder="Min Collateral Percentage" class="form-control" id="collateralPercentage" name="collateralPercentage" />
+                                </div>
+                            </div>
+                        </section>
+                        <h3>Loan Accounts</h3>
+                        <section>
+                            <div class="row">
+                                <div class="form-group modsp col-sm-12">
+                                    <span>GL Acct</span><select class="form-control" id="accountno"></select>
+                                </div>
+                                <div class="form-group modsp col-sm-12">
+                                    <span>Group Acct</span><select class="form-control" id="memgroupacct"></select>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Interest Code</span><select class="form-control" id="interestcode"></select>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Charges Code</span><select class="form-control" id="chargecode"></select>
+                                </div>
+                            </div>
+                        </section>
+                        <h3>Loan Criteria</h3>
+                        <section>
+                            <div class="row">
+                                <div class="form-group modsp col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="colltype">Require Collateral</span>
+                                        <label class="switch">
+                                            <input id="requireGuarantor" type="checkbox">
+                                            <span class="slider cround"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="runtype">Can be requested while Loan Running</span>
+                                        <label class="switch">
+                                            <input id="request_while_running" type="checkbox">
+                                            <span class="slider cround"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Collaterals</span><select class="form-control" id="collateral" multiple="multiple"></select>
+                                </div>
+                                <div class="form-group modsp col-sm-6">
+                                    <span>Required Documents</span><select class="form-control" id="documents" multiple="multiple"></select>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="card-footer small text-muted">Updated Today at <span id="todayT"></span></div>
+
+
         </div>
 </div>
 
@@ -303,7 +325,7 @@ function etype(elementId){
 
     function loadView(id) {
         $('#loadViewModal').pleaseWait();
-        var url = appConfig.apiURL + 'api/settings/loantypebyId?id=' + encodeURIComponent(id);
+            var url = appConfig.setupURL + 'api/loan/byid?id=' + encodeURIComponent(id);
         $.get(url, function (data) {
             loanDetails = data;
             $('#loadViewModal').pleaseWait('stop');
@@ -314,7 +336,8 @@ function etype(elementId){
                         var fname = data[key].split(' ')[1];
                         $('[name="firstname"]').html(fname);
                         $('[name="lastname"]').html(lname);
-                    }
+                        }
+                        $('[name="' + key + '"]').val(data[key]);
                     $('[name="' + key + '"]').html(data[key]);
                     if (key == 'requestDate') {
                         $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
