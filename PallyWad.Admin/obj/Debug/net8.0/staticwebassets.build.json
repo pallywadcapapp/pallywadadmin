@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "saoZnolJqDaSn9tyMY7+7l6gaIlQPN0m+YMe+AtFBnE=",
+  "Hash": "dDLXMvbj4bz3QqDk6UtxtO3fWYV8100E87bEmcriIDM=",
   "Source": "PallyWad.Admin",
   "BasePath": "_content/PallyWad.Admin",
   "Mode": "Default",
@@ -33476,6 +33476,25 @@
       "OriginalItemSpec": "wwwroot\\css\\toastr.min.css"
     },
     {
+      "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\wysiwyg-editor.css",
+      "SourceId": "PallyWad.Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\",
+      "BasePath": "_content/PallyWad.Admin",
+      "RelativePath": "css/wysiwyg-editor.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\wysiwyg-editor.css"
+    },
+    {
       "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\favicon.ico",
       "SourceId": "PallyWad.Admin",
       "SourceType": "Discovered",
@@ -33493,6 +33512,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\bootstrap-wysiwyg.js",
+      "SourceId": "PallyWad.Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\",
+      "BasePath": "_content/PallyWad.Admin",
+      "RelativePath": "js/bootstrap-wysiwyg.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\bootstrap-wysiwyg.js"
     },
     {
       "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\dropzone_.js",
@@ -33797,6 +33835,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\jquery.easing.min.js"
+    },
+    {
+      "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.hotkeys.js",
+      "SourceId": "PallyWad.Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\",
+      "BasePath": "_content/PallyWad.Admin",
+      "RelativePath": "js/jquery.hotkeys.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\jquery.hotkeys.js"
     },
     {
       "Identity": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.idle.js",

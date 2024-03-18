@@ -7069,12 +7069,20 @@
       "PackagePath": "staticwebassets\\css\\toastr.min.css"
     },
     {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\css\\wysiwyg-editor.css",
+      "PackagePath": "staticwebassets\\css\\wysiwyg-editor.css"
+    },
+    {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\FileSaver.js",
       "PackagePath": "staticwebassets\\js\\FileSaver.js"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\bootstrap-wysiwyg.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap-wysiwyg.js"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\dropzone.js",
@@ -7139,6 +7147,10 @@
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.easing.min.js",
       "PackagePath": "staticwebassets\\js\\jquery.easing.min.js"
+    },
+    {
+      "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.hotkeys.js",
+      "PackagePath": "staticwebassets\\js\\jquery.hotkeys.js"
     },
     {
       "Id": "D:\\VS Project\\PallyWad Project\\PallyWad\\PallyWad.Admin\\wwwroot\\js\\jquery.idle.js",

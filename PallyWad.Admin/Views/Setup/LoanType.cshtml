@@ -178,10 +178,109 @@
     </div>
 </div>
 
+<div id="descModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Product Description</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group modsp">
+                    <span>Name </span><input type="text" placeholder="Name" class="form-control" id="name" />
+                </div>
+                <div class="form-group">
+                    <span>Details</span>
+                    <div class="btn-toolbar" data-role="editor-toolbar"
+                         data-target="#editor">
+                        <div class="btn-group">
+                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a data-edit="fontSize 5" class="fs-Five">Huge</a></li>
+                                <li><a data-edit="fontSize 3" class="fs-Three">Normal</a></li>
+                                <li><a data-edit="fontSize 1" class="fs-One">Small</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Text Highlight Color"><i class="fa fa-paint-brush"></i>&nbsp;<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <p>&nbsp;&nbsp;&nbsp;Text Highlight Color:</p>
+                                <li><a data-edit="backColor #00FFFF">Blue</a></li>
+                                <li><a data-edit="backColor #00FF00">Green</a></li>
+                                <li><a data-edit="backColor #FF7F00">Orange</a></li>
+                                <li><a data-edit="backColor #FF0000">Red</a></li>
+                                <li><a data-edit="backColor #FFFF00">Yellow</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Color"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <p>&nbsp;&nbsp;&nbsp;Font Color:</p>
+                                <li><a data-edit="foreColor #000000">Black</a></li>
+                                <li><a data-edit="foreColor #0000FF">Blue</a></li>
+                                <li><a data-edit="foreColor #30AD23">Green</a></li>
+                                <li><a data-edit="foreColor #FF7F00">Orange</a></li>
+                                <li><a data-edit="foreColor #FF0000">Red</a></li>
+                                <li><a data-edit="foreColor #FFFF00">Yellow</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                            <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                            <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                            <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                            <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                            <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-outdent"></i></a>
+                            <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                            <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                            <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                            <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                            <div class="dropdown-menu input-append">
+                                <input placeholder="URL" type="text" data-edit="createLink" />
+                                <button class="btn" type="button">Add</button>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-unlink"></i></a>
+                            <span class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn">
+                                <i class="fa fa-picture-o"></i>
+                                <input class="imgUpload" type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+                            </span>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                            <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                            <a class="btn btn-default" data-edit="html" title="Clear Formatting"><i class='glyphicon glyphicon-pencil'></i></a>
+                        </div>
+                    </div>
+                    <div id="editor" class="lead" data-placeholder="This is a basic example with no toolbars."></div>
+                    <div id="editorPreview"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveLoanDesc()" id="saveLoanDescBtn">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 @section Scripts{
 
     <script src="~/Scripts/config.js" type="text/javascript"></script>
+    <script type='text/javascript'>$('#editor').wysiwyg();</script>
     <script>
+        var tableData = '';
         var $accountno = $('#accountno');
         var $memgroupacct = $('#memgroupacct');
         var $interestcode = $('#interestcode');
@@ -321,8 +420,21 @@
                 ' <ul class="dropdown-menu">' +
                 '<li><a id="demo01" class="btn" data-toggle="modal" data-target="#loadViewModal" onclick="loadView(\'' + id + '\', \'' + status + '\', \'' + key + '\')">VIEW</a></li>' +
                 '<li><a id="demo02" class="btn admin" onclick="loadEditView(\'' + id + '\')"><i class="fa fa-edit"></i> EDIIT</a></li>' +
+                '<li><a onclick="edit(' + index + ')" class="btn btn-success" data-toggle="modal" data-target="#descModal">Edit Description</a></li>'
                 ' </ul></div >'
         };
+
+
+
+        function edit(id) {
+            seldata = tableData[id];
+            var name = seldata.loancode;
+            var desc = seldata.loandesc;
+            console.log(desc);
+            $('#name').val(name);
+            $('#editor').html(desc);
+            $('#saveLoanDescBtn').html('update')
+        }
 
         function actionFormatter(value, row, index) {
             return '<a href="./tbdetails?year=2018&id=' + value + '" >' + value + '</a>';
@@ -332,7 +444,36 @@
             $('#LoanTypesTab').bootstrapTable('refresh', { url: newUrl, silent: true });
         }
 
+        function saveLoanDesc() {
+            $('#descModal').pleaseWait();
 
+            var name = $('#name').val();
+            var editor = $('#editor').html();
+
+
+                var url = appConfig.setupURL + "api/loan/loandesc?id=" + seldata.id;
+            seldata.loancode = name,
+                seldata.loandesc = editor,
+                    //seldata.type = "collateral"
+                console.log(seldata)
+                $.ajax({
+                    type: 'PUT',
+                    url: url,
+                    data: JSON.stringify(seldata),
+                    //dataType: 'json',
+                    contentType: "application/json",
+                }).done(function (data) {
+                $('#descModal').pleaseWait('stop');
+                $('#descModal').modal('hide');
+                    toastr.success('Loan descriptiom  ' + name + ' updated successfully');
+                    refreshTables();
+                }).fail(function (request, message, error) {
+                $('#descModal').pleaseWait('stop');
+                toastr.error('error ' + error + 'for updating Loan descriptiom ' + name);
+                });
+
+
+        }
         function saveLoanTypes() {
             $('#myModal').pleaseWait();
 
@@ -493,6 +634,11 @@
                 $('[data-tooltip="true"]').tooltip({
                     container: 'body'
                 });
+            });
+
+            $('#LoanTypesTab').on('load-success.bs.table', function (e, field, row, old, $el) {
+                console.log(field)
+                tableData = field;
             });
             $(document).on('editable-save.bs.table', '#LoanTypesTab', function (e, field, row, old, $el) {
                 console.log(row);
