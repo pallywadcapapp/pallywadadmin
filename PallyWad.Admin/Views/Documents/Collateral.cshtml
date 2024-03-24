@@ -8,7 +8,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="~/">Dashboard</a>
         </li>
         <li class="breadcrumb-item active">Collateral</li>
     </ol>
@@ -81,7 +81,7 @@
         }
 
         function previewImageFormatter(value, row,index){
-            return '<button>Preview Image</button>'
+            return '<a class="btn btn-primary" href="collateralpreview?collateralId='+ row.id +'">Preview Image</a>'
         }
         function imsgeFormatter(value, row, index) {
             var url = '';

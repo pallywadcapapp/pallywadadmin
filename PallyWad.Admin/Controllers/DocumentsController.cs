@@ -28,5 +28,9 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+        public IActionResult CollateralPreview()
+        {
+            return View();
+        }
     }
 }

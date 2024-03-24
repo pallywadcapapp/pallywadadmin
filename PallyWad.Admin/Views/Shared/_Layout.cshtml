@@ -562,6 +562,7 @@
     @await RenderSectionAsync("Scripts", required: false)
         <script>
             //$.fn.editable.defaults.mode = 'popup';
+            $('#todayT').html(new Date().toDateString())
             localStorage.setItem('prev', window.location.href);
 
             $(document).idle({

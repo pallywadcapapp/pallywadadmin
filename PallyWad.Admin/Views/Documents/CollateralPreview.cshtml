@@ -1,0 +1,103 @@
+@{
+    //ViewData["Title"] = "Collateral";
+    ViewBag.Title = "Collateral Prview";
+}
+
+<link href="~/css/index_style.css" rel="stylesheet">
+<link href="~/assets/css/imgPreview.css" rel="stylesheet" type="text/css">
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="~/">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Collateral Prview</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>Collateral Prview
+        </div>
+        <div class="card-body">
+            <div id="collPrev"></div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+
+@section Scripts {
+
+    <script>
+        var collId= qs['collateralId'];
+var modal = document.getElementById("myModal");
+        singleLoanUserCollaterals(collId);
+        function singleLoanUserCollaterals(coll) {
+            var collPrevElements = '<div class="row">';
+            var $collElement = document.getElementById('collPrev');
+            var size = coll.length;
+            if (coll == null) {
+                collPrevElements = '<h6>No User Collateral Uploaded</h6>'
+                $collElement.innerHTML = collPrevElements + '</div>';
+            } else {
+                //$.each(coll, function (e) {
+                var ecoll = coll;
+                var url = '@Html.Raw(Url.Action("images", "assets"))';
+                $.get(appConfig.adminURL + 'api/collateral/Files?id=' + ecoll, function (data) {
+                    $.each(data, function (e) {
+                        console.log(data[e])
+                        if (data[e].fileurl.indexOf('.pdf') == -1) {
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        } else {
+                            collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' +
+                                url + '/pdf.png" ' + 'alt=' + appConfig.userURL +
+                                'api/documents/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
+                        }
+
+                        $collElement.innerHTML = collPrevElements + '</div>';
+                    });
+                })
+
+                // });
+            }
+        }
+        function previewImage(id) {
+            
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            if (id.src.indexOf('pdf.png') == -1) {
+                modal.style.display = "block";
+                modalImg.src = id.src;
+                captionText.innerHTML = id.alt;
+        } else {
+            window.location.href= id.alt
+        }
+          
+    }
+
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+
+    </script>
+
+
+}
