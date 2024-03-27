@@ -101,9 +101,9 @@
                             <div class="panel panel-success">
                                 <div data-cc-widget-header title="Role List"
                                      allow-collapse="true" class="panel-heading">
-                                    <span>Role List</span>
+                                    <span></span>
                                 </div>
-                                <div class="panel-body widget-content text-info">
+                                <div class="panel-body widget-content">
                                     <table id="usersInRolesTab" class="table table-bordered"  width="100%" cellspacing="0"
                                data-pagination="true" data-sort-name="balance" data-sort-order="desc" data-page-size="50"
                                data-page-list="[ 25, 50, 100, 200, 500, ALL]" data-show-header="true" data-id-field="memberId"
@@ -129,21 +129,27 @@
 
 @section Scripts{ 
     <script>
+        function rolenameFormatter(value, row, index) {
+            var member = getMemberById(value);
+            console.log(member)
+            var fullname = member.lastname + ' ' + member.firstname + ' ' + member.othernames;
+            return '<span>' + fullname + '</span>';
+        }
         function roleFormatter(value, row,index){
-            var result = '<a href="javascript:void;" onclick="deleteUserFromRole(\''+ row.users +'\',\''+ row.role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a>';
+            var result = '<a href="javascript:void(0);" onclick="deleteUserFromRole(\''+ row.users +'\',\''+ row.role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a>';
                 return result;
         }
         //$('#usersInRolesTab').bootstrapTable();
         function deleteUserFromRole(user, role) {
             var _user = encodeURIComponent(user);
             var _role = encodeURIComponent(role);
-            $('#rolerel').pleaseWait();
+            $('#usersInRolesTab').pleaseWait();
             $.get(appConfig.authURL + 'api/admin/RemoveUserFromRole?user=' + _user + '&role=' + _role, data => {
                 GetAllUsersInRoles();
-                $('#rolerel').pleaseWait('stop');
+                $('#usersInRolesTab').pleaseWait('stop');
             }).fail(error => {
                 console.log(error)
-                $('#rolerel').pleaseWait('stop');
+                $('#usersInRolesTab').pleaseWait('stop');
             });
                 }
 
@@ -198,7 +204,7 @@
                     $rolerel.empty();
                     for (var counter = 0; counter <= data.length - 1; counter++) {
                         $option = $('<tr><td>' + data[counter].users + '</td><td>' + data[counter].role + '</td>' +
-                            '<td><a href="javascript:void;" onclick="deleteUserFromRole(\''+ data[counter].users +'\',\''+ data[counter].role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a><td></tr>');
+                            '<td><a href="javascript:void(0);" onclick="deleteUserFromRole(\''+ data[counter].users +'\',\''+ data[counter].role +'\')"><i style="color:red;" class="fa fa-trash fa-2x"></i><a><td></tr>');
                         $rolerel.append($option);
                     }
                 });
@@ -261,9 +267,13 @@
                 sortStable: true,
                 columns: [ {
                     field: 'users',
+                    title: 'Email',
+                    //footerFormatter: nameFormatter,
+                }, {
+                    field: 'users',
                     title: 'Fullname',
-                    //footerFormatter: totalNameFormatter,
-                },{
+                    formatter: rolenameFormatter,
+                }, {
                     field: 'role',
                     title: 'Role',
                 }, {
