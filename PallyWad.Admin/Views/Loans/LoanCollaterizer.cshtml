@@ -175,7 +175,7 @@
         <li class="breadcrumb-item">
             <a href="~/">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Loan Collaterizer</li>
+        <li class="breadcrumb-item active">Loan Collateralizer</li>
     </ol>
     <!-- Example DataTables Card-->
     <div id="tabs">
@@ -208,8 +208,9 @@
                                     <p>
                                         <span>Monthly Interest Amount: </span><span name="monthlyrepay" id="monthlyrepay"></span>
                                     </p>
+                                    <!--</p>
                                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
-                                    </p>
+                                    </p>-->
                                     <p>
                                         <span>Tenor(Months): </span><span name="duration" id="duration"></span>
                                     </p>
@@ -261,14 +262,14 @@
                     </div>
                     <input type="file" class="d-none" id="selectfile" />
                     <div>
-                        <button href="javascript:;" id="uploadDocument" class="btn btn-primary continue-button-5">Submit Document</button>
+                        <button type="button" id="uploadDocument" class="btn btn-primary continue-button-5">Submit Document</button>
                     </div>
 
 
                 </div>
 
             </div>
-            <div class="form-group modsp col-sm-12">
+            <!--<div class="form-group modsp col-sm-12">
                 <div class="input-group" style="margin-left:5%">
                     <label class="switch">
                         <input id="certifyApproval" onchange="certify()" type="checkbox">
@@ -276,7 +277,7 @@
                     </label>
                     <span class="input-group-addon" id="colltype">&nbsp;&nbsp; Certify All Documents</span>
                 </div>
-            </div>
+            </div>-->
             <div class="col-sm-12">
                 <!--<button type="button" class="btn btn-danger pull-right" onclick="saveReview('Decline')">Decline</button>-->
                 <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#loadReviewModal">Decline</button>
@@ -689,6 +690,8 @@
                     $(this).attr('disabled', true);
                     $('#tabs-2').pleaseWait('stop');
                     toastr.success('collateral documents uploaded');
+                    $('#process').prop('disabled', false);
+                    $('#uploadDocument').prop('disabled', true);
                 },
                 error: function (error) {
                     $('#tabs-2').pleaseWait('stop');

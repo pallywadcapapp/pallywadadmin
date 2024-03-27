@@ -171,22 +171,19 @@
                             <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                         </p>
                         <p>
-                            <span>Description: </span><span name="description" id="description"></span>
+                            <span>Purpose: </span><span name="purpose" id="purpose"></span>
                         </p>
                         <p>
-                            <span>Requested Date: </span><span name="transdate" id="transdate"></span>
+                            <span>Requested Date: </span><span name="processedDate" id="processedDate"></span>
                         </p>
                         <p>
-                            <span>BVN: </span><span name="bvn" id="bvn"></span>
+                            <span>collateral: </span><span name="collateral" id="collateral"></span>
                         </p>
                         <p>
-                            <span>Bank: </span><span name="bank" id="bank"></span>
+                            <span>collateral Value: </span><span name="collateralValue" id="collateralValue"></span>
                         </p>
                         <p>
-                            <span>Account No: </span><span name="bankaccountno" id="bankaccountno"></span>
-                        </p>
-                        <p>
-                            <span>Previous Loan Bal.: </span><span name="loanBal" id="loanBal"></span>
+                            <span>Tenor: </span><span name="duration" id="duration"></span>
                         </p>
                     </div>
                 </div>
@@ -230,8 +227,29 @@
                         $('[name="lastname"]').html(lname);
                     }
                     $('[name="' + key + '"]').html(data[key]);
-                    if (key == 'transdate') {
+                    if (key == 'processedDate') {
                         $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
+                    }
+                    if (key == 'amount') {
+                        var currformatter = new Intl.NumberFormat('en-NG', {
+                    style: 'currency',
+                    currency: 'NGN',
+                    currencySign: "accounting",
+                });
+                var main = currformatter.format(data[key]);
+                $('[name="' + key + '"]').html(main);
+
+                        }
+                    if (key == 'collateralValue') {
+
+                            var currformatter = new Intl.NumberFormat('en-NG', {
+                                style: 'currency',
+                                currency: 'NGN',
+                                currencySign: "accounting",
+                            });
+                            var main = currformatter.format(data[key]);
+                            $('[name="' + key + '"]').html(main);
+
                     }
                     if (key == 'memberId') {
                             var member = getMemberById(data[key]);
@@ -264,10 +282,10 @@
                 formatter: actionFormatter
             }, {
                 field: 'memberid',
-                title: 'Member ID'
+                title: 'User ID'
             }, {
                 field: 'memberid',
-                title: 'Member Name(s)',
+                title: 'User Full Name(s)',
                 formatter: nameFormatter
             }, {
                 field: 'loanamount',
@@ -277,11 +295,11 @@
                 field: 'interestamt',
                 title: 'Interest',
                 formatter: moneyFormatter
-            }, {
+            }/*, {
                 field: 'repayamount',
                 title: 'Mon. Deduc.',
                 formatter: moneyFormatter
-            }, {
+            }*/, {
                 field: 'totrepayable',
                 title: 'Repayable',
                 formatter: moneyFormatter
