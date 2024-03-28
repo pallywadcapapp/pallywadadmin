@@ -186,9 +186,9 @@
                     <p>
                         <span>Monthly Interest Amount (&#8358;) </span><input type="number" disabled name="monthlyrepay" id="monthlyrepay" class="form-control" />
                     </p>
-                    <p>
+                    <!--<p>
                         <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
-                    </p>
+                    </p>-->
                 </div>
                 <div class="form-group modsp col-sm-12">
                     <div class="input-group" style="margin-left:5%">
@@ -280,7 +280,7 @@
                 loanDetails.loanmonthlyinterest = loaninterest; // loanmonthlyinterest;
                 loanDetails.approvalDate = new Date();
                 url = appConfig.adminURL + 'api/loanrequest/loanrequestapproved';// '?id=' + loanDetails.id + '&interest=' + loaninterest 
-                + '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
+                //+ '&duration=' + duration +'&processingFee=' + processingFee; //ProcessLoanRequest;
             } else {
                 loanDetails.processState = "Processed";
                 loanDetails.processState = "Decline";

@@ -341,7 +341,7 @@
         }
 
         function printPreview() {
-            var url = '@Html.Raw(Url.Action("LoanprintPreview", "Loans"))';
+            var url = '@Html.Raw(Url.Action("LoanProcessedPrintPreview", "Loans"))';
             window.location.href = url + '?loanId=' + encodeURIComponent(loanDetails.loanId) + '&memberId=' + encodeURIComponent(loanDetails.memberId);
 
         }

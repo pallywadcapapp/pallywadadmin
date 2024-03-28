@@ -52,6 +52,11 @@ namespace PallyWad.Admin.Controllers
             return View();
         }
 
+        public IActionResult LoanProcessedPrintPreview()
+        {
+            return View();
+        }
+
         public IActionResult LoanTrans()
         {
             return View();
