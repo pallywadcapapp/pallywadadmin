@@ -145,10 +145,10 @@
                         <span>Amount: </span><b><span name="amount" id="amount"></span></b>
                     </p>
                     <p>
-                        <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
+                        <span>Request Interest Rate(%): </span><span name="preferredRate" id="preferredRate"></span>
                     </p>
                     <p>
-                        <span>Request Interest Rate(%): </span><span name="preferredRate" id="preferredRate"></span>
+                        <span>Request Tenor(Months): </span><span name="preferredTenor" id="preferredTenor"></span>
                     </p>
                     <p>
                         <span>Loan Purpose: </span><b><span name="purpose" id="purpose"></span></b>
@@ -165,12 +165,9 @@
                             <span> Years in Business: </span><b><span name="age" id="age"></span></b>
                         </p>
                     </div>
-                    <p>
+                    <!--<p>
                         <span>Processing Fee: </span><span name="processingFee" id="processingFee"></span>
-                    </p>
-                    <p>
-                        <span>Tenor(Months): </span><span name="duration" id="duration"></span>
-                    </p>
+                    </p>-->
                     <p>
                         <span>Requested Date: </span><span name="requestDate" id="requestDate"></span>
                     </p>
@@ -185,6 +182,12 @@
 
                     <p>
                         <span>Monthly Interest Amount (&#8358;) </span><input type="number" disabled name="monthlyrepay" id="monthlyrepay" class="form-control" />
+                    </p>
+                    <p>
+                        <span>Collateral: </span><span name="collateral" id="collateral"></span>
+                    </p>
+                    <p>
+                        <span>Estimated Collateral Value: </span><span name="estimatedCollateralValue" id="estimatedCollateralValue"></span>
                     </p>
                     <!--<p>
                         <span>Processing Fee</span><input type="number" name="processingFee" id="processingFee" class="form-control" />
@@ -399,6 +402,9 @@
                             $('[name="' + key + '"]').html(currformatter.format(data[key]));
                             console.log(intrate)
                             $('[name="monthlyrepay"]').val((intrate));
+                        }
+                        if (key == 'estimatedCollateralValue') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
                         }
                         if (key == 'loanamount') {
                             

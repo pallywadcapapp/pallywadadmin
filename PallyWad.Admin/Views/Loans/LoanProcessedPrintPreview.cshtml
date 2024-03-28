@@ -146,11 +146,11 @@
                     <p>
                         <span>Amount: </span><b><span name="amount" id="amount"></span></b>
                     </p>
-                    <!--<p>
-                        <span>Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
-                    </p>-->
                     <p>
                         <span>Request Interest Rate(%): </span><span name="preferredRate" id="preferredRate"></span>
+                    </p>
+                    <p>
+                        <span>Approved Interest Rate(%): </span><span name="loaninterest" id="loaninterest"></span>
                     </p>
                     <p>
                         <span>Preferred Tenor(Months): </span><span name="preferredTenor" id="preferredTenor"></span>
@@ -362,6 +362,7 @@
                                 $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
                                 $('[id="' + key + '"]').val(d);
                             }
+                        }
                             if (key == 'processedDate') {
                                 if (data[key] == null) {
                                     var d = new Date().toISOString().split('T')[0];
@@ -371,8 +372,6 @@
                                     $('[name="' + key + '"]').html(new Date(data[key]).toLocaleDateString());
                                     $('[id="' + key + '"]').val(d);
                                 }
-
-                            }
                         }
                         if (key == 'category') {
                             if (data[key] == "Personal Loan") {
