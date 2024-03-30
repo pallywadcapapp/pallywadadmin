@@ -487,14 +487,14 @@ function etype(elementId){
                         var url = '@Html.Raw(Url.Action("images", "assets"))';
                         $.get(appConfig.adminURL + 'api/collateral/loadedCollateral?loanId=' + loanId, function (data) {
                             $.each(data, function (e) {
-                                //if (data[e].fileurl.indexOf('.pdf') == -1) {
+                                if (data[e].fileurl.indexOf('.pdf') == -1) {
                                 collPrevElements += '<div class="col-sm-3 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' + appConfig.adminURL +
                                         'api/collateral/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
-                                /*} else {
+                                } else {
                                     collPrevElements += '<div class="col-sm-6 card"><img onclick="previewImage(this)" class="myImg" style="width:150px;height:150px;" src="' +
-                                        url + '/pdf.png" ' + 'alt=' + appConfig.adminURL +
+                                        url + '/pdf.png" ' + 'alt="' + appConfig.adminURL +
                                         'api/collateral/fileuploads?filepath=' + data[e].fileurl + '" /></div>';
-                                }*/
+                                }
 
                                 $collElement.innerHTML = collPrevElements + '</div>';
                             })

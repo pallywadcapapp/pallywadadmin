@@ -160,6 +160,9 @@
                         <span>Collateral: </span><span name="collateral" id="collateral"></span>
                     </p>
                     <p>
+                        <span>Estimated Collateral Value: </span><span name="estimatedCollateralValue" id="estimatedCollateralValue"></span>
+                    </p>
+                    <p>
                         <span>Loan Purpose: </span><b><span name="purpose" id="purpose"></span></b>
                     </p>
                     <div class="business">
@@ -356,6 +359,9 @@ function etype(elementId){
                     if (key == 'amount') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }
+                        if (key == 'estimatedCollateralValue') {
+                            $('[name="' + key + '"]').html(currformatter.format(data[key]));
+                        }
                     if (key == 'processingFee') {
                         $('[name="' + key + '"]').html(currformatter.format(data[key]));
                     }

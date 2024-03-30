@@ -637,6 +637,7 @@
                 file = document.getElementById("selectfile").files[0];
 
                 //check if uploaded file is valid
+                var url = '@Html.Raw(Url.Action("images", "assets"))';
                 let validExtensions = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
                 let fileType = file.type;
                 if (validExtensions.includes(fileType)) {
@@ -645,6 +646,8 @@
                     fileReader.onload = () => {
                         let fileURL = fileReader.result;
                         let imgTag = `<img src="${fileURL}" class="imgTag2" alt="">`;
+                        if (fileType == "application/pdf")
+                            imgTag = `<img src="` + url + `/pdf.png" class="imgTag2" alt="">`;
                         let output = `
                                         ${imgTag}
                                     `;
