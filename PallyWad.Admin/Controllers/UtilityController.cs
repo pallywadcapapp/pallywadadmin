@@ -16,5 +16,13 @@ namespace PallyWad.Admin.Controllers
         {
             return View();
         }
+        public IActionResult ElapsedInterest()
+        {
+            return View();
+        }
+        public IActionResult DueInterest()
+        {
+            return View();
+        }
     }
 }

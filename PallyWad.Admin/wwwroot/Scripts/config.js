@@ -8,6 +8,7 @@ var appConfig = {
     'userURL': userBaseUrl(),
     'accountURL': accountBaseUrl(),
     'managerUrl': managerBaseUrl(),
+    'jobsUrl': jobsBaseUrl(),
     'rootApp': 'http://adb.anchorinsuranceng.com:8051/web/'
     //'rootApp': 'http://anchorweb.azurewebsites.net/'
     //'rootApp': 'http://localhost:8050/web/'
@@ -140,6 +141,39 @@ function userBaseUrl() {
         url = url.replace('127.0.0.1', 'localhost');
     } else {
         url = domain.replace('admin', 'user');
+    }
+
+    const newUrl = url.substr(url.length - 1);
+    if (newUrl === '/') {
+        return url;
+    } else {
+        url = url + '/';
+        return url;
+    }
+}
+
+function jobsBaseUrl() {
+    const angularRoute = window.location.pathname + window.location.search;
+    const _url = window.location.href;
+    let domain = '';
+    if (!(angularRoute.substr(angularRoute.length - 1) === '/')) {
+        domain = _url.replace(angularRoute, '');
+    } else {
+        domain = _url;
+    }
+    let url = '';
+
+    if (domain.includes('localhost')) {
+        if (domain.includes('5135')) {
+            url = domain.replace('5135', '5232');
+        } else if (domain.includes('5134')) {
+            url = domain.replace('5134', '6001');
+        }
+    } else if (domain.includes('127.0.0.1')) {
+        url = domain.replace('8080', '4000');
+        url = url.replace('127.0.0.1', 'localhost');
+    } else {
+        url = domain.replace('admin', 'jobs');
     }
 
     const newUrl = url.substr(url.length - 1);
