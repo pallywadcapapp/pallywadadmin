@@ -424,7 +424,8 @@
             });
 
             $('#LoanTransactionsTab').on('check.bs.table', function (e, row) {
-                checkedRows.push({ id: row.id, name: row.memberId, forks: row.forks });
+                //checkedRows.push({ id: row.id, name: row.memberId, forks: row.forks });
+                checkedRows.push(row);
                 console.log(checkedRows);
             });
             $('#LoanTransactionsTab').on('check-all.bs.table', function (e, row) {
