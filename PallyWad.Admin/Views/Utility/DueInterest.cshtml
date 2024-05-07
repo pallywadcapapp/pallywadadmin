@@ -196,6 +196,34 @@
     </div>
 </div>
 
+<div id="processModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Process Loan Request</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group modsp col-sm-12">
+                        <!--<span>Approval Date </span><input type="date" class="form-control"
+                                                          id="approvalDate" /> -->
+                        <span>Kindly click proceed button to send notification email reminder</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="ProcessDueData()" id="processBulkLoan">
+                    Proceed
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 @section Scripts {
 
     <script src="~/Scripts/config.js" type="text/javascript"></script>
@@ -218,7 +246,7 @@
 
         }
 
-        function ProcessElapsedData() {
+        function ProcessDueData() {
             $('#processModal').pleaseWait();
             console.log(checkedRows);
             const chunkSize = 10;
